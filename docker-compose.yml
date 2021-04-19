@@ -1,0 +1,53 @@
+version: "3.9"
+services:
+  rabbitmq:
+    image: rabbitmq:3.8.14
+    environment:
+      - ./.env.dev
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      - ./.env.dev
+
+  server:
+    build:
+      context: ./server
+    volumes:
+      - ./server/flask-server:/server
+    depends_on:
+      - rabbitmq
+    links:
+      - mongo
+    environment:
+      - ./.env.dev
+    networks:
+      - web_nw
+
+  client:
+    build:
+      context: ./client
+    volumes:
+      - ./client/react-client:/client
+      - /client/node_modules
+    environment:
+      - ./.env.dev
+    networks:
+      - web_nw
+
+  nginx:
+    build:
+      context: ./nginx
+    depends_on:
+      - server
+      - client
+    ports:
+      - "80:80"
+      - "5000:5000"
+    networks:
+      - web_nw
+
+networks:
+  web_nw:
+    driver: bridge
