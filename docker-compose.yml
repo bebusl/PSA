@@ -29,7 +29,7 @@ services:
     build:
       context: ./client
     volumes:
-      - ./client/react-client:/client
+      - ./client:/client
       - /client/node_modules
     environment:
       - ./.env.dev
