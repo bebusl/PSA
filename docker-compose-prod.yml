@@ -15,7 +15,7 @@ services:
     build:
       context: ./server
     volumes:
-      - ./server/flask-server:/server
+      - ./server:/server
     depends_on:
       - rabbitmq
     links:
@@ -30,7 +30,7 @@ services:
       context: ./client
       dockerfile: Dockerfile-prod
     volumes:
-      - ./client/react-client:/client
+      - ./client:/client
       - /client/node_modules
       - build-react:/client/build
     environment:

@@ -1,8 +1,0 @@
-[submodule "client/react-client"]
-	path = client/react-client
-	url = https://anonymous00000@bitbucket.org/capstone-11/react-client.git
-	branch = master
-[submodule "server/flask-server"]
-	path = server/flask-server
-	url = https://anonymous00000@bitbucket.org/capstone-11/flask-server.git
-	branch = master

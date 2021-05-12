@@ -2,11 +2,11 @@ FROM node:14.16.0
 
 WORKDIR /client
 
-COPY react-client/package*.json ./
+COPY package*.json ./
 
 RUN yarn
 
-COPY ./react-client .
+COPY . .
 
 EXPOSE 3000
 
