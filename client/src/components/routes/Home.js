@@ -1,12 +1,28 @@
 import { Link } from "react-router-dom";
+import SearchBox from "../layout/SearchBox";
 import useInput from "../shared/hook/useInput";
-import "./home.css";
-function Home() {
-  const [values, onChange, reset] = useInput({ searchItem: "" });
+function Home({ history }) {
+  const [values, onChange] = useInput({ searchItem: "" });
 
   const onSubmit = (e) => {
-    e.preventDefault();
-    console.log("서브밋했따,,", values);
+    e.preventDefault(); //새로고침 안함.
+    console.log(values.searchItem); //확인하고
+    const keywords = [
+      "품질",
+      "키워드2",
+      "키워드3",
+      "키워드4",
+      "키워드5",
+      "키워드6",
+      "키워드7",
+      "키워드8",
+      "키워드9",
+    ];
+    console.log("history", history);
+    history.push({
+      pathname: "/keyword",
+      state: { keywords: keywords },
+    });
   };
 
   return (
@@ -22,20 +38,11 @@ function Home() {
           <Link to="/ranking">랭킹리스트(결과)페이지</Link>
         </li>
       </ul>
-
-      <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          name="searchItem"
-          value={values.searchItem}
-          placeholder="원하는 상품을 검색해보세요!"
-          onChange={onChange}
-          className="searchbar"
-        ></input>
-        <button type="submit" className="searchButton">
-          검색
-        </button>
-      </form>
+      <SearchBox
+        searchItem={values.searchItem}
+        onSubmit={onSubmit}
+        onChange={onChange}
+      ></SearchBox>
     </>
   );
 }
