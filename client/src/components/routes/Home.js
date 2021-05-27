@@ -1,5 +1,14 @@
 import { Link } from "react-router-dom";
+import useInput from "../shared/hook/useInput";
+import "./home.css";
 function Home() {
+  const [values, onChange, reset] = useInput({ searchItem: "" });
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log("서브밋했따,,", values);
+  };
+
   return (
     <>
       <ul>
@@ -14,7 +23,19 @@ function Home() {
         </li>
       </ul>
 
-      <div>검색창 구현해주세요</div>
+      <form onSubmit={onSubmit}>
+        <input
+          type="text"
+          name="searchItem"
+          value={values.searchItem}
+          placeholder="원하는 상품을 검색해보세요!"
+          onChange={onChange}
+          className="searchbar"
+        ></input>
+        <button type="submit" className="searchButton">
+          검색
+        </button>
+      </form>
     </>
   );
 }
