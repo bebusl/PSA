@@ -3,14 +3,7 @@ import useInput from "../shared/hook/useInput";
 
 function KeywordBtn({ word, handleClick }){
   const Likeword = [];   
-  // function BtnClick(e){
-  //   e.preventDefault();
-  //   // console.log({word})
-  //   // console.log({values})
-  //   Keyword(e, word)
-  //   const likeword = Likeword.concat({word})
-  //   // console.log({likeword})
-  // } 
+ 
   return (
       <div>
           <button onClick={handleClick}>{word}</button>
@@ -18,9 +11,18 @@ function KeywordBtn({ word, handleClick }){
   );
 }
 
-function SelectBox({ keywords }) {
+function SelectBox({ keywords, history }) {
 
   const [values, onChange,onFileChange,KeywordButton] = useInput({ likeword: [] });
+
+  function onSubmit(e){
+    e.preventDefault()
+    history.push({
+      pathname: "/ranking",
+      state: { likeword: values.likeword },
+    });
+
+  }
 
   useEffect(()=>{
     console.log("useEffect : ",values)
@@ -36,6 +38,9 @@ function SelectBox({ keywords }) {
         {keywords.map((Keyword, index) => (
                 <KeywordBtn word={Keyword} key={index} handleClick={(e)=>handleClick(e,Keyword)} />
         ))}
+        <form onSubmit={onSubmit}>
+          <button type='submit'>버튼</button>
+        </form>
         <button>더보기</button>
     </Fragment>
 )
