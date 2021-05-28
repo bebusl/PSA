@@ -5,6 +5,7 @@ function useInput(initialValues) {
 
   const onChange = useCallback((e) => {
     const { name, value } = e.target;
+    console.log(name, value);
     setValues((values) => ({ ...values, [name]: value }));
   }, []);
 
@@ -12,14 +13,17 @@ function useInput(initialValues) {
     setValues((values) => ({ ...values, ["file"]: e.target.file[0] }));
   }, []);
 
-  const KeywordButton =useCallback((keyword) =>{
+  const KeywordButton = useCallback((keyword) => {
     // console.log(keyword)
-    setValues((values) => ({ ...values, likeword: [...values.likeword, keyword] }) )
+    setValues((values) => ({
+      ...values,
+      likeword: [...values.likeword, keyword],
+    }));
     // console.log(temp)
     // console.log(values)
   }, []);
   const reset = useCallback(() => setValues(initialValues), [initialValues]);
-  return [values, onChange, onFileChange, KeywordButton, reset];
+  return { values, onChange, onFileChange, KeywordButton, reset };
 }
 
 export default useInput;

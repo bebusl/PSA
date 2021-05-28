@@ -1,6 +1,5 @@
 import SelectBox from "../layout/SelectBox";
-import {useLocation} from "react-router";
-import useInput from "../shared/hook/useInput";
+import { useLocation } from "react-router";
 
 function KeywordSelect(props) {
   const location = useLocation();

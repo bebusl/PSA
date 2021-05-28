@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import SearchBox from "../layout/SearchBox";
 import useInput from "../shared/hook/useInput";
 function Home({ history }) {
-  const [values, onChange] = useInput({ searchItem: "" });
+  const { values, onChange } = useInput({ searchItem: "" });
 
   const onSubmit = (e) => {
     e.preventDefault(); //새로고침 안함.
@@ -27,7 +27,7 @@ function Home({ history }) {
 
   return (
     <>
-      <ul>
+      {/*<ul>
         <li>
           <Link to="/">홈으로</Link>
         </li>
@@ -37,7 +37,7 @@ function Home({ history }) {
         <li>
           <Link to="/ranking">랭킹리스트(결과)페이지</Link>
         </li>
-      </ul>
+      </ul>*/}
       <SearchBox
         searchItem={values.searchItem}
         onSubmit={onSubmit}
