@@ -1,11 +1,11 @@
-FROM node:14.16.0
+FROM node:14
 
 WORKDIR /client
 
 COPY package*.json ./
 
-RUN yarn
+RUN npm i
 
-COPY . .
+COPY ./ ./
 
-CMD ["yarn", "run", "build"]
+CMD ["npm", "run", "build"]
