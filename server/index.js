@@ -2,12 +2,14 @@ const http = require("http");
 
 const app = require("./app");
 const User = require("./models/@main");
-
+const consumer = require("./kafka/consumer");
 const { SERVER_PORT } = require("./env");
 
 const server = http.createServer(app);
 
 const io = require("socket.io")(server);
+
+consumer.init();
 
 io.on("connection", function (socket) {
   console.log("connected");
