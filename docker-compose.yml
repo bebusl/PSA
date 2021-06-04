@@ -1,10 +1,5 @@
 version: "3.9"
 services:
-  rabbitmq:
-    image: rabbitmq:3.8.14
-    env_file:
-      - .env.dev
-
   mongo:
     image: mongo
     restart: always
@@ -16,8 +11,6 @@ services:
       context: ./server
     volumes:
       - ./server:/server
-    depends_on:
-      - rabbitmq
     links:
       - mongo
     env_file:
