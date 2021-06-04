@@ -1,14 +1,9 @@
 version: "3.9"
 services:
-  rabbitmq:
-    image: rabbitmq:3.8.14
-    environment:
-      - ./.env.dev
-
   mongo:
     image: mongo
     restart: always
-    environment:
+    env_file:
       - ./.env.dev
 
   server:
@@ -16,11 +11,9 @@ services:
       context: ./server
     volumes:
       - ./server:/server
-    depends_on:
-      - rabbitmq
     links:
       - mongo
-    environment:
+    env_file:
       - ./.env.dev
     networks:
       - web_nw
@@ -31,22 +24,15 @@ services:
     volumes:
       - ./client:/client
       - /client/node_modules
-    environment:
-      - ./.env.dev
-    networks:
-      - web_nw
-
-  nginx:
-    build:
-      context: ./nginx
-    depends_on:
-      - server
-      - client
+    env_file:
+      - .env.dev
     ports:
-      - "80:80"
-      - "5000:5000"
+      - "3000:3000"
     networks:
       - web_nw
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
 
 networks:
   web_nw:
