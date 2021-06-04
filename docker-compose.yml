@@ -70,6 +70,20 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
 
+  test:
+    build:
+      context: ./test
+    volumes:
+      - ./test:/test
+      - /test/node_modules
+    env_file:
+      - .env.dev
+    networks:
+      - web_nw
+    #command: sh -c "dockerize -wait tcp://kafka:9092 npm start"
+    depends_on:
+      - kafka
+
 networks:
   web_nw:
     driver: bridge
