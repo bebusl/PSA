@@ -1,5 +1,7 @@
 const http = require("http");
+
 const app = require("./app");
+const User = require("./models/@main");
 
 const { SERVER_PORT } = require("./env");
 
