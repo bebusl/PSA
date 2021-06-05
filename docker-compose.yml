@@ -8,15 +8,13 @@ services:
       ZOO_MY_ID: 1
       ZOO_PORT: 2181
       ZOO_SERVERS: server.1=zookeeper:2888:3888
-    networks:
-      - web_nw
 
   kafka:
     image: confluentinc/cp-kafka:5.5.1
     ports:
       - "9092:9092"
     environment:
-      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka:19092,LISTENER_DOCKER_EXTERNAL://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka:9093,LISTENER_DOCKER_EXTERNAL://127.0.0.1:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -25,16 +23,12 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
     depends_on:
       - zookeeper
-    networks:
-      - web_nw
 
   mongo:
     image: mongo
     restart: always
     env_file:
       - ./.env.dev
-    networks:
-      - web_nw
 
   server:
     build:
@@ -46,11 +40,9 @@ services:
       - mongo
     env_file:
       - ./.env.dev
-    networks:
-      - web_nw
     environment:
       - CHOKIDAR_USEPOLLING=true
-    command: sh -c "dockerize -wait tcp://kafka:9092 npm run dev"
+    command: sh -c "dockerize -wait tcp://kafka:9093 npm run dev"
     depends_on:
       - kafka
       - mongo
@@ -65,25 +57,14 @@ services:
       - .env.dev
     ports:
       - "3000:3000"
-    networks:
-      - web_nw
     environment:
       - CHOKIDAR_USEPOLLING=true
 
-  test:
+  analysis:
     build:
-      context: ./test
+      context: ./analysis
     volumes:
-      - ./test:/test
-      - /test/node_modules
-    env_file:
-      - .env.dev
-    networks:
-      - web_nw
-    #command: sh -c "dockerize -wait tcp://kafka:9092 npm start"
+      - ./analysis:/analysis
     depends_on:
       - kafka
-
-networks:
-  web_nw:
-    driver: bridge
+    shm_size: "4gb"

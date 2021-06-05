@@ -2,8 +2,6 @@ FROM node:14
 
 WORKDIR /server
 
-RUN rm package*.json
-
 COPY package*.json ./
 
 RUN npm i
