@@ -19,12 +19,13 @@ const sendMessage = () => {
         },
       ],
     })
+    .then((data) => console.log(data))
     .catch((e) => console.error(`[test-producer] ${e.message}`, e));
 };
 
 const run = async () => {
   await producer.connect();
-  setInterval(sendMessage, 1000);
+  setInterval(sendMessage, 10000);
 };
 
 run().catch((e) => console.error(`[test-producer] ${e.message}`, e));
