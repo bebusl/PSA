@@ -67,3 +67,4 @@ services:
       - ./analysis:/analysis
     depends_on:
       - kafka
+    shm_size: "4gb"
