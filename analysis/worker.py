@@ -1,10 +1,10 @@
 #from reloadr import autoreload
 from kafka import KafkaConsumer, KafkaProducer
 
-producer = KafkaProducer(bootstrap_servers='kafka:9092')
+producer = KafkaProducer(bootstrap_servers='kafka:9093')
 consumer = KafkaConsumer(
     'analysis',
-    bootstrap_servers=['kafka:9092'])
+    bootstrap_servers=['kafka:9093'])
 
 print(consumer)
 
