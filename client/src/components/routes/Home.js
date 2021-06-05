@@ -1,12 +1,21 @@
 import { Link } from "react-router-dom";
 import SearchBox from "../layout/SearchBox";
 import useInput from "../shared/hook/useInput";
+import {useEffect} from 'react';
+
 function Home({ history }) {
   const [values, onChange] = useInput({ searchItem: "" });
+  let socket;
+  useEffect(()=>{
+      socket = socketIOClient('http://localhost:5000');
+  },[])
+  
 
   const onSubmit = (e) => {
     e.preventDefault(); //새로고침 안함.
-    console.log(values.searchItem); //확인하고
+    console.log("소켓으로 넣을 값:",values.searchItem); //확인하고
+    
+    socket.emit('send message',{searchItem : values.searchItem})
     const keywords = [
       "품질",
       "키워드2",
