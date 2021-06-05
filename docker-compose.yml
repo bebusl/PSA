@@ -38,6 +38,8 @@ services:
       - /server/node_modules
     links:
       - mongo
+    ports:
+      - "5000:5000"
     env_file:
       - ./.env.dev
     environment:
@@ -68,3 +70,5 @@ services:
     depends_on:
       - kafka
     shm_size: "4gb"
+    
+
