@@ -23,7 +23,6 @@ def addProductDetail(name, price, url, refId):
         "url": url,
         "reviews": DBRef(collection='reviews', id=refId)
     }
-
     try:
         productDetailId = productDetail.insert(data)
         return productDetailId
@@ -45,11 +44,13 @@ def addReviews(review):
     return 0
 
 
-def addKeyword(keyword, refId):
+def addKeyword(keyword, refIds):
     data = {
         'keyword': keyword,
-        'products': DBRef(collection='productDetail', id=refId)
+        'products': []
     }
+    for refId in refIds:
+        data['products'].append(DBRef(collection='productDetail', id=refId))
     try:
         id = searchKeyword.insert(data)
         return id
