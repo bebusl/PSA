@@ -9,7 +9,6 @@ function Home({ history }) {
   useEffect(()=>{
       socket = socketIOClient('http://localhost:5000');
   },[])
-  
 
   const onSubmit = (e) => {
     e.preventDefault(); //새로고침 안함.
@@ -36,7 +35,7 @@ function Home({ history }) {
 
   return (
     <>
-      <ul>
+      {/*<ul>
         <li>
           <Link to="/">홈으로</Link>
         </li>
@@ -46,7 +45,7 @@ function Home({ history }) {
         <li>
           <Link to="/ranking">랭킹리스트(결과)페이지</Link>
         </li>
-      </ul>
+      </ul>*/}
       <SearchBox
         searchItem={values.searchItem}
         onSubmit={onSubmit}
