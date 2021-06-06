@@ -15,9 +15,9 @@ load_dotenv('../.env')
 
 
 KAFKA_BOOTSTRAP_SERVER = os.getenv('KAFKA_BOOTSTRAP_SERVER')
-CRAWL_CLIENT_ID=os.getenv('CRAWL_CLIENT_ID')
-CRAWL_GROUP_ID=os.getenv('CRAWL_GROUP_ID')
-CRAWL_TOPIC=os.getenv('CRAWL_TOPIC')
+CRAWL_CLIENT_ID = os.getenv('CRAWL_CLIENT_ID')
+CRAWL_GROUP_ID = os.getenv('CRAWL_GROUP_ID')
+CRAWL_TOPIC = os.getenv('CRAWL_TOPIC')
 
 
 def crawlReviews(product):
@@ -38,28 +38,34 @@ def crawlReviews(product):
                 if len(review) < 20:
                     continue
                 reviewList.append(review)
-        productData={"name":productTitle,"price":price,"url":crUrl,"reviews":reviewList}
+        productData = {"name": productTitle, "price": price,
+                       "url": crUrl, "reviews": reviewList}
         return productData
     except Exception as e:
         print(e)
         pass
 
+
 if __name__ == "__main__":
     print("크롤러 실행 : ")
-    consumer  = KafkaConsumer(
+
+    producer = KafkaProducer(bootstrap_servers='kafka:9093')
+    consumer = KafkaConsumer(
         'crawl',
         bootstrap_servers=KAFKA_BOOTSTRAP_SERVER,
         group_id=CRAWL_GROUP_ID,
+        auto_offset_reset='latest',
+        enable_auto_commit=True
     )
 
-
     for message in consumer:
-        print("Topic: %s, Partition: %d, Offset: %d, Key: %s, Value: %s" % ( message.topic, message.partition, message.offset, message.key, message.value ))
-        keyword=message.value.decode('utf-8')
-        print("크롤링 키워드 : ",keyword)
+        print("Topic: %s, Partition: %d, Offset: %d, Key: %s, Value: %s" % (
+            message.topic, message.partition, message.offset, message.key, message.value))
+        keyword = message.value.decode('utf-8')
+        print("크롤링 키워드 : ", keyword)
         start = time.time()
-        rlist=[]
-        ddd=[]
+        rlist = []
+        ddd = []
 
         headers = {
             'authority': 'search.shopping.naver.com',
@@ -94,10 +100,10 @@ if __name__ == "__main__":
             ('window', ''),
         )
 
-        response = requests.get('https://search.shopping.naver.com/search/all', headers=headers, params=params)
+        response = requests.get(
+            'https://search.shopping.naver.com/search/all', headers=headers, params=params)
 
         result_dict = json.loads(response.text)
-        
 
         if 'shoppingResult' in result_dict:
             products = result_dict['shoppingResult']['products']
@@ -112,12 +118,13 @@ if __name__ == "__main__":
             for r in result:
                 size += len(r['reviews'])
 
-            print("크롤링 소요시간 :" ,time.time() - start)
-            print("크롤링 된 문장 개수 : ",size)
+            print("크롤링 소요시간 :", time.time() - start)
+            print("크롤링 된 문장 개수 : ", size)
             print("DB저장 시작!: ")
 
-            setDB(keyword,result)
+            keywordId = setDB(keyword, result)
 
+            producer.send('analysis', value=str(keywordId).encode())
 
         else:
             print('no such product')

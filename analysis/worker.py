@@ -226,7 +226,6 @@ if __name__ == '__main__':
     tokenizer_class = AutoTokenizer
 
     model = model_class.from_pretrained("./checkpoint-100/")
-    model.share_memory()
     tokenizer = tokenizer_class.from_pretrained("beomi/kcbert-base")
 
     device = torch.device("cpu")  # cuda
@@ -242,16 +241,24 @@ if __name__ == '__main__':
     producer = KafkaProducer(bootstrap_servers='kafka:9093')
     consumer = KafkaConsumer(
         'analysis',
-        bootstrap_servers=['kafka:9093'])
+        bootstrap_servers=['kafka:9093'],
+        auto_offset_reset='latest',
+        enable_auto_commit=True
+    )
 
     print(consumer)
 
     for message in consumer:
         message = message.value
+        keywordId = message.decode()
+        print(keywordId)
 
         start = time.time()
 
-        keywords = analysis(model, dataloader, evaluate_label_ids, total_words)
+        keywords = {}
+        # keywords = analysis(model, dataloader, evaluate_label_ids, total_words)
 
         print("%d개 걸린시간 %d초" % (len(keywords), time.time() - start))
         print(keywords)
+
+        producer.send('result', value=str(keywordId).encode())
