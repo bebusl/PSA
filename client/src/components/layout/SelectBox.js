@@ -1,49 +1,87 @@
-import { Fragment,useEffect } from 'react';
-import useInput from "../shared/hook/useInput";
-
-function KeywordBtn({ word, handleClick }){
-  const Likeword = [];   
- 
+import { Fragment, useEffect, useCallback } from "react";
+import useKeywords from "../shared/hook/useKeywords";
+import "./SelectBox.css";
+function KeywordBtn({ word, handleClick, className }) {
   return (
-      <div>
-          <button onClick={handleClick}>{word}</button>
-      </div>
+    <button className={`keywordBtn ${className}`} onClick={handleClick}>
+      {word}
+    </button>
   );
 }
 
 function SelectBox({ keywords, history }) {
-
-  const [values, onChange,onFileChange,KeywordButton] = useInput({ likeword: [] });
-
-  function onSubmit(e){
-    e.preventDefault()
-    history.push({
-      pathname: "/ranking",
-      state: { likeword: values.likeword },
-    });
-
+  const {
+    values,
+    likeButton,
+    hateButton,
+    deleteLikeKeyword,
+    deleteHateKeyword,
+    setHateMode,
+  } = useKeywords({
+    isLikeSelect: true,
+    likeword: [],
+    hateword: [],
+  });
+  useEffect(() => {
+    console.log("useEffect", values);
+  });
+  function onKeywordSubmit(e) {
+    e.preventDefault();
+    if (values.isLikeSelect) {
+      setHateMode();
+    } else {
+      history.push({
+        pathname: "/ranking",
+        state: { likeword: values.likeword, hateword: values.hateword },
+      });
+    }
   }
 
-  useEffect(()=>{
-    console.log("useEffect : ",values)
-  })
+  const handleLikeClick = (e, Keyword) => {
+    if (values.likeword.includes(Keyword)) {
+      console.log("나 또눌림");
+      deleteLikeKeyword(Keyword);
+    } else likeButton(Keyword);
+  };
 
-  const handleClick = (e,Keyword)=>{
-    KeywordButton(Keyword)
-    
-  }
+  const handleHateClick = (e, Keyword) => {
+    if (values.hateword.includes(Keyword)) {
+      deleteHateKeyword(Keyword);
+    } else hateButton(Keyword);
+  };
   return (
-    <Fragment>
+    <div>
+      {values.isLikeSelect ? (
         <div>원하는 키워드를 선택해주세요!</div>
-        {keywords.map((Keyword, index) => (
-                <KeywordBtn word={Keyword} key={index} handleClick={(e)=>handleClick(e,Keyword)} />
-        ))}
-        <form onSubmit={onSubmit}>
-          <button type='submit'>버튼</button>
-        </form>
-        <button>더보기</button>
-    </Fragment>
-)
+      ) : (
+        <div>원하지 않는 키워드를 선택해주세요!</div>
+      )}
+      {keywords.map((Keyword, index) => (
+        <>
+          {index % 4 === 0 ? <div></div> : undefined}
+          <KeywordBtn
+            word={Keyword}
+            key={index}
+            className={`${
+              values.isLikeSelect
+                ? values.likeword.includes(Keyword) && "like"
+                : values.hateword.includes(Keyword) && "hate"
+            }`}
+            handleClick={(e) =>
+              values.isLikeSelect
+                ? handleLikeClick(e, Keyword)
+                : handleHateClick(e, Keyword)
+            }
+          />
+        </>
+      ))}
+
+      <form onSubmit={onKeywordSubmit}>
+        <button type="submit">완료</button>
+      </form>
+      <button>더보기</button>
+    </div>
+  );
 }
 
 export default SelectBox;

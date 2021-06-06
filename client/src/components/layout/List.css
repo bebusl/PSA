@@ -53,3 +53,10 @@
   margin: 0 5px;
   padding: 2px;
 }
+
+.badKeywords {
+  border: 2px solid red;
+  display: inline-block;
+  margin: 0 5px;
+  padding: 2px;
+}
