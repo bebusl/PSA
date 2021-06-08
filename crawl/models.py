@@ -11,8 +11,8 @@ load_dotenv('../.env')
 MONGO_MAIN_DB_URL = os.getenv('MONGO_MAIN_DB_URL')
 client = pymongo.MongoClient("mongodb://%s:%s@mongo" % (username, password))
 mydb = client['psa']
-searchKeyword = mydb['searchKeyword']
-productDetail = mydb['productDetail']
+searchKeyword = mydb['searchkeywords']
+productDetail = mydb['productdetails']
 reviews = mydb['reviews']
 
 
@@ -50,7 +50,7 @@ def addKeyword(keyword, refIds):
         'products': []
     }
     for refId in refIds:
-        data['products'].append(DBRef(collection='productDetail', id=refId))
+        data['products'].append(DBRef(collection='productdetails', id=refId))
     try:
         id = searchKeyword.insert(data)
         return id

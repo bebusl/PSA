@@ -13,6 +13,11 @@ import re
 import emoji
 from soynlp.normalizer import repeat_normalize
 import time
+from dotenv import load_dotenv
+import pymongo
+import urllib.parse
+from bson.objectid import ObjectId
+from bson.dbref import DBRef
 
 
 def clean(x):
@@ -127,22 +132,20 @@ def convert_examples_to_seq_features(examples, label_list, tokenizer,
     return features
 
 
-def load_and_cache_examples(tokenizer):
+def load_and_cache_examples(tokenizer, reviews):
     processor = ABSAProcessor()
 
     label_list = processor.get_labels('BIEOS')
 
     examples = []
-    file = os.path.join('./', "test_modify.txt")
-    with open(file, 'r', encoding='UTF-8') as fp:
-        sample_id = 0
-        for line in fp:
-            guid = "%s-%s" % ('test', sample_id)
-            text_a = ' '.join([word.replace("#", "")
-                              for word in tokenizer.tokenize(line)])
-            examples.append(InputExample(
-                guid=guid, text_a=text_a, text_b=[], label=[]))
-            sample_id += 1
+    sample_id = 0
+    for review in reviews:
+        guid = "%s-%s" % ('test', sample_id)
+        text_a = ' '.join([word.replace("#", "")
+                           for word in tokenizer.tokenize(review)])
+        examples.append(InputExample(
+            guid=guid, text_a=text_a, text_b=[], label=[]))
+        sample_id += 1
 
     features = convert_examples_to_seq_features(examples=examples, label_list=label_list, tokenizer=tokenizer,
                                                 cls_token_at_end=False,
@@ -174,7 +177,7 @@ def load_and_cache_examples(tokenizer):
 
 
 def analysis(model, dataloader, evaluate_label_ids, total_words):
-    keywords = {}
+    result = {}
     idx = 0
     absa_label_vocab = {'O': 0, 'EQ': 1, 'B-POS': 2, 'I-POS': 3, 'E-POS': 4, 'S-POS': 5, 'B-NEG': 6,
                         'I-NEG': 7, 'E-NEG': 8, 'S-NEG': 9, 'B-NEU': 10, 'I-NEU': 11, 'E-NEU': 12, 'S-NEU': 13}
@@ -186,36 +189,54 @@ def analysis(model, dataloader, evaluate_label_ids, total_words):
 
     for batch in dataloader:
         batch = tuple(t.to('cpu') for t in batch)
-        with torch.no_grad():
-            inputs = {'input_ids': batch[0],
-                      'attention_mask': batch[1],
-                      'token_type_ids': batch[2],
-                      'labels': batch[3]}
-            outputs = model(**inputs)
-            logits = outputs[1]
-            preds = np.argmax(logits.detach().cpu().numpy(), axis=-1)
-            label_indices = evaluate_label_ids[idx]
-            pred_labels = preds[0][label_indices]
-            words = total_words[idx]
-            assert len(words) == len(pred_labels)
-            pred_tags = [absa_id2tag[label] for label in pred_labels]
+        try:
+            with torch.no_grad():
+                inputs = {'input_ids': batch[0],
+                          'attention_mask': batch[1],
+                          'token_type_ids': batch[2],
+                          'labels': batch[3]}
+                outputs = model(**inputs)
+                logits = outputs[1]
+                preds = np.argmax(logits.detach().cpu().numpy(), axis=-1)
+                label_indices = evaluate_label_ids[idx]
+                pred_labels = preds[0][label_indices]
+                words = total_words[idx]
+                assert len(words) == len(pred_labels)
+                pred_tags = [absa_id2tag[label] for label in pred_labels]
 
-            p_ts_sequence = tag2ts(ts_tag_sequence=pred_tags)
-            output_ts = []
-            for t in p_ts_sequence:
-                beg, end, sentiment = t
-                aspect = str(words[beg:end+1])
-                output_ts.append('%s: %s' % (aspect, sentiment))
-                if aspect in keywords:
-                    keywords[aspect] += 1
-                else:
-                    keywords[aspect] = 1
-            idx += 1
+                p_ts_sequence = tag2ts(ts_tag_sequence=pred_tags)
+                for t in p_ts_sequence:
+                    beg, end, sentiment = t
+                    aspect = ''.join(words[beg:end+1])
+                    if aspect in result:
+                        result[aspect][sentiment] += 1
+                    else:
+                        result[aspect] = {}
+                        result[aspect]['POS'] = 0
+                        result[aspect]['NEU'] = 0
+                        result[aspect]['NEG'] = 0
+                        result[aspect][sentiment] = 1
+                idx += 1
+        except:
+            pass
 
-    return keywords
+    arr = []
+    for key, value in result.items():
+        temp = {}
+        temp[key] = value
+        arr.append(temp)
+
+    return arr
 
 
 if __name__ == '__main__':
+    username = urllib.parse.quote_plus('root')
+    password = urllib.parse.quote_plus('root')
+
+    load_dotenv('../.env')
+    MONGO_MAIN_DB_URL = os.getenv('MONGO_MAIN_DB_URL')
+    client = pymongo.MongoClient(
+        "mongodb://%s:%s@mongo" % (username, password))
 
     emojis = ''.join(emoji.UNICODE_EMOJI.keys())
     pattern = re.compile(f'[^ .,?!/@$%~％·∼()\x00-\x7Fㄱ-ㅣ가-힣{emojis}]+')
@@ -231,12 +252,6 @@ if __name__ == '__main__':
     device = torch.device("cpu")  # cuda
     model.to(device)  # cuda
     model.eval()
-
-    dataset, evaluate_label_ids, total_words = load_and_cache_examples(
-        tokenizer)
-    sampler = SequentialSampler(dataset)
-
-    dataloader = DataLoader(dataset, sampler=sampler, batch_size=1)
 
     producer = KafkaProducer(bootstrap_servers='kafka:9093')
     consumer = KafkaConsumer(
@@ -255,10 +270,40 @@ if __name__ == '__main__':
 
         start = time.time()
 
-        keywords = {}
-        # keywords = analysis(model, dataloader, evaluate_label_ids, total_words)
+        mydb = client['psa']
+        searchKeywords = mydb['searchkeywords']
+        productDetails = mydb['productdetails']
+        analyses = mydb['analysis']
 
-        print("%d개 걸린시간 %d초" % (len(keywords), time.time() - start))
-        print(keywords)
+        searchKeyword = searchKeywords.find_one({"_id": ObjectId(keywordId)})
+        products = searchKeyword['products']
+
+        for productRef in searchKeyword['products']:
+            product = mydb.dereference(productRef)
+            reviews = mydb.dereference(product["reviews"])
+
+            dataset, evaluate_label_ids, total_words = load_and_cache_examples(
+                tokenizer, reviews['reviews'])
+            sampler = SequentialSampler(dataset)
+
+            dataloader = DataLoader(dataset, sampler=sampler, batch_size=1)
+
+            result = analysis(model, dataloader,
+                              evaluate_label_ids, total_words)
+            print(result)
+
+            data = {
+                "result": result
+            }
+
+            anaysisId = analyses.insert(data)
+
+            myquery = {"_id": product['_id']}
+            newvalues = {"$set": {"analysis": DBRef(
+                collection='analysis', id=anaysisId)}}
+
+            productDetails.update(myquery, newvalues)
+
+        print("걸린시간 %d초" % (time.time() - start))
 
         producer.send('result', value=str(keywordId).encode())

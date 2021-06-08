@@ -12,7 +12,7 @@ const producer = kafka.producer({});
 const sendMessage = () => {
   return producer
     .send({
-      topic: TEST_TOPIC,
+      topic: "result",
       messages: [
         {
           value: "안녕하세요",
