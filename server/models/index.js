@@ -1,12 +1,34 @@
-const { readdirSync, statSync } = require("fs");
-const { join } = require("path");
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
-let models = {};
+const root = encodeURI("root");
 
-readdirSync(__dirname)
-  .filter(
-    (dir) => dir.startsWith("@") && statSync(join(__dirname, dir)).isDirectory()
-  )
-  .forEach((dir) => (models = { ...models, ...require(`./${dir}`) }));
+mongoose.connect(
+  `mongodb://${root}:${root}@mongo/psa?authSource=admin`,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  function (err, res) {
+    if (err) console.log(`DB 연결 실패 ${err}`);
+  }
+);
 
-module.exports = models;
+const testCollectionSchema = new Schema(
+  { keyword: String, products: [] },
+  { strict: false }
+);
+const productdetailsSchema = new Schema(
+  {
+    analysis: Schema.Types.Mixed,
+  },
+  { strict: false }
+);
+const analysisSchema = new Schema(
+  {
+    result: [],
+  },
+  { strict: false }
+);
+const TestCollection = mongoose.model("searchkeywords", testCollectionSchema);
+const productdetails = mongoose.model("productdetails", productdetailsSchema);
+const analyses = mongoose.model("analysi", analysisSchema);
+
+module.exports = { TestCollection, productdetails, analyses };
