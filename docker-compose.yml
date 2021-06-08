@@ -27,6 +27,8 @@ services:
   mongo:
     image: mongo
     restart: always
+    ports:
+      - "27017:27017"
     env_file:
       - ./.env.dev
 
@@ -70,23 +72,15 @@ services:
     depends_on:
       - kafka
     shm_size: "4gb"
-    
 
   crawl:
     build:
       context: ./crawl
     volumes:
       - ./crawl:/crawl
-    links:
-      - server
     env_file:
       - ./.env.dev
-    networks:
-      - web_nw
-    command:
-      sh -c "dockerize -wait tcp://kafka:9092 python3 -u crawl.py"
+    command: sh -c "dockerize -wait tcp://kafka:9092 python3 -u crawl.py"
     depends_on:
       - kafka
-      - server
       - mongo
-      - client 
