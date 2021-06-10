@@ -4,21 +4,6 @@ const crawl_producer = require("./kafka/crawl-producer");
 const { SERVER_PORT } = require("./env");
 const { TestCollection, productdetails, analyses } = require("./models");
 
-function sort_object(dict) {
-  var sorted = [];
-  for (var key in dict) {
-    sorted[sorted.length] = dict[key];
-  }
-  sorted.sort();
-
-  var tempDict = {};
-  for (var i = 0; i < sorted.length; i++) {
-    tempDict[sorted[i]] = dict[sorted[i]];
-  }
-
-  return tempDict;
-}
-
 io.on("connection", function (socket) {
   console.log("connected");
 
