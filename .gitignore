@@ -1,2 +1,10 @@
+# Node.js
 node_modules
+
+# Python
+.idea
 __pycache__
+venv
+
+# Model
+analysis-gpu/checkpoint-100

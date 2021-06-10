@@ -1,0 +1,9 @@
+kafka-python
+numpy
+transformers==4.1.1
+tqdm==4.32.1
+emoji
+soynlp
+python-dotenv
+pymongo==3.11.0
+torch==1.8.1+cu111
