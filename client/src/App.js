@@ -1,42 +1,36 @@
 import { Switch, Route } from "react-router-dom";
-import "./App.css";
-import Home from "./components/routes/Home";
-import KeywordSelect from "./components/routes/KeywordSelect";
-import RankingList from "./components/routes/RankingList";
+import "./styles/css/App.css";
+import Main from "./components/pages/Main";
+import LikeKeywordSelect from "./components/pages/LikeKeywordSelect";
+import HateKeywordSelect from "./components/pages/HateKeywordSelect";
+import Ranking from "./components/pages/Ranking";
 import Nav from "./components/layout/Nav";
-import styled, { createGlobalStyle } from "styled-components";
-
-const GlobalStyle = createGlobalStyle`
-  html, body {
-    height: 100%
-  }
-	body {
-		padding: 0;
-    margin: 0;
-  }
-  #root {
-    height: 100%;
-  }
-`;
-
-const Content = styled.div`
-  height: 80vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+import Content from "./components/layout/Content";
+import KeywordContainer from "./components/container/KeywordContainer";
+// import Home from "./post-components/routes/Home";
+// import KeywordSelect from "./post-components/routes/KeywordSelect";
+// import RankingList from "./post-components/routes/RankingList";
+// import Nav from "./post-components/layout/Nav";
+// import styled, { createGlobalStyle } from "styled-components";
 
 function App() {
   return (
     <>
-      <GlobalStyle />
       <Nav></Nav>
       <Content>
         <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/keyword" component={KeywordSelect} />
-          <Route exact path="/ranking" component={RankingList} />
+          <Route exact path="/" component={Main} />
+          <Route
+            exact
+            path="/likekeyword"
+            component={KeywordContainer(LikeKeywordSelect)}
+          />
+          <Route
+            exact
+            path="/hatekeyword"
+            component={KeywordContainer(HateKeywordSelect)}
+          />
+          <Route exact path="/ranking" component={KeywordContainer(Ranking)} />
         </Switch>
       </Content>
     </>
