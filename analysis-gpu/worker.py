@@ -236,7 +236,7 @@ if __name__ == '__main__':
     load_dotenv('../.env')
     MONGO_MAIN_DB_URL = os.getenv('MONGO_MAIN_DB_URL')
     client = pymongo.MongoClient(
-        "mongodb://%s:%s@127.0.0.1" % (username, password))
+        "mongodb://%s:%s@192.168.0.4" % (username, password))
 
     emojis = ''.join(emoji.UNICODE_EMOJI.keys())
     pattern = re.compile(f'[^ .,?!/@$%~％·∼()\x00-\x7Fㄱ-ㅣ가-힣{emojis}]+')
@@ -253,10 +253,10 @@ if __name__ == '__main__':
     model.to(device)  # cuda
     model.eval()
 
-    producer = KafkaProducer(bootstrap_servers='127.0.0.1:9092')
+    producer = KafkaProducer(bootstrap_servers='192.168.0.4:9092')
     consumer = KafkaConsumer(
         'analysis',
-        bootstrap_servers=['127.0.0.1:9092'],
+        bootstrap_servers=['192.168.0.4:9092'],
         auto_offset_reset='latest',
         enable_auto_commit=True
     )
