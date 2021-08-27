@@ -8,6 +8,7 @@ services:
       ZOO_MY_ID: 1
       ZOO_PORT: 2181
       ZOO_SERVERS: server.1=zookeeper:2888:3888
+    restart: always
 
   kafka:
     image: confluentinc/cp-kafka:5.5.1
@@ -23,6 +24,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
     depends_on:
       - zookeeper
+    restart: always
 
   mongo:
     image: mongo
@@ -31,6 +33,7 @@ services:
       - "27017:27017"
     env_file:
       - ./.env.dev
+    restart: always
 
   server:
     build:
@@ -46,10 +49,11 @@ services:
       - ./.env.dev
     environment:
       - CHOKIDAR_USEPOLLING=true
-    command: sh -c "dockerize -wait tcp://kafka:9093 -timeout 20s npm run dev"
+    command: sh -c "dockerize -wait tcp://kafka:9093 -timeout 30s npm run dev"
     depends_on:
       - kafka
       - mongo
+    restart: always
 
   client:
     build:
@@ -63,15 +67,15 @@ services:
       - "3000:3000"
     environment:
       - CHOKIDAR_USEPOLLING=true
-
-  analysis:
-    build:
-      context: ./analysis
-    volumes:
-      - ./analysis:/analysis
-    depends_on:
-      - kafka
-    shm_size: "4gb"
+    restart: always
+  # analysis:
+  #   build:
+  #     context: ./analysis
+  #   volumes:
+  #     - ./analysis:/analysis
+  #   depends_on:
+  #     - kafka
+  #   shm_size: "4gb"
             
   crawl:
     build:
@@ -80,7 +84,8 @@ services:
       - ./crawl:/crawl
     env_file:
       - ./.env.dev
-    command: sh -c "dockerize -wait tcp://kafka:9092 -timeout 20s python3 -u crawl.py"
+    command: sh -c "dockerize -wait tcp://kafka:9092 -timeout 30s python3 -u crawl.py"
     depends_on:
       - kafka
       - mongo
+    restart: always
