@@ -72,7 +72,7 @@ if __name__ == "__main__":
             'authority': 'search.shopping.naver.com',
             'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"',
             'accept': 'application/json, text/plain, */*',
-            'urlprefix': '/api',
+            # 'urlprefix': '/api',
             'sec-ch-ua-mobile': '?0',
             'logic': 'PART',
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
@@ -102,7 +102,7 @@ if __name__ == "__main__":
         )
 
         response = requests.get(
-            'https://search.shopping.naver.com/search/all', headers=headers, params=params)
+            'https://search.shopping.naver.com/api/search/all', headers=headers, params=params)
         try:
             result_dict = json.loads(response.text)
 
