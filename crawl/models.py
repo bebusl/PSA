@@ -16,11 +16,12 @@ productDetail = mydb['productdetails']
 reviews = mydb['reviews']
 
 
-def addProductDetail(name, price, url, refId):
+def addProductDetail(name, price, url, imageUrl, refId):
     data = {
         "name": name,
         "price": price,
         "url": url,
+        "imageUrl": imageUrl,
         "reviews": DBRef(collection='reviews', id=refId)
     }
     try:
@@ -67,6 +68,6 @@ def setDB(keyword, productData):
     for i in productData:
         reviewId = addReviews(i["reviews"])
         detailIds.append(addProductDetail(
-            i["name"], i["price"], i["url"], reviewId))
+            i["name"], i["price"], i["url"], i["imageUrl"], reviewId))
 
     return addKeyword(keyword, detailIds)
