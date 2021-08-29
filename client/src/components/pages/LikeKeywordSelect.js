@@ -1,10 +1,10 @@
 import SelectBox from "../shared/SelectBox";
-import { useLocation } from "react-router";
 import { useKeywords } from "../../hooks";
 
-function LikeKeywordSelect(props) {
-  const location = useLocation();
-  const keywords = location.state.keywords;
+function LikeKeywordSelect({ updateLikeKeyword, history, location }) {
+  const keywords = location.keywords;
+  const socket = location.socket;
+
   const { values, addKeyword, deleteKeyword } = useKeywords("like", [
     "testKeyword",
   ]);
@@ -18,10 +18,11 @@ function LikeKeywordSelect(props) {
   function onSubmit(e) {
     //redux에 저장하고 다음페이지로 넘기기!
     e.preventDefault();
-    props.updateLikeKeyword(values["like"]); //redux 저장소에 like keyword 저장.
-    props.history.push({
+    updateLikeKeyword(values["like"]); //redux 저장소에 like keyword 저장.
+    history.push({
       pathname: "/hatekeyword",
       keywords: keywords,
+      socket: socket,
     });
   }
   return (

@@ -1,13 +1,29 @@
 import SelectBox from "../shared/SelectBox";
-import { useLocation } from "react-router";
 import { useKeywords } from "../../hooks";
+import { useCallback, useEffect } from "react";
 
-function HateKeywordSelect(props) {
-  const location = useLocation();
+function HateKeywordSelect({
+  updateHateKeyword,
+  history,
+  location,
+  likeWrd,
+  hateWrd,
+}) {
+  const socket = location.socket;
   const keywords = location.keywords;
   const { values, addKeyword, deleteKeyword } = useKeywords("hate", [
     "hatetest",
   ]);
+
+  const setSocket = useCallback(() => {
+    socket.on("productlist", (productlist) => {
+      history.push({
+        pathname: "/ranking",
+        productlist: productlist,
+        socket: socket,
+      });
+    });
+  }, []);
 
   function onClick(e, keyword) {
     e.preventDefault();
@@ -19,11 +35,21 @@ function HateKeywordSelect(props) {
   function onSubmit(e) {
     //redux에 저장하고 다음페이지로 넘기기!
     e.preventDefault();
-    props.updateHateKeyword(values["hate"]); //redux 저장소에 like keyword 저장.
-    props.history.push({
-      pathname: "/ranking",
+    updateHateKeyword(values["hate"]); //redux 저장소에 like keyword 저장.
+    socket.emit("selected keywords", {
+      searchItem: "깡통",
+      likeword: likeWrd,
+      hateword: hateWrd,
     });
   }
+
+  useEffect(() => {
+    setSocket();
+    return function cleanup() {
+      socket.off("productlist");
+    };
+  }, []);
+
   return (
     <div className="contents-wrapper">
       <SelectBox

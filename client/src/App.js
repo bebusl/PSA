@@ -6,12 +6,11 @@ import HateKeywordSelect from "./components/pages/HateKeywordSelect";
 import Ranking from "./components/pages/Ranking";
 import Nav from "./components/layout/Nav";
 import Content from "./components/layout/Content";
-import KeywordContainer from "./components/container/KeywordContainer";
-// import Home from "./post-components/routes/Home";
-// import KeywordSelect from "./post-components/routes/KeywordSelect";
-// import RankingList from "./post-components/routes/RankingList";
-// import Nav from "./post-components/layout/Nav";
-// import styled, { createGlobalStyle } from "styled-components";
+import KeywordContainer from "./components/container/withKeyword";
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:5000");
+console.log("socket io 아이디", socket);
 
 function App() {
   return (
@@ -19,7 +18,11 @@ function App() {
       <Nav></Nav>
       <Content>
         <Switch>
-          <Route exact path="/" component={Main} />
+          <Route
+            exact
+            path="/"
+            render={(props) => <Main {...props} socket={socket} />}
+          />
           <Route
             exact
             path="/likekeyword"
