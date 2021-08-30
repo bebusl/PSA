@@ -15,6 +15,10 @@
   text-align: center;
   width: 250px;
 }
+
+.productImage img{
+  width:250px;
+}
 .productInfo {
   flex-grow: 1;
   text-align: left;
@@ -60,3 +64,5 @@
   margin: 0 5px;
   padding: 2px;
 }
+
+
