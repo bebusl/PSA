@@ -1,5 +1,5 @@
 import "./SelectBox.css";
-
+import { Fragment } from "react";
 function KeywordBtn({ word, handleClick, className }) {
   return (
     <button className={`keywordBtn ${className}`} onClick={handleClick}>
@@ -17,17 +17,16 @@ function SelectBox({ mode, values, keywords, onSubmit, onClick }) {
         <div>원하지 않는 키워드를 선택해주세요!</div>
       )}
       {keywords.map((Keyword, index) => (
-        <>
+        <Fragment key={index}>
           {index % 4 === 0 ? <div></div> : undefined}
           <KeywordBtn
             word={Keyword}
-            key={index}
             className={`${values[mode].includes(Keyword) && `${mode}`}`}
             handleClick={(e) => {
               onClick(e, Keyword);
             }}
           />
-        </>
+        </Fragment>
       ))}
 
       <form onSubmit={onSubmit}>

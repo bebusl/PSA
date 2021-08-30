@@ -1,20 +1,14 @@
 import List from "../shared/List";
-import { dummyRankinglist } from "../dummyData";
 
-function Ranking() {
+function Ranking({ location }) {
+  const productlist = location.productlist;
   return (
     <div>
       <h2>Ranking Page</h2>
-      {dummyRankinglist.map((product) => {
-        const { productname, price, productDetail, like, hate } = product;
+      {productlist.map((product, idx) => {
+        const { name, price, imageUrl } = product;
         return (
-          <List
-            product={productname}
-            price={price}
-            productDetail={productDetail}
-            likeword={like}
-            hateword={hate}
-          />
+          <List key={idx} product={name} price={price} imageUrl={imageUrl} />
         );
       })}
     </div>
