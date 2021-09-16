@@ -2,7 +2,7 @@ import List from "../shared/List";
 import { dummyRankinglist } from "../dummyData";
 
 
-function Ranking() {
+function Cart() {
   // function onClick(props){
   //   props.history.push({
   //     pathname: "/detail",
@@ -14,7 +14,7 @@ function Ranking() {
 
   return (
     <div>
-      <h2>Ranking Page</h2>
+      <h2>Shopping List</h2>
       {dummyRankinglist.map((product) => {
         const { productname, price, productDetail, like, hate } = product;
         return (
@@ -33,5 +33,5 @@ function Ranking() {
   
 }
 
-export default Ranking;
+export default Cart;
 //product, price, productDetail, likeword, hateword

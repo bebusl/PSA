@@ -1,7 +1,11 @@
-.like{
-    background-color: blue;
+.like {
+  background-color: blue;
 }
 
-.hate{
-    background-color: red;
+.hate {
+  background-color: red;
 }
+
+/* .keywordBtn {
+  background-color: white;
+} */

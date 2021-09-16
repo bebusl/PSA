@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import "./SelectBox.css";
 
 function KeywordBtn({ word, handleClick, className }) {

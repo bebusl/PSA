@@ -7,6 +7,8 @@ import Ranking from "./components/pages/Ranking";
 import Nav from "./components/layout/Nav";
 import Content from "./components/layout/Content";
 import KeywordContainer from "./components/container/KeywordContainer";
+import DetailPage from "./components/pages/DetailPage";
+import Cart from "./components/pages/Cart";
 // import Home from "./post-components/routes/Home";
 // import KeywordSelect from "./post-components/routes/KeywordSelect";
 // import RankingList from "./post-components/routes/RankingList";
@@ -31,6 +33,8 @@ function App() {
             component={KeywordContainer(HateKeywordSelect)}
           />
           <Route exact path="/ranking" component={KeywordContainer(Ranking)} />
+          <Route exact path="/detail" component={DetailPage} />
+          <Route exact path="/cart" component={Cart} />
         </Switch>
       </Content>
     </>

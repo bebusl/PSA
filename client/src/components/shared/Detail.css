@@ -1,19 +1,23 @@
-.List-container {
+.Detail-container {
   max-width: 1300px;
   min-width: 1300px;
-  margin: 0 auto;
+  margin: 50px auto 0px;
   display: flex;
+  border: 2px solid black;
+  /* padding-top: 10px; */
   /* border: 2px solid lightgrey; */
 }
-.List-item {
+
+.Detail {
   margin: 10px;
   flex-basis: auto;
+  border: 2px solid black;
   /* border: 2px solid lightgrey; */
 }
 .productImage {
   flex-grow: 0;
   text-align: center;
-  width: 250px;
+  width: 350px;
 }
 .productInfo {
   flex-grow: 1;
@@ -23,14 +27,9 @@
   flex-direction: column;
 }
 
-.List-product {
-  margin: 5px;
-  /* border: 2px solid lightgrey; */
-  padding: 1px;
-}
 .product {
   flex-grow: 0;
-  font-size: larger;
+  font-size: 25px;
 }
 .productD {
   flex-grow: 1;
@@ -38,7 +37,7 @@
 }
 .price {
   flex-grow: 0;
-  font-size: large;
+  font-size: 25px;
 }
 .keywords {
   flex-grow: 0;
@@ -59,4 +58,33 @@
   display: inline-block;
   margin: 0 5px;
   padding: 2px;
+}
+
+.info {
+  display: block;
+  border: 2px solid black;
+}
+
+.CloudPercent-container {
+  max-width: 1300px;
+  min-width: 1300px;
+  margin: 50px auto 0px;
+  display: flex;
+  justify-content: space-around;
+  border: 2px solid black;
+  /* border: 2px solid lightgrey; */
+}
+
+.Detail-WordCloud {
+  display: flex;
+  text-align: center;
+  border: 2px solid black;
+  flex-grow: 0;
+  width: 600px;
+}
+
+.Detail-percentage {
+  border: 2px solid black;
+  flex-grow: 0;
+  width: 350px;
 }
