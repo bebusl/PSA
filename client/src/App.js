@@ -7,8 +7,11 @@ import Ranking from "./components/pages/Ranking";
 import Nav from "./components/layout/Nav";
 import Content from "./components/layout/Content";
 import KeywordContainer from "./components/container/KeywordContainer";
+<<<<<<< HEAD
 import DetailPage from "./components/pages/DetailPage";
 import Cart from "./components/pages/Cart";
+=======
+>>>>>>> bcb639ec2c59d4a05ab7e3a878b7ec9a2464a4a4
 // import Home from "./post-components/routes/Home";
 // import KeywordSelect from "./post-components/routes/KeywordSelect";
 // import RankingList from "./post-components/routes/RankingList";
@@ -33,8 +36,11 @@ function App() {
             component={KeywordContainer(HateKeywordSelect)}
           />
           <Route exact path="/ranking" component={KeywordContainer(Ranking)} />
+<<<<<<< HEAD
           <Route exact path="/detail" component={DetailPage} />
           <Route exact path="/cart" component={Cart} />
+=======
+>>>>>>> bcb639ec2c59d4a05ab7e3a878b7ec9a2464a4a4
         </Switch>
       </Content>
     </>

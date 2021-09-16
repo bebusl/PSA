@@ -65,6 +65,21 @@ io.on("connection", function (socket) {
       });
   });
 
+  socket.on("selected keywords",function({searchItem, likeword,hateword}){
+    TestCollection.findOne({ keyword: searchItem }).then(async (keyword) => {
+      if (keyword) {
+        const { products } = keyword;
+        let productlist=[]
+        for (productRef in products) {
+          const product = await productdetails.findById(products[productRef]["oid"])
+          productlist.push(product )
+        }
+        io.emit("productlist",productlist)
+        }
+      }).catch(err=>console.log(err))
+
+  })
+
   socket.on("disconnect", function () {
     console.log("disconnected", socket.id);
   });

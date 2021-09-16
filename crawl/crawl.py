@@ -25,8 +25,9 @@ def crawlReviews(product):
         reviewList = []
         productTitle = product['productTitle']
         price = product['price']
-        crUrl = product['crUrl']
-        res = requests.get(crUrl)
+        crUrl = product['crUrl'] 
+        imageUrl  = product['imageUrl']
+        res = requests.get(crUrl) 
         soup = BeautifulSoup(res.text, 'lxml')
         time.sleep(0.1)
         items = soup.find_all('p', class_="reviewItems_text__XIsTc")
@@ -39,7 +40,7 @@ def crawlReviews(product):
                     continue
                 reviewList.append(review)
         productData = {"name": productTitle, "price": price,
-                       "url": crUrl, "reviews": reviewList}
+                       "url": crUrl, "imageUrl": imageUrl, "reviews": reviewList}
         return productData
     except Exception as e:
         print(e)
@@ -71,7 +72,7 @@ if __name__ == "__main__":
             'authority': 'search.shopping.naver.com',
             'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"',
             'accept': 'application/json, text/plain, */*',
-            'urlprefix': '/api',
+            # 'urlprefix': '/api',
             'sec-ch-ua-mobile': '?0',
             'logic': 'PART',
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
@@ -101,30 +102,32 @@ if __name__ == "__main__":
         )
 
         response = requests.get(
-            'https://search.shopping.naver.com/search/all', headers=headers, params=params)
+            'https://search.shopping.naver.com/api/search/all', headers=headers, params=params)
+        try:
+            result_dict = json.loads(response.text)
 
-        result_dict = json.loads(response.text)
+            if 'shoppingResult' in result_dict and 'products' in result_dict['shoppingResult']:
+                products = result_dict['shoppingResult']['products']
+                pool = multiprocessing.Pool(8)
+                result = []
+                print("크롤링 진행중...")
 
-        if 'shoppingResult' in result_dict:
-            products = result_dict['shoppingResult']['products']
-            pool = multiprocessing.Pool(8)
-            result = []
-            print("크롤링 진행중...")
+                for reviews in pool.map(crawlReviews, products):
+                    result.append(reviews)
 
-            for reviews in pool.map(crawlReviews, products):
-                result.append(reviews)
+                size = 0
+                for r in result:
+                    size += len(r['reviews'])
 
-            size = 0
-            for r in result:
-                size += len(r['reviews'])
+                print("크롤링 소요시간 :", time.time() - start)
+                print("크롤링 된 문장 개수 : ", size)
+                print("DB저장 시작!: ")
 
-            print("크롤링 소요시간 :", time.time() - start)
-            print("크롤링 된 문장 개수 : ", size)
-            print("DB저장 시작!: ")
+                keywordId = setDB(keyword, result)
 
-            keywordId = setDB(keyword, result)
+                producer.send('analysis', value=str(keywordId).encode())
 
-            producer.send('analysis', value=str(keywordId).encode())
-
-        else:
-            print('no such product')
+            else:
+                print('no such product')
+        except:
+            print('no result')

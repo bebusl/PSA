@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .like {
   background-color: blue;
 }
@@ -9,3 +10,45 @@
 /* .keywordBtn {
   background-color: white;
 } */
+=======
+.title{
+    text-align: center;
+    margin-bottom: 30px;
+}
+.keywordBtn{
+    border: 1px solid black;
+    display:inline;
+    width:80px;
+    height:30px;
+    background-color: white;
+    cursor:pointer;
+    margin :2px 25px;
+}
+
+.like{
+    background-color: blue;
+    color:white;
+}
+
+.hate{
+    background-color: red;
+    color:white;
+}
+.submitBox{
+    width:100%;
+    margin:0 auto;
+    text-align: center;
+    margin-top:20px;
+}
+.submitBtn{
+    text-align: center;
+
+    border: 1px solid black;
+    width:150px;
+    border-radius: 50px;
+    height:40px;
+    background-color: #0A1B62;
+    color:white;
+    cursor:pointer;
+}
+>>>>>>> bcb639ec2c59d4a05ab7e3a878b7ec9a2464a4a4

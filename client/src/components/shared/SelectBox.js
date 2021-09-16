@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import styled from "styled-components";
+=======
+>>>>>>> bcb639ec2c59d4a05ab7e3a878b7ec9a2464a4a4
 import "./SelectBox.css";
 
 function KeywordBtn({ word, handleClick, className }) {
