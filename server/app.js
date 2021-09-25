@@ -4,17 +4,27 @@ const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const cors = require("cors");
 const userRouter = require("./routes/user");
+const productRouter = require("./routes/product");
 
 const app = express();
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
-app.use(cors());
+app.use(
+    cors({
+        origin: ["http://localhost:3000"],
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        preflightContinue: false,
+        optionsSuccessStatus: 204,
+        credentials: true,
+    })
+);
 app.use(cookieParser(COOKIE_SECRET));
 app.use(passport.initialize());
 require("./passport/config")(passport);
 
 app.use("/auth", userRouter);
+app.use("/product", productRouter);
 
 app.use((req, res, next) => {
     const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
