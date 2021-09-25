@@ -11,9 +11,8 @@ import Nav from "./components/layout/Nav";
 import Content from "./components/layout/Content";
 import ProductDetail from "./components/pages/ProductDetail";
 import KeywordContainer from "./components/container/withKeyword";
-import withAuth from "./components/container/withAuth";
 import io from "socket.io-client";
-import { useEffect } from "react";
+
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
@@ -41,6 +40,8 @@ function App() {
                     <Route exact path="/ranking" render={(props) => KeywordContainer(Ranking, props, socket)} />
                     <Route path="/detail/:id" component={ProductDetail} />
                     <Route path="/cart" component={WishList} />
+                    {/* <Route exact path="/detail" component={DetailPage} />
+                    <Route exact path="/cart" component={Cart} /> */}
                 </Switch>
             </Content>
         </>

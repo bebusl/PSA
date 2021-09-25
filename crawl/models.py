@@ -16,6 +16,7 @@ productDetail = mydb['productdetails']
 reviews = mydb['reviews']
 
 
+
 def addProductDetail(name, price, url, imageUrl, refId):
     data = {
         "name": name,
