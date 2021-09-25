@@ -1,11 +1,11 @@
 const { server, io } = require("./socket");
 const result_consumer = require("./kafka/result-consumer");
 const crawl_producer = require("./kafka/crawl-producer");
-const { SERVER_PORT } = require("./env");
+const SERVER_PORT = require("./env").SERVER_PORT;
 const { TestCollection, productdetails, analyses } = require("./models");
 
 io.on("connection", function (socket) {
-    console.log("connected");
+    console.log("connected", socket.id);
 
     crawl_producer.init();
     result_consumer.init();
@@ -21,14 +21,14 @@ io.on("connection", function (socket) {
                         const product = await productdetails.findById(products[productRef]["oid"]);
                         const analysis = await analyses.findById(product.analysis["oid"]);
                         const result = analysis.result;
-                        for (idx in result) {
-                            console.log(result[idx]);
-                            const key = Object.keys(result[idx])[0];
-                            const value = Object.values(result[idx])[0]["POS"];
-                            if (key in keywords) {
-                                keywords[key] += value;
+                        const key = Object.keys(result[0]);
+                        const values = Object.values(result[0]);
+                        for (let idx = 0; idx < key.length; idx++) {
+                            let value = values[idx]["POS"];
+                            if (key[idx] in keywords) {
+                                keywords[key[idx]] += value;
                             } else {
-                                keywords[key] = value;
+                                keywords[key[idx]] = value;
                             }
                         }
                     }
@@ -48,8 +48,6 @@ io.on("connection", function (socket) {
                         return dict.keyword;
                     });
 
-                    console.log(real);
-
                     io.emit("keywords", real);
                 } else {
                     crawl_producer.sendMessage(msg);
@@ -68,7 +66,22 @@ io.on("connection", function (socket) {
                     const { products } = keyword;
                     let productlist = [];
                     for (productRef in products) {
-                        const product = await productdetails.findById(products[productRef]["oid"]);
+                        let product = await productdetails.findById(products[productRef]["oid"]);
+                        const analy = await analyses.findById(product.analysis["oid"]);
+                        const allKeywords = Object.keys(analy["result"][0]);
+                        const posKeywords = likeword.filter(
+                            (keyword) =>
+                                allKeywords.includes(keyword) &&
+                                analy["result"][0][keyword]["POS"] > analy["result"][0][keyword]["NEG"]
+                        );
+                        const negKeywords = hateword.filter(
+                            (keyword) =>
+                                allKeywords.includes(keyword) &&
+                                analy["result"][0][keyword]["POS"] < analy["result"][0][keyword]["NEG"]
+                        );
+
+                        const { _id, imageUrl, name, price, url } = product._doc;
+                        product = { _id, name, price, imageUrl, url, posKeywords, negKeywords };
                         productlist.push(product);
                     }
                     io.emit("productlist", productlist);
