@@ -1,8 +1,19 @@
 import "./Nav.css";
 import { Link } from "react-router-dom";
 import withAuth from "../container/withAuth";
+import { useEffect } from "react";
+import axios from "axios";
 
-function Nav({ isLogin, logoff }) {
+function Nav({ isLogin, logoff, userData, history, login }) {
+    useEffect(() => {
+        axios
+            .get("http://localhost:5000/auth/status")
+            .then((res) => {
+                login(res.data.userData);
+            })
+            .catch((e) => console.log("NavErr ", e));
+    }, [isLogin]);
+
     return (
         <>
             <nav>
@@ -29,14 +40,20 @@ function Nav({ isLogin, logoff }) {
                                 href="#"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    logoff();
+                                    axios
+                                        .get("http://localhost:5000/auth/logout")
+                                        .then((res) => {
+                                            logoff();
+                                            history.push("/");
+                                        })
+                                        .catch((e) => console.error(e));
                                 }}
                             >
                                 로그아웃
                             </a>
                         </li>
                         <li>
-                            <Link to="cart">장바구니</Link>
+                            <Link to="cart">{userData.name}님의 장바구니</Link>
                         </li>
                     </ul>
                 )}

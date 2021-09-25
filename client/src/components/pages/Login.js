@@ -1,6 +1,8 @@
 import withAuth from "../container/withAuth";
 import { useInput } from "../../hooks";
 import axios from "axios";
+axios.defaults.withCredentials = true;
+
 const Login = ({ login, history }) => {
     const { values, onChange, isLogin, userData } = useInput({ email: "", password: "" });
 
