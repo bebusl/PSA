@@ -2,7 +2,9 @@ export const LOGIN = "LOGIN",
     LOGOFF = "LOGOFF",
     UPDATE_USERDATA = "UPDATE_USERDATA",
     UPDATE_LIKEKEYWORD = "UPDATE_LIKEKEYWORD",
-    UPDATE_HATEKEYWORD = "UPDATE_HATEKEYWORD";
+    UPDATE_HATEKEYWORD = "UPDATE_HATEKEYWORD",
+    SETSEARCHITEM = "SETSEARCHITEM",
+    SETPRODUCTLIST = "SETPRODUCTLIST";
 
 export const login = (userData) => {
     return {
@@ -33,5 +35,19 @@ export const updateHateKeyword = (keywords) => {
     return {
         type: UPDATE_HATEKEYWORD,
         keywords,
+    };
+};
+
+export const setSearchItem = (searchItem) => {
+    return {
+        type: SETSEARCHITEM,
+        searchItem,
+    };
+};
+
+export const setProductlist = (productlists) => {
+    return {
+        type: SETPRODUCTLIST,
+        productlists,
     };
 };
