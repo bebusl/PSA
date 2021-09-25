@@ -176,6 +176,11 @@ def load_and_cache_examples(tokenizer, reviews):
     return dataset, all_evaluate_label_ids, total_words
 
 
+
+"""
+데이터 저장부분 수정 : db에[[키워드1],[키워드2],[키워드3]] 으로 저장되던 것을 
+                     {"키워드1":{POS: , NEU, NEG},"키워드2":{POS, NEU, NEG}}형태로 접근하기 쉽게 만듦
+"""
 def analysis(model, dataloader, evaluate_label_ids, total_words):
     result = {}
     idx = 0
@@ -220,13 +225,11 @@ def analysis(model, dataloader, evaluate_label_ids, total_words):
         except:
             pass
 
-    arr = []
+    keywords={}
     for key, value in result.items():
-        temp = {}
-        temp[key] = value
-        arr.append(temp)
+        keywords[key]=value
 
-    return arr
+    return keywords
 
 
 if __name__ == '__main__':
