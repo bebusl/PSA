@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const SECRET_TOKEN = require("../env").JWT_SECRET;
 const User = require("../models/user");
+const { wishlists } = require("../models/");
 const jwtMiddleware = require("./middlewares");
 
 let errors = {};
@@ -29,11 +30,17 @@ router.post("/register", (req, res) => {
                 name: req.body.name,
                 password: req.body.password,
             });
+            const WishList = new wishlists({
+                userEmail: req.body.email,
+                wishlist: [],
+            });
+
             await hashingPwd(newUser.password)
                 .then((hashing) => {
                     newUser.password = hashing;
                 })
                 .catch((err) => console.log("eror" + err)); //password hashing할 때 사용. 나중에 shema에 methods/statics로 넣어줄 것!
+            WishList.save();
             newUser
                 .save()
                 .then((user) => res.json(user))
@@ -63,10 +70,10 @@ router.post("/login", (req, res) => {
                             res.status(400).json({ error: "jwt token save error. something wrotng" });
                         }
                     });
+
                     return res
                         .cookie("x_auth", user.token, {
                             maxAge: 1000 * 60 * 60 * 24 * 7,
-                            httpOnly: true,
                         })
                         .status(200)
                         .json({ success: true, userData: { email: user.email, name: user.name } });
@@ -78,8 +85,13 @@ router.post("/login", (req, res) => {
         });
     });
 });
-router.post("/logout", jwtMiddleware, (req, res) => {
-    return res.cookie("x_auth", "").json({ sucess: true });
+
+router.get("/logout", jwtMiddleware, (req, res) => {
+    return res.cookie("x_auth", "").json({ success: true });
+});
+
+router.get("/status", jwtMiddleware, (req, res) => {
+    return res.json({ success: true, userData: { email: req.userEmail, name: req.name } });
 });
 
 module.exports = router;

@@ -2,13 +2,16 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = require("../env").JWT_SECRET;
 const User = require("../models/user");
 
-const jwtMiddleware = (req, res, next) => {
+const jwtMiddleware = async (req, res, next) => {
     let token = req.cookies.x_auth;
-    jwt.verify(token, JWT_SECRET, (error, decoded) => {
+    if (token.length == 0) {
+        return res.status(501).json({ error: "저장된 token이 없습니다." });
+    }
+    await jwt.verify(token, JWT_SECRET, async (error, decoded) => {
         if (error) {
             return res.status(500).json({ error: "token을 decode하는데 실패했습니다." });
         }
-        User.findOne({ email: decoded.email }, (error, user) => {
+        await User.findOne({ email: decoded.email }, (error, user) => {
             if (error) {
                 return res.json({ error: "DB에서 회원정보를 찾는 도중 오류가 발생햇습니다." });
             }
@@ -17,7 +20,8 @@ const jwtMiddleware = (req, res, next) => {
             }
             if (user) {
                 req.token = token;
-                req.user = user;
+                req.userEmail = user.email;
+                req.name = user.name;
             }
         });
     });
