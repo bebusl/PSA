@@ -1,72 +1,66 @@
 .List-container {
-  max-width: 1300px;
-<<<<<<< HEAD:client/src/components/shared/List.css
-  min-width: 1300px;
-=======
-  min-width:1300px;
->>>>>>> bcb639ec2c59d4a05ab7e3a878b7ec9a2464a4a4:client/src/components/layout/List.css
-  margin: 0 auto;
-  display: flex;
-  /* border: 2px solid lightgrey; */
+    max-width: 1300px;
+    min-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    /* border: 2px solid lightgrey; */
 }
 .List-item {
-  margin: 10px;
-  flex-basis: auto;
-  /* border: 2px solid lightgrey; */
+    margin: 10px;
+    flex-basis: auto;
+    /* border: 2px solid lightgrey; */
 }
 .productImage {
-  flex-grow: 0;
-  text-align: center;
-  width: 250px;
+    flex-grow: 0;
+    text-align: center;
+    width: 250px;
 }
 
-.productImage img{
-  width:250px;
+.productImage img {
+    width: 250px;
 }
 .productInfo {
-  flex-grow: 1;
-  text-align: left;
-  padding: 1px 20px 1px 20px;
-  display: flex;
-  flex-direction: column;
+    flex-grow: 1;
+    text-align: left;
+    padding: 1px 20px 1px 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .List-product {
-  margin: 5px;
-  /* border: 2px solid lightgrey; */
-  padding: 1px;
+    margin: 5px;
+    /* border: 2px solid lightgrey; */
+    padding: 1px;
 }
 .product {
-  flex-grow: 0;
-  font-size: larger;
+    flex-grow: 0;
+    font-size: larger;
 }
 .productD {
-  flex-grow: 1;
-  font-size: large;
+    flex-grow: 1;
+    font-size: large;
 }
 .price {
-  flex-grow: 0;
-  font-size: large;
+    flex-grow: 0;
+    font-size: large;
 }
 .keywords {
-  flex-grow: 0;
-  font-size: large;
+    flex-grow: 0;
+    font-size: large;
 }
 .sBasket {
-  padding: 20px 0;
+    padding: 20px 0;
 }
 .goodKeywords {
-  border: 2px solid blue;
-  display: inline-block;
-  margin: 0 5px;
-  padding: 2px;
+    border: 2px solid blue;
+    display: inline-block;
+    margin: 0 5px;
+    padding: 2px;
 }
 
 .badKeywords {
-  border: 2px solid red;
-  display: inline-block;
-  margin: 0 5px;
-  padding: 2px;
+    border: 2px solid red;
+    display: inline-block;
+    margin: 0 5px;
+    padding: 2px;
 }
-
-

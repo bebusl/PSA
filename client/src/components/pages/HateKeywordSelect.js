@@ -1,40 +1,53 @@
 import SelectBox from "../shared/SelectBox";
-import { useLocation } from "react-router";
 import { useKeywords } from "../../hooks";
+import { useCallback, useEffect, useState } from "react";
 
-function HateKeywordSelect(props) {
-  const location = useLocation();
-  const keywords = location.keywords;
-  const { values, addKeyword, deleteKeyword } = useKeywords("hate", [
-    "hatetest",
-  ]);
+function HateKeywordSelect({ updateHateKeyword, setProductlist, history, likeWrd, hateWrd, searchItem, socket }) {
+    //const socket = location.socket;
+    const { values, addKeyword, deleteKeyword } = useKeywords("hate", []);
+    const [keywords, setKeywords] = useState([]);
 
-  function onClick(e, keyword) {
-    e.preventDefault();
-    if (values["hate"].includes(keyword)) {
-      deleteKeyword(keyword);
-    } else addKeyword(keyword);
-  }
+    const setSocket = useCallback(() => {
+        socket.on("productlist", (productlist) => {
+            setProductlist(productlist);
+            history.push({
+                pathname: "/ranking",
+            });
+        });
+    }, []);
 
-  function onSubmit(e) {
-    //redux에 저장하고 다음페이지로 넘기기!
-    e.preventDefault();
-    props.updateHateKeyword(values["hate"]); //redux 저장소에 like keyword 저장.
-    props.history.push({
-      pathname: "/ranking",
-    });
-  }
-  return (
-    <div className="contents-wrapper">
-      <SelectBox
-        mode="hate"
-        onSubmit={onSubmit}
-        onClick={onClick}
-        values={values}
-        keywords={keywords}
-      />
-    </div>
-  );
+    useEffect(() => {
+        setSocket();
+        let item = window.localStorage.getItem("keywords");
+        setKeywords(JSON.parse(item));
+        return function cleanup() {
+            socket.off("productlist");
+        };
+    }, []);
+
+    function onClick(e, keyword) {
+        e.preventDefault();
+        if (values["hate"].includes(keyword)) {
+            deleteKeyword(keyword);
+        } else addKeyword(keyword);
+    }
+
+    function onSubmit(e) {
+        //redux에 저장하고 다음페이지로 넘기기!
+        e.preventDefault();
+        updateHateKeyword(values["hate"]); //redux 저장소에 like keyword 저장.
+        socket.emit("selected keywords", {
+            searchItem: searchItem,
+            likeword: likeWrd,
+            hateword: hateWrd,
+        });
+    }
+
+    return (
+        <div className="contents-wrapper">
+            <SelectBox mode="hate" onSubmit={onSubmit} onClick={onClick} values={values} keywords={keywords} />
+        </div>
+    );
 }
 
 export default HateKeywordSelect;

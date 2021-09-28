@@ -16,19 +16,13 @@ productDetail = mydb['productdetails']
 reviews = mydb['reviews']
 
 
-<<<<<<< HEAD
-def addProductDetail(name, price, url, refId):
-=======
+
 def addProductDetail(name, price, url, imageUrl, refId):
->>>>>>> bcb639ec2c59d4a05ab7e3a878b7ec9a2464a4a4
     data = {
         "name": name,
         "price": price,
         "url": url,
-<<<<<<< HEAD
-=======
         "imageUrl": imageUrl,
->>>>>>> bcb639ec2c59d4a05ab7e3a878b7ec9a2464a4a4
         "reviews": DBRef(collection='reviews', id=refId)
     }
     try:
@@ -75,10 +69,6 @@ def setDB(keyword, productData):
     for i in productData:
         reviewId = addReviews(i["reviews"])
         detailIds.append(addProductDetail(
-<<<<<<< HEAD
-            i["name"], i["price"], i["url"], reviewId))
-=======
             i["name"], i["price"], i["url"], i["imageUrl"], reviewId))
->>>>>>> bcb639ec2c59d4a05ab7e3a878b7ec9a2464a4a4
 
     return addKeyword(keyword, detailIds)
