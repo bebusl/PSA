@@ -49,11 +49,7 @@ services:
       - ./.env.dev
     environment:
       - CHOKIDAR_USEPOLLING=true
-<<<<<<< HEAD
-    command: sh -c "dockerize -wait tcp://kafka:9093 -timeout 20s npm run dev"
-=======
     command: sh -c "dockerize -wait tcp://kafka:9093 -timeout 30s npm run dev"
->>>>>>> bcb639ec2c59d4a05ab7e3a878b7ec9a2464a4a4
     depends_on:
       - kafka
       - mongo
@@ -72,14 +68,15 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
     restart: always
-  # analysis:
-  #   build:
-  #     context: ./analysis
-  #   volumes:
-  #     - ./analysis:/analysis
-  #   depends_on:
-  #     - kafka
-  #   shm_size: "4gb"
+
+  analysis:
+    build:
+      context: ./analysis
+    volumes:
+      - ./analysis:/analysis
+    depends_on:
+      - kafka
+    shm_size: "4gb"
             
   crawl:
     build:
@@ -91,21 +88,5 @@ services:
     command: sh -c "dockerize -wait tcp://kafka:9092 -timeout 30s python3 -u crawl.py"
     depends_on:
       - kafka
-<<<<<<< HEAD
-    shm_size: "4gb"
-            
-  crawl:
-    build:
-      context: ./crawl
-    volumes:
-      - ./crawl:/crawl
-    env_file:
-      - ./.env.dev
-    command: sh -c "dockerize -wait tcp://kafka:9092 -timeout 20s python3 -u crawl.py"
-    depends_on:
-      - kafka
-      - mongo
-=======
       - mongo
     restart: always
->>>>>>> bcb639ec2c59d4a05ab7e3a878b7ec9a2464a4a4
