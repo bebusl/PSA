@@ -4,8 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 
 function HateKeywordSelect({ updateHateKeyword, setProductlist, history, likeWrd, hateWrd, searchItem, socket }) {
     //const socket = location.socket;
-    const { values, addKeyword, deleteKeyword } = useKeywords("hate", []);
     const [keywords, setKeywords] = useState([]);
+    const { values, addKeyword, deleteKeyword } = useKeywords("hate", []);
 
     const setSocket = useCallback(() => {
         socket.on("productlist", (productlist) => {
@@ -39,7 +39,7 @@ function HateKeywordSelect({ updateHateKeyword, setProductlist, history, likeWrd
         socket.emit("selected keywords", {
             searchItem: searchItem,
             likeword: likeWrd,
-            hateword: hateWrd,
+            hateword: values["hate"],
         });
     }
 

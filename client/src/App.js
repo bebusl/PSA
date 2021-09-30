@@ -8,6 +8,8 @@ import Register from "./components/pages/Register";
 import Ranking from "./components/pages/Ranking";
 import DetailPage from "./components/pages/DetailPage";
 import Cart from "./components/pages/Cart";
+import ProductDetail from "./components/pages/ProductDetail";
+import WishList from "./components/pages/Wishlist";
 import Nav from "./components/layout/Nav";
 import Content from "./components/layout/Content";
 import KeywordContainer from "./components/container/withKeyword";
@@ -38,8 +40,8 @@ function App() {
                         render={(props) => KeywordContainer(HateKeywordSelect, props, socket)}
                     />
                     <Route exact path="/ranking" render={(props) => KeywordContainer(Ranking, props, socket)} />
-                    {/* <Route path="/detail/:id" component={ProductDetail} />
-                    <Route path="/cart" component={WishList} /> */}
+                    {/*<Route path="/detail/:id" component={ProductDetail} />
+                    <Route path="/cart" component={WishList} />*/}
                     <Route exact path="/detail" component={DetailPage} />
                     <Route exact path="/cart" component={Cart} />
                 </Switch>

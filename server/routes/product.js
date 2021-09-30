@@ -24,8 +24,9 @@ router.get("/detail/:id", async (req, res) => {
     return res.status(200).json({ success: true, data: product });
 });
 
-router.get("/wishlist/:userEmail/:id", async (req, res) => {
-    const { id, userEmail } = req.params;
+router.get("/wishlist/:id", jwtMiddleware, async (req, res) => {
+    const { id } = req.params;
+    const userEmail = req.userEmail;
     const product = await getProductInfo(id);
     try {
         await wishlists
@@ -51,14 +52,29 @@ router.get("/wishlistId", jwtMiddleware, async (req, res) => {
         return accumulator;
     }, []);
 
-    return res.json({ succes: true, cartlist: wishlistId });
+    return res.json({ success: true, cartlist: wishlistId });
 }); //rankingpages에서 wishlist Id만 필요할 때.
 
 router.get("/wishlist", jwtMiddleware, async (req, res) => {
     const userEmail = req.userEmail;
     const _wishlist = await wishlists.findOne({ userEmail: userEmail });
 
-    return res.json({ succes: true, cartlist: _wishlist.wishlist });
+    return res.json({ success: true, cartlist: _wishlist.wishlist });
+});
+
+router.delete("/wishlist/:id", jwtMiddleware, async (req, res) => {
+    const userEmail = req.userEmail;
+    const { id } = req.params;
+    try {
+        await wishlists
+            .updateOne({ userEmail: userEmail }, { $pull: { wishlist: { _id: ObjectId(id) } } })
+            .catch((error) => console.log(error));
+        const _wishlist = await wishlists.findOne({ userEmail: userEmail });
+
+        return res.json({ success: true, cartlist: _wishlist.wishlist });
+    } catch (error) {
+        console.error("장바구니 리스트", error);
+    }
 });
 
 module.exports = router;
