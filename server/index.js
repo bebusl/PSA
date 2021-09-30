@@ -142,7 +142,10 @@ io.on("connection", function (socket) {
                   allKeywords_.includes(keyword) &&
                   likeword.includes(keyword)
                 ) {
-                  if (allKeywords[keyword]["POS"] == 0) {
+                  if (
+                    allKeywords[keyword]["POS"] == 0 ||
+                    allKeywords[keyword]["POS"] <= allKeywords[keyword]["NEG"]
+                  ) {
                     product_good_vec.push(0);
                   } else {
                     product_good_vec.push(
@@ -159,7 +162,10 @@ io.on("connection", function (socket) {
                   allKeywords_.includes(keyword) &&
                   hateword.includes(keyword)
                 ) {
-                  if (allKeywords[keyword]["NEG"] == 0) {
+                  if (
+                    allKeywords[keyword]["NEG"] == 0 ||
+                    allKeywords[keyword]["NEG"] <= allKeywords[keyword]["POSS"]
+                  ) {
                     product_bad_vec.push(0);
                   } else {
                     product_bad_vec.push(
@@ -176,12 +182,7 @@ io.on("connection", function (socket) {
               good_sim = cosineSimilarity(good_vec, product_good_vec);
               bad_sim = cosineSimilarity(bad_vec, product_bad_vec);
 
-              let alpha = 0;
-              if (bad_sim != 0 || good_sim != 0) {
-                alpha = bad_sim / (good_sim + bad_sim);
-              }
-
-              product["sim"] = good_sim - alpha;
+              product["sim"] = good_sim - bad_sim;
             }
           }
 
