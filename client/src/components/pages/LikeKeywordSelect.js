@@ -7,7 +7,7 @@ function LikeKeywordSelect({ updateLikeKeyword, history, socket }) {
     const { values, addKeyword, deleteKeyword } = useKeywords("like", []);
 
     useEffect(() => {
-        let item = window.localStorage.getItem("keywords");
+        let item = window.localStorage.getItem("poskeywords");
         setKeywords(JSON.parse(item));
     }, []);
 

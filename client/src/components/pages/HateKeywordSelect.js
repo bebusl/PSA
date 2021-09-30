@@ -18,7 +18,7 @@ function HateKeywordSelect({ updateHateKeyword, setProductlist, history, likeWrd
 
     useEffect(() => {
         setSocket();
-        let item = window.localStorage.getItem("keywords");
+        let item = window.localStorage.getItem("negkeywords");
         setKeywords(JSON.parse(item));
         return function cleanup() {
             socket.off("productlist");
