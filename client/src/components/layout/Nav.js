@@ -53,7 +53,7 @@ function Nav({ isLogin, logoff, userData, history, login }) {
                             </a>
                         </li>
                         <li>
-                            <Link to="cart">{userData.name}님의 장바구니</Link>
+                            <Link to="/cart">{userData.name}님의 장바구니</Link>
                         </li>
                     </ul>
                 )}

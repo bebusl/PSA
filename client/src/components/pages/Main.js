@@ -15,9 +15,10 @@ function Home({ history, socket, setSearchItem }) {
     const [isLoading, setLoading] = useState(false);
 
     const setSocket = useCallback(() => {
-        socket.on("keywords", (keyword) => {
+        socket.on("keywords", (poskeyword, negkeyword) => {
             setLoading(false);
-            window.localStorage.setItem("keywords", JSON.stringify(keyword));
+            window.localStorage.setItem("poskeywords", JSON.stringify(poskeyword));
+            window.localStorage.setItem("negkeywords", JSON.stringify(negkeyword));
             history.push({
                 pathname: "/likekeyword",
                 socket: socket,

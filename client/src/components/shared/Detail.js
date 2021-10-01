@@ -2,9 +2,12 @@
 import "./Detail.css";
 import { TagCloud } from "react-tagcloud"
 import React, { useState } from 'react'
+import { Bar } from 'react-chartjs-2';
+import { useScript } from "../../hooks";
 
 function Detail({ product, price, productDetail, likeword, hateword }) {
-    const defaultData = [
+  useScript('https://use.fontawesome.com/releases/v5.2.0/js/all.js');
+    const defaultdata = [
         { value: 'jQuery', count: 25 },
         { value: 'MongoDB', count: 18 },
         { value: 'JavaScript', count: 38 },
@@ -25,12 +28,65 @@ function Detail({ product, price, productDetail, likeword, hateword }) {
         { value: 'NPM', count: 11 },
       ];
       
+
+
+const data = {
+  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], //키워드
+  datasets: [
+    {
+      label: 'good',   //긍정
+      data: [12, 19, 3, 5, 2, 3],  //키워드 별 퍼센트? 
+      backgroundColor: 'blue',
+      stack: 'Stack 0',
+      // borderColor: [
+      //   'rgba(255, 99, 132, 1)',
+      //   'rgba(54, 162, 235, 1)',
+      //   'rgba(255, 206, 86, 1)',
+      //   'rgba(75, 192, 192, 1)',
+      //   'rgba(153, 102, 255, 1)',
+      //   'rgba(255, 159, 64, 1)',
+      // ],
+      borderWidth: 1,
+    },
+  {
+    label: 'bad',   //부정
+    data: [19, 3, 12, 5, 7, 9],
+    backgroundColor:'red',
+    stack: 'Stack 0',
+    borderWidth: 1,
+  },
     
-      const [minSize, setMinSize] = useState(12)
-      const [maxSize, setMaxSize] = useState(35)
-      const [data, setData] = useState(defaultData)
-      const [randomColor, setRandomColor] = useState(true)
-      const [shuffle, setShuffle] = useState(true)
+  ],
+};
+
+const options = {
+  indexAxis: 'y',
+  elements: {
+    bar: {
+      borderWidth: 2,
+    },
+  },
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'right',
+    },
+    title: {
+      display: true,
+      text: 'Percentage__keyword',
+    },
+    responsive: true,
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true
+      }
+    }
+  },
+};
+
 
   return (
       <div>
@@ -44,7 +100,7 @@ function Detail({ product, price, productDetail, likeword, hateword }) {
         <div className="Detail price"> price</div>
       </div>
       <div className="Detail sBasket">
-        <button type="button">장바구니</button>
+        <button type="button"><i class="fas fa-cart-plus fa-2x"></i></button>
       </div>
 
       <div></div>
@@ -52,70 +108,18 @@ function Detail({ product, price, productDetail, likeword, hateword }) {
     
     <div className="CloudPercent-container">
         <div className="Detail-WordCloud">
-            
-          <div className="controls">
-            <div>
-              <span>Min</span>
-              <input
-                type="number"
-                min={0}
-                value={minSize}
-                onChange={e => setMinSize(parseInt(e.target.value, 10))}
-              />
-            </div>
-            <div>
-              <span>Max</span>
-              <input
-                type="number"
-                min={0}
-                value={maxSize}
-                onChange={e => setMaxSize(parseInt(e.target.value, 10))}
-              />
-            </div>
-            <div>
-              <span>Shuffle</span>
-              <input
-                type="checkbox"
-                checked={shuffle}
-                onChange={() => setShuffle(!shuffle)}
-              />
-            </div>
-            <div>
-              <span>Color</span>
-              <input
-                type="checkbox"
-                checked={randomColor}
-                onChange={() => setRandomColor(!randomColor)}
-              />
-            </div>
-            <div>
-              <button onClick={() => setData(data.slice(0, -1))}>Pop</button>
-            </div>
-          </div>
           <TagCloud
-            minSize={minSize}
-            maxSize={maxSize}
-            tags={data}
-            shuffle={shuffle}
-            disableRandomColor={!randomColor}
+            minSize={12}
+            maxSize={35}
+            tags={defaultdata}
             className="simple-cloud"
-            onClick={tag => {
-              const value = prompt('Edit tag value', tag.value)
-              if (value == null) {
-                return
-              }
-              const newTag = { value, count: tag.count }
-              const newData = data.map(t => {
-                if (t.value === tag.value) {
-                  return newTag
-                }
-                return t
-              })
-              setData(newData)
-            }}
+            onClick={tag => alert(`'${tag.value}' was selected!`)}
           />
         </div>
-        <div className="Detail-percentage">percwener</div>
+
+        <div className="Detail-percentage">
+          <Bar data={data} options={options} />
+        </div>
     </div>
     </div>
   );

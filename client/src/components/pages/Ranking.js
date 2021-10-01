@@ -16,7 +16,7 @@ function Ranking({ history, isLogin, userData, productlists = [] }) {
     function wishListOnClick(_id) {
         if (isLogin) {
             axios
-                .get(`http://localhost:5000/product/wishlist/${userData.email}/${_id}`)
+                .get(`http://localhost:5000/product/wishlist/${_id}`)
                 .then((res) => setCart(res.data.cartlist))
                 .catch((e) => console.error(e));
         } else {
@@ -39,6 +39,7 @@ function Ranking({ history, isLogin, userData, productlists = [] }) {
                             negKeywords={negKeywords}
                             posKeywords={posKeywords}
                             onWishlist={cart.includes(_id)}
+                            btnMsg="장바구니에 담기"
                             wishListOnClick={() => wishListOnClick(_id)}
                         >
                             <div

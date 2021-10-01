@@ -1,0 +1,42 @@
+.textl {
+  font-size: 35px;
+  text-align: center;
+}
+
+.box input {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border: none;
+  padding: 0.2em 0.5em;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  outline-style: none;
+  margin-bottom: 15px;
+  margin-top: 8px;
+  display: block;
+  width: 400px;
+  background-color: rgba(255, 255, 255, 0.801);
+}
+
+.box label {
+  margin: 5px;
+  font-size: 25px;
+}
+
+.box {
+  background-color: rgb(235, 233, 233);
+  padding: 30px;
+  margin: 30px;
+}
+
+.box button {
+  margin-top: 20px;
+  color: #ffffff;
+  padding: 10px;
+  background-color: #0a1b62;
+  border-radius: 0;
+  width: 100%;
+  cursor: pointer;
+  font-size: 20px;
+}

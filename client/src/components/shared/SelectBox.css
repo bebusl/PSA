@@ -1,40 +1,59 @@
 .title {
-    text-align: center;
-    margin-bottom: 30px;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 30px;
 }
 .keywordBtn {
-    border: 1px solid black;
-    display: inline;
-    width: 80px;
-    height: 30px;
-    background-color: white;
-    cursor: pointer;
-    margin: 2px 25px;
+  border: 1px solid black;
+  display: inline;
+  width: 80px;
+  height: 40px;
+  background-color: white;
+  cursor: pointer;
+  margin: 5px 25px;
+  font-size: 18px;
 }
 
 .like {
-    background-color: blue;
-    color: white;
+  background-color: blue;
+  color: white;
 }
 
 .hate {
-    background-color: red;
-    color: white;
+  background-color: red;
+  color: white;
 }
 .submitBox {
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-    margin-top: 20px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 20px;
 }
 .submitBtn {
-    text-align: center;
+  text-align: center;
+  border: 1px solid black;
+  width: 150px;
+  border-radius: 50px;
+  height: 40px;
+  background-color: #323c63;
+  color: white;
+  cursor: pointer;
+}
 
-    border: 1px solid black;
-    width: 150px;
-    border-radius: 50px;
-    height: 40px;
-    background-color: #0a1b62;
-    color: white;
-    cursor: pointer;
+.sbox {
+  background-color: rgba(125, 123, 160, 0.521);
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.text {
+  text-align: center;
+  margin: 10px;
+}
+
+.showmore {
+  display: block;
+  border-radius: 50px;
+  cursor: pointer;
+  width: 100%;
 }

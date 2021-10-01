@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 
 function LikeKeywordSelect({ updateLikeKeyword, history, socket }) {
     const [keywords, setKeywords] = useState([]);
+    const { values, addKeyword, deleteKeyword } = useKeywords("like", []);
+
     useEffect(() => {
-        let item = window.localStorage.getItem("keywords");
+        let item = window.localStorage.getItem("poskeywords");
         setKeywords(JSON.parse(item));
     }, []);
 
-    const { values, addKeyword, deleteKeyword } = useKeywords("like", []);
     function onClick(e, keyword) {
         e.preventDefault();
         if (values["like"].includes(keyword)) {
