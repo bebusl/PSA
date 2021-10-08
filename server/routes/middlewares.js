@@ -4,7 +4,7 @@ const User = require("../models/user");
 
 const jwtMiddleware = async (req, res, next) => {
     let token = req.cookies.x_auth;
-    if (token.length == 0) {
+    if (!token || token.length == 0) {
         return res.status(501).json({ error: "저장된 token이 없습니다." });
     }
     await jwt.verify(token, JWT_SECRET, async (error, decoded) => {
