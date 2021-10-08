@@ -3,27 +3,30 @@ import os
 from dotenv import load_dotenv
 from bson.dbref import DBRef
 import urllib.parse
+import datetime
 
 username = urllib.parse.quote_plus('root')
 password = urllib.parse.quote_plus('root')
 
 load_dotenv('../.env')
 MONGO_MAIN_DB_URL = os.getenv('MONGO_MAIN_DB_URL')
+MONGO_EXPIRE = os.getenv('MONGO_EXPIRE')
 client = pymongo.MongoClient("mongodb://%s:%s@mongo" % (username, password))
 mydb = client['psa']
 searchKeyword = mydb['searchkeywords']
 productDetail = mydb['productdetails']
 reviews = mydb['reviews']
-
-
+timestamp = datetime.datetime.now()
 
 def addProductDetail(name, price, url, imageUrl, refId):
+    productDetail.create_index("date", expireAfterSeconds=MONGO_EXPIRE)
     data = {
         "name": name,
         "price": price,
         "url": url,
         "imageUrl": imageUrl,
-        "reviews": DBRef(collection='reviews', id=refId)
+        "reviews": DBRef(collection='reviews', id=refId),
+        "date": timestamp
     }
     try:
         productDetailId = productDetail.insert(data)
@@ -34,8 +37,10 @@ def addProductDetail(name, price, url, imageUrl, refId):
 
 
 def addReviews(review):
+    reviews.create_index("date", expireAfterSeconds=MONGO_EXPIRE)
     data = {
-        "reviews": review
+        "reviews": review,
+        "date": timestamp
     }
     try:
         id = reviews.insert(data)
@@ -47,8 +52,10 @@ def addReviews(review):
 
 
 def addKeyword(keyword, refIds):
+    searchKeyword.create_index("date", expireAfterSeconds=MONGO_EXPIRE)
     data = {
         'keyword': keyword,
+        "date": timestamp,
         'products': []
     }
     for refId in refIds:
