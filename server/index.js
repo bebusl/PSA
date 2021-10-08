@@ -95,8 +95,14 @@ io.on("connection", function (socket) {
         }
       })
       .catch((err) => {
-        console.log(err);
-        // crawl_producer.sendMessage(msg);
+        // 오류 발생시 키워드 제거후 재시도
+        TestCollection.findOneAndDelete({ keyword: msg })
+          .then(() => {
+            crawl_producer.sendMessage(msg);
+          })
+          .catch((e) => {
+            console.err(e);
+          });
       });
   });
 
