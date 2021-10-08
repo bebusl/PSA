@@ -25,9 +25,6 @@ function cosineSimilarity(A, B) {
 io.on("connection", function (socket) {
   console.log("connected", socket.id);
 
-  crawl_producer.init();
-  result_consumer.init();
-
   socket.on("send message", ({ searchItem }) => {
     const msg = searchItem;
     TestCollection.findOne({ keyword: msg })
@@ -226,7 +223,10 @@ io.on("connection", function (socket) {
 });
 
 server.listen(+SERVER_PORT);
-server.on("listening", () => {
+server.on("listening", async () => {
+  await crawl_producer.init();
+  await result_consumer.init();
+
   const addr = server.address();
   console.log(`Server running on ${addr.address}:${addr.port}`);
 });
