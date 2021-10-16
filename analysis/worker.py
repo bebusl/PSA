@@ -186,6 +186,7 @@ def analysis(model, dataloader, evaluate_label_ids, total_words):
     idx = 0
     absa_label_vocab = {'O': 0, 'EQ': 1, 'B-POS': 2, 'I-POS': 3, 'E-POS': 4, 'S-POS': 5, 'B-NEG': 6,
                         'I-NEG': 7, 'E-NEG': 8, 'S-NEG': 9, 'B-NEU': 10, 'I-NEU': 11, 'E-NEU': 12, 'S-NEU': 13}
+    test = []
 
     absa_id2tag = {}
     for k in absa_label_vocab:
@@ -210,6 +211,7 @@ def analysis(model, dataloader, evaluate_label_ids, total_words):
                 pred_tags = [absa_id2tag[label] for label in pred_labels]
 
                 p_ts_sequence = tag2ts(ts_tag_sequence=pred_tags)
+                test.append({})
                 for t in p_ts_sequence:
                     beg, end, sentiment = t
                     aspect = ''.join(words[beg:end+1])
@@ -221,6 +223,15 @@ def analysis(model, dataloader, evaluate_label_ids, total_words):
                         result[aspect]['NEU'] = 0
                         result[aspect]['NEG'] = 0
                         result[aspect][sentiment] = 1
+
+                    if aspect in test[idx]:
+                        test[idx][aspect][sentiment] += 1
+                    else:
+                        test[idx][aspect] = {}
+                        test[idx][aspect]['POS'] = 0
+                        test[idx][aspect]['NEU'] = 0
+                        test[idx][aspect]['NEG'] = 0
+                        test[idx][aspect][sentiment] = 1
                 idx += 1
         except:
             pass
@@ -229,7 +240,7 @@ def analysis(model, dataloader, evaluate_label_ids, total_words):
     for key, value in result.items():
         keywords[key]=value
 
-    return keywords
+    return test, keywords
 
 
 if __name__ == '__main__':
@@ -277,6 +288,7 @@ if __name__ == '__main__':
         searchKeywords = mydb['searchkeywords']
         productDetails = mydb['productdetails']
         analyses = mydb['analysis']
+        reviewDetails = mydb['reviewdetails']
 
         searchKeyword = searchKeywords.find_one({"_id": ObjectId(keywordId)})
         products = searchKeyword['products']
@@ -285,15 +297,30 @@ if __name__ == '__main__':
             product = mydb.dereference(productRef)
             reviews = mydb.dereference(product["reviews"])
 
+            review_list = []
+            for i in reviews['reviews']:
+                review_ = mydb.dereference(i)
+                review_list.append(review_["review"])
             dataset, evaluate_label_ids, total_words = load_and_cache_examples(
-                tokenizer, reviews['reviews'])
+                tokenizer, review_list)
             sampler = SequentialSampler(dataset)
 
             dataloader = DataLoader(dataset, sampler=sampler, batch_size=1)
 
-            result = analysis(model, dataloader,
+            test, result = analysis(model, dataloader,
                               evaluate_label_ids, total_words)
-            print(result)
+            
+            index = 0
+            for i in reviews['reviews']:
+                if len(test[index]) > 0:
+                    review_ = mydb.dereference(i)
+                    myquery = {"_id": review_['_id']}
+                    newvalues = {"$set": {"analysis": test[index]}}
+                    reviewDetails.update(myquery, newvalues)
+
+                index += 1
+
+            print("최종", result)
 
             data = {
                 "result": result
