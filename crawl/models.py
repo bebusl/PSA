@@ -10,7 +10,7 @@ password = urllib.parse.quote_plus('root')
 
 load_dotenv('../.env')
 MONGO_MAIN_DB_URL = os.getenv('MONGO_MAIN_DB_URL')
-MONGO_EXPIRE = os.getenv('MONGO_EXPIRE')
+MONGO_EXPIRE = int(os.getenv('MONGO_EXPIRE'))
 client = pymongo.MongoClient("mongodb://%s:%s@mongo" % (username, password))
 mydb = client['psa']
 searchKeyword = mydb['searchkeywords']
