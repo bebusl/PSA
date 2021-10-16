@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { productdetails, analyses, wishlists } = require("../models/index");
+const { productdetails, analyses, wishlists, reviews, reviewdetails } = require("../models/index");
 const ObjectId = require("mongoose").Types.ObjectId;
 const mongoose = require("mongoose");
 const jwtMiddleware = require("./middlewares");
@@ -9,11 +9,19 @@ const getProductInfo = async (id) => {
     try {
         let product = await productdetails.findById(ObjectId(id));
         const analy = await analyses.findById(product.analysis["oid"]);
+        const my_reviews = await reviews.findById(product.reviews["oid"]);
         const { _id, imageUrl, name, price, url } = product._doc;
         const keywords = analy["result"][0];
 
-        return { _id, imageUrl, name, price, url, keywords };
+        const review_list = []
+        for (i in my_reviews["reviews"]) {
+            const review = await reviewdetails.findById(ObjectId(my_reviews["reviews"][i]["oid"]));
+            review_list.push({"review": review["review"], "analysis": review["analysis"]});
+        }
+
+        return { _id, imageUrl, name, price, url, keywords, review_list };
     } catch (error) {
+        console.log(error);
         return "error";
     }
 };
