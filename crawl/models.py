@@ -10,12 +10,13 @@ password = urllib.parse.quote_plus('root')
 
 load_dotenv('../.env')
 MONGO_MAIN_DB_URL = os.getenv('MONGO_MAIN_DB_URL')
-MONGO_EXPIRE = os.getenv('MONGO_EXPIRE')
+MONGO_EXPIRE = int(os.getenv('MONGO_EXPIRE'))
 client = pymongo.MongoClient("mongodb://%s:%s@mongo" % (username, password))
 mydb = client['psa']
 searchKeyword = mydb['searchkeywords']
 productDetail = mydb['productdetails']
 reviews = mydb['reviews']
+reviewdetails = mydb['reviewdetails']
 timestamp = datetime.datetime.now()
 
 def addProductDetail(name, price, url, imageUrl, refId):
@@ -33,21 +34,41 @@ def addProductDetail(name, price, url, imageUrl, refId):
         return productDetailId
     except Exception as e:
         print("DETAILERR", e)
-        pass
 
-
-def addReviews(review):
-    reviews.create_index("date", expireAfterSeconds=MONGO_EXPIRE)
+def addReview(review_):
+    reviewdetails.create_index("date", expireAfterSeconds=MONGO_EXPIRE)
     data = {
-        "reviews": review,
+        "review": review_,
+        "analysis": [],
         "date": timestamp
     }
+    try:
+        reviewId = reviewdetails.insert(data)
+        return reviewId
+    except Exception as e:
+        print(e)
+
+def addReviews(reviews_):
+    review_list = []
+
+    for review_ in reviews_:
+        review_list.append(addReview(review_))
+
+    reviews.create_index("date", expireAfterSeconds=MONGO_EXPIRE)
+    data = {
+        "reviews": [],
+        "date": timestamp
+    }
+
+    for refId in review_list:
+        data['reviews'].append(DBRef(collection='reviewdetails', id=refId))
+
     try:
         id = reviews.insert(data)
         return id
     except Exception as e:
         print("REVIEWS ERROR", e)
-        pass
+        
     return 0
 
 
@@ -65,17 +86,22 @@ def addKeyword(keyword, refIds):
         return id
     except Exception as e:
         print("KEYWORDERR", e)
-        pass
+
     return 0
 
 
 def setDB(keyword, productData):
     print("SETDB start")
     # productData={"name":productTitle,"price":price,"url":crUrl,"reviews":reviewList}
-    detailIds = []
-    for i in productData:
-        reviewId = addReviews(i["reviews"])
-        detailIds.append(addProductDetail(
-            i["name"], i["price"], i["url"], i["imageUrl"], reviewId))
+    try:
+        detailIds = []
+        for i in productData:
+            reviewId = addReviews(i["reviews"])
+            detailIds.append(addProductDetail(
+                i["name"], i["price"], i["url"], i["imageUrl"], reviewId))
 
-    return addKeyword(keyword, detailIds)
+        return addKeyword(keyword, detailIds)
+    except Exception as e:
+        print(e)
+
+    return 0

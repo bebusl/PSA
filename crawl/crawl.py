@@ -44,8 +44,8 @@ def crawlReviews(product):
         return productData
     except Exception as e:
         print(e)
-        pass
 
+    return []
 
 if __name__ == "__main__":
     print("크롤러 실행 : ")
@@ -101,9 +101,10 @@ if __name__ == "__main__":
             ('window', ''),
         )
 
-        response = requests.get(
-            'https://search.shopping.naver.com/api/search/all', headers=headers, params=params)
         try:
+            response = requests.get(
+                'https://search.shopping.naver.com/api/search/all', headers=headers, params=params)
+
             result_dict = json.loads(response.text)
 
             if 'shoppingResult' in result_dict and 'products' in result_dict['shoppingResult']:
@@ -129,5 +130,5 @@ if __name__ == "__main__":
 
             else:
                 print('no such product')
-        except:
-            print('no result')
+        except Exception as e:
+            print(e)
