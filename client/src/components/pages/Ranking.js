@@ -29,7 +29,7 @@ function Ranking({ history, isLogin, userData, productlists = [] }) {
             <h2>Ranking Page</h2>
             {productlists &&
                 productlists.map((product, idx) => {
-                    const { _id, name, price, imageUrl, posKeywords, negKeywords } = product;
+                    const { _id, name, price, imageUrl, posKeywords, negKeywords, allKeywords } = product;
                     return (
                         <List
                             key={idx}
@@ -47,7 +47,13 @@ function Ranking({ history, isLogin, userData, productlists = [] }) {
                                 style={{ cursor: "pointer" }}
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    history.push(`/detail/${_id}`);
+                                    history.push({
+                                        pathname:`/detail/${_id}`,
+                                        state: {
+                                            product: name, price: price, 
+                                            imageUrl: imageUrl, _id: _id,
+                                            allKeywords: allKeywords}
+                                    });
                                 }}
                             >
                                 상세페이지 보기

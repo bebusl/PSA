@@ -11,7 +11,7 @@ function Nav({ isLogin, logoff, userData, history, login }) {
             .then((res) => {
                 login(res.data.userData);
             })
-            .catch((e) => console.log("NavErr ", e));
+            .catch((e) => {console.log("NavErr ", e);logoff();});
     }, [isLogin]);
 
     return (

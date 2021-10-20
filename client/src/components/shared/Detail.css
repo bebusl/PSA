@@ -45,6 +45,14 @@
   border-radius: 10px;
   background-color: #0a1b62;
   padding: 10px 15px 10px 15px;
+  cursor: pointer;
+}
+.Detail button:disabled {
+  background-color: #eeeeee;
+  color: rgb(173, 173, 173);
+  border-color: rgb(215, 215, 215);
+  border-style: solid;
+  cursor: default;
 }
 
 .CloudPercent-container {
