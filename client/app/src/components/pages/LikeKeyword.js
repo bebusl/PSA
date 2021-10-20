@@ -26,8 +26,8 @@ const DATA = [
 ]
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor, {borderWidth:2, width: '41%'}]}>
-        <Text style={[styles.title, textColor, {flex: 2, textAlign: 'center'}]}>{item.title}</Text>
+    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+        <Text style={[styles.title, textColor]}>{item.title}</Text>
     </TouchableOpacity>    
 )
 
@@ -48,8 +48,11 @@ export const LikeKeyword = ({ navigation }) => {
     )
     }
     return(
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <View style={{ height: '30%' }}/>
+        <View style={styles.container}>
+            <View style={styles.information}> 
+                <Text style={styles.text}>선호 특징을 선택해주세요!</Text>
+                <Text style={styles.textInfo}>선택한 키워드에 대한 긍정적인 리뷰가 많은 순으로 상품이 보여집니다.</Text>
+            </View>
             <View style={{ alignItems: 'center' }}>
                 <FlatList
                     horizontal= {false}
@@ -66,13 +69,34 @@ export const LikeKeyword = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+    container:{
+        flex: 1, 
+        backgroundColor: 'white' 
+    },
     item: {
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,
+        borderWidth:2, 
+        width:'41%'
     },
     title: {
         fontSize: 32,
+        flex: 2, 
+        textAlign: 'center'
+    },
+    information:{
+        height: '30%', 
+        justifyContent: 'center'
+    },
+    text:{ 
+        textAlign: 'center', 
+        fontSize: 30
+    },
+    textInfo:{ 
+        textAlign: 'center', 
+        fontSize: 13, 
+        marginTop: 15 
     }
 })
 

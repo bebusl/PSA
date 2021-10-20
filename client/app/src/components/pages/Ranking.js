@@ -17,11 +17,11 @@ function Item ({ item }) {
                     }}
                 />
                 <View style={{ flex:1, margin: 10}}>
-                    <Text style={{ fontSize: 20 }}>{item.productname}</Text>
-                    <Text style={{ fontSize: 20 }}>{item.price}</Text>
+                    <Text style={styles.text}>{item.productname}</Text>
+                    <Text style={styles.text}>{item.price}</Text>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={{ fontSize: 20, borderWidth: 2, padding: 3, margin: 2, borderColor: 'blue', color: 'blue' }}>{item.like[0]}</Text>
-                        <Text style={{ fontSize: 20, borderWidth: 2, padding: 3, margin: 2, borderColor: 'red', color: 'red' }}>{item.hate}</Text>
+                        <Text style={styles.likeKeyword}>{item.like[0]}</Text>
+                        <Text style={styles.hateKeyword}>{item.hate}</Text>
                     </View>
                 </View>
             </View>
@@ -35,7 +35,7 @@ export const Ranking = ({ navigation }) => {
     )
 
     return(
-        <View>
+        <View style={{ backgroundColor: "white" }}>
             <FlatList
                 data={dummyRankinglist}
                 renderItem={renderItem}
@@ -50,6 +50,25 @@ const styles = StyleSheet.create({
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16
+    },
+    hateKeyword:{
+        fontSize: 20, 
+        borderWidth: 2, 
+        padding: 3, 
+        margin: 2, 
+        borderColor: 'red', 
+        color: 'red'
+    },
+    likeKeyword:{
+        fontSize: 20, 
+        borderWidth: 2, 
+        padding: 3, 
+        margin: 2, 
+        borderColor: 'blue', 
+        color: 'blue'
+    },
+    text:{ 
+        fontSize: 20 
     }
 })
 export default Ranking;

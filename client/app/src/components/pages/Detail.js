@@ -1,48 +1,48 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native"
+import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from "react-native"
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 function Detail({ route, navigation }){
     const {item} = route.params;
     return(
-        <View style={{ flex: 1 }}>
-            <View style={{ flexDirection: 'row', height: "30%"}}>
+        <View style={styles.container}>
+            <View style={styles.productInfo}>
                 <Image 
-                    style={{ flex:1, margin: 10 }}
+                    style={styles.image}
                     source={{
                     uri: 'http://placehold.it/100'
                     }}
                 />
-                <View style={{ flex:1, margin: 10 }}>
-                    <Text style={{ flex: 1, fontSize: 20, margin: 10}}>{item.productname}</Text>
-                    <Text style={{ flex: 1, fontSize: 15, margin: 10 }}>가격: {item.price}</Text>
-                    <TouchableOpacity style={{ flex: 1, flexDirection: 'row', margin: 5, backgroundColor: "#000080", borderRadius: 50, justifyContent: 'center' }} onPress={() => navigation.navigate('CartScreen')}>
-                        <Text style={{ color: 'white', fontSize: 15, justifyContent: 'center', marginTop: 10 }}>장바구니에 넣기</Text>
-                        <View style={{ justifyContent: 'center', margin: 3 }}>
+                <View style={styles.image}>
+                    <Text style={styles.productName}>{item.productname}</Text>
+                    <Text style={styles.productPrice}>가격: {item.price}</Text>
+                    <TouchableOpacity style={styles.cartBtn} onPress={() => navigation.navigate('CartScreen')}>
+                        <Text style={styles.cartBtnText}>장바구니에 넣기</Text>
+                        <View style={styles.icon}>
                             <AntDesign name='shoppingcart' size= {30} color= "white" />
                         </View>
                     </TouchableOpacity>
                 </View>       
             </View>
-            <View style={{ flexDirection: 'row', height: "10%", alignContent: 'center', alignItems: 'center', padding: 10 }}>
-                <Text style={{ fontSize: 20, margin: 10}}>대표키워드</Text>
-                <Text style={{ fontSize: 20, borderWidth: 2, padding: 5, margin: 3, borderColor: 'blue', color: 'blue' }}>{item.like[0]}</Text>
-                <Text style={{ fontSize: 20, borderWidth: 2, padding: 5, margin: 3, borderColor: 'red', color: 'red' }}>{item.hate}</Text>
+            <View style={styles.listBox}>
+                <Text style={styles.text}>대표키워드</Text>
+                <Text style={styles.likeKeyword}>{item.like[0]}</Text>
+                <Text style={styles.hateKeyword}>{item.hate}</Text>
             </View>
             <ScrollView>
-                <View style={{ flex: 1, height: 300, padding: 10 }}>
-                    <Text style={{ fontSize: 20, margin: 10 }}>워드클라우드</Text>
+                <View style={styles.wordCloud}>
+                    <Text style={styles.text}>워드클라우드</Text>
                     <Image 
-                    style={{ flex:1, margin: 10 }}
+                    style={styles.image}
                     source={{
                         uri: 'http://placehold.it/100'
                     }}
                 />
                 </View>
-                <View style={{ flex: 1, height: 300, padding: 10 }}>
-                    <Text style={{ fontSize: 20, margin: 10 }}>긍부정분석</Text>
+                <View style={styles.wordChart}>
+                    <Text style={styles.text}>긍부정분석</Text>
                     <Image 
-                    style={{ flex:1, margin: 10 }}
+                    style={styles.image}
                     source={{
                         uri: 'http://placehold.it/100'
                     }}
@@ -52,5 +52,85 @@ function Detail({ route, navigation }){
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container:{
+        flex: 1,
+        backgroundColor: "white"
+    },
+    image:{
+        flex:1, 
+        margin: 10
+    },
+    productInfo:{
+        flexDirection: 'row', 
+        height: "30%"
+    },
+    wordCloud:{
+        flex: 1, 
+        height: 300, 
+        padding: 10 
+    },
+    wordChart:{
+        flex: 1, 
+        height: 300, 
+        padding: 10
+    },
+    cartBtn:{
+        flex: 1, 
+        flexDirection: 'row', 
+        margin: 5, 
+        backgroundColor: "#000080", 
+        borderRadius: 50, 
+        justifyContent: 'center'
+    },
+    cartBtnText:{
+        color: 'white', 
+        fontSize: 15, 
+        justifyContent: 'center',
+        marginTop: 10
+    },
+    icon:{
+        justifyContent: 'center', 
+        margin: 3
+    },
+    text:{
+        fontSize: 20, 
+        margin: 10
+    },
+    hateKeyword:{
+        fontSize: 20, 
+        borderWidth: 2, 
+        padding: 5, 
+        margin: 3, 
+        borderColor: 'red', 
+        color: 'red'
+    },
+    likeKeyword:{
+        fontSize: 20, 
+        borderWidth: 2, 
+        padding: 5, 
+        margin: 3, 
+        borderColor: 'blue', 
+        color: 'blue'
+    },
+    productName:{ 
+        flex: 1, 
+        fontSize: 20, 
+        margin: 10
+    },
+    productPrice:{ 
+        flex: 1, 
+        fontSize: 15, 
+        margin: 10 
+    },
+    listBox:{
+        flexDirection: 'row', 
+        height: "10%", 
+        alignContent: 'center', 
+        alignItems: 'center', 
+        padding: 10
+    }
+})
 
 export default Detail;
