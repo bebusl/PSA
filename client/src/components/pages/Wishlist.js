@@ -10,7 +10,6 @@ function Cart({ isLogin }) {
         axios
             .get(`http://localhost:5000/product/wishlist`)
             .then((res) => {
-                console.log(res.data.cartlist);
                 setWishlist(res.data.cartlist);
             })
             .catch((e) => console.error(e));
