@@ -91,7 +91,7 @@ router.get("/logout", jwtMiddleware, (req, res) => {
 });
 
 router.get("/status", jwtMiddleware, (req, res) => {
-    return res.json({ success: true, userData: { email: req.userEmail, name: req.name } });
+    return res.status(200).json({ success: true, userData: { email: req.userEmail, name: req.name } });
 });
 
 module.exports = router;
