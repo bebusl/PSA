@@ -40,10 +40,10 @@ function App() {
                         render={(props) => KeywordContainer(HateKeywordSelect, props, socket)}
                     />
                     <Route exact path="/ranking" render={(props) => KeywordContainer(Ranking, props, socket)} />
-                    <Route path="/detail/:id" render={(props) => KeywordContainer(DetailPage, props, socket)} />
-                    <Route path="/cart" component={WishList} />
-                    {/* <Route exact path="/detail" component={DetailPage} />
-                    <Route exact path="/cart" component={Cart} /> */}
+                    {/* <Route path="/detail/:id" render={(props) => KeywordContainer(ProductDetail, props, socket)} />
+                    <Route path="/cart" component={WishList} /> */}
+                    <Route exact path="/detail/:id" render={(props) => KeywordContainer(DetailPage, props, socket)} />
+                    <Route exact path="/cart" component={Cart} />
                 </Switch>
             </Content>
         </>

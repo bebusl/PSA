@@ -1,17 +1,25 @@
 .title {
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 30px;
+  margin-bottom: 15px;
+  font-size: 35px;
 }
+
+.explain {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: rgb(100, 100, 100);
+}
+
 .keywordBtn {
   border: 1px solid black;
   display: inline;
-  width: 80px;
+  width: 100px;
   height: 40px;
   background-color: white;
   cursor: pointer;
-  margin: 5px 25px;
-  font-size: 18px;
+  margin: 12px 25px;
+  font-size: 20px;
 }
 
 .like {
@@ -31,17 +39,19 @@
 }
 .submitBtn {
   text-align: center;
+  margin-top: 20px;
   border: 1px solid black;
-  width: 150px;
+  width: 100%;
   border-radius: 50px;
   height: 40px;
   background-color: #323c63;
   color: white;
   cursor: pointer;
+  font-size: 15px;
 }
 
 .sbox {
-  background-color: rgba(125, 123, 160, 0.521);
+  background-color: rgba(211, 210, 238);
   padding: 30px;
   border-radius: 20px;
 }
@@ -54,6 +64,10 @@
 .showmore {
   display: block;
   border-radius: 50px;
+  border: none;
   cursor: pointer;
   width: 100%;
+  margin-top: 10px;
+  color: rgb(100, 100, 100);
+  background-color: rgba(255, 255, 255, 0);
 }
