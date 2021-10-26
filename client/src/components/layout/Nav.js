@@ -9,7 +9,7 @@ function Nav({ isLogin, logoff, userData, history, login }) {
         axios
             .get("http://localhost:5000/auth/status")
             .then((res) => {
-                if (res.status == 200) {
+                if (res.status === 200) {
                     login(res.data.userData);
                 } else {
                     logoff();
@@ -17,7 +17,6 @@ function Nav({ isLogin, logoff, userData, history, login }) {
             })
             .catch((e) => {
                 console.log("NavErr ", e);
-                logoff();
             });
     }, [isLogin]);
 
