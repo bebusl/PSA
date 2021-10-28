@@ -15,7 +15,7 @@ function List({
     return (
         <div className="List-container">
             <div className="List-item productImage">
-                <img src={imageUrl}></img>
+                <img src={imageUrl} alt={product}></img>
             </div>
             <div className="List-item productInfo">
                 <div className="List-product product">{product} </div>

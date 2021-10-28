@@ -10,7 +10,6 @@ function Cart({ isLogin }) {
         axios
             .get(`http://localhost:5000/product/wishlist`)
             .then((res) => {
-                console.log(res.data.cartlist);
                 setWishlist(res.data.cartlist);
             })
             .catch((e) => console.error(e));
@@ -31,7 +30,7 @@ function Cart({ isLogin }) {
         <div>
             <h2>Shopping List</h2>
             {wishlist.map((product, idx) => {
-                const { name, price, productDetail, keywords, imageUrl, _id } = product;
+                const { name, price, imageUrl, _id } = product;
                 return (
                     <List
                         kdy={idx}

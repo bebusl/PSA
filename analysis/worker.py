@@ -3,7 +3,7 @@ from kafka import KafkaConsumer, KafkaProducer
 import os
 import numpy as np
 import torch
-
+import konlpy.tag
 from glue_utils import ABSAProcessor, SeqInputFeatures, InputExample
 from transformers import AutoTokenizer
 from absa_layer import BertABSATagger
@@ -267,6 +267,8 @@ if __name__ == '__main__':
     model.to(device)  # cuda
     model.eval()
 
+    Okt = konlpy.tag.Okt()
+
     producer = KafkaProducer(bootstrap_servers='kafka:9093')
     consumer = KafkaConsumer(
         'analysis',
@@ -321,9 +323,28 @@ if __name__ == '__main__':
                 index += 1
 
             print("최종", result)
+            
+            #같은 키워드인데 조사가 붙었을 경우 처리
+            result_ = {}
+
+            for key,value in result.items():
+                try:
+                    keyword = Okt.nouns(key)[0]
+                    if keyword in result_ :
+                        result_[keyword]["POS"] = result_[keyword]["POS"]+value["POS"]
+                        result_[keyword]["NEU"] = result_[keyword]["NEU"]+value["NEU"]
+                        result_[keyword]["NEG"] = result_[keyword]["NEG"]+value["NEG"]
+                    else:
+                        result_[keyword]={}
+                        result_[keyword]["POS"] = value["POS"]
+                        result_[keyword]["NEU"] = value["NEU"]
+                        result_[keyword]["NEG"] = value["NEG"]
+                except:
+                    print("키워드 처리과정 에러 발생"+ str(Okt.nouns(key)))
+                    pass
 
             data = {
-                "result": result
+                "result": result_
             }
 
             anaysisId = analyses.insert(data)

@@ -3,7 +3,6 @@ import axios from "axios";
 
 const ProductDetail = ({ match }) => {
     const [isLoading, setLoading] = useState(true);
-    console.log(match.params);
     useEffect(() => {
         axios
             .get(`http://localhost:5000/product/detail/${match.params.id}`)

@@ -48,11 +48,14 @@ function Ranking({ history, isLogin, userData, productlists = [] }) {
                                 onClick={(e) => {
                                     e.preventDefault();
                                     history.push({
-                                        pathname:`/detail/${_id}`,
+                                        pathname: `/detail/${_id}`,
                                         state: {
-                                            product: name, price: price, 
-                                            imageUrl: imageUrl, _id: _id,
-                                            allKeywords: allKeywords}
+                                            product: name,
+                                            price: price,
+                                            imageUrl: imageUrl,
+                                            _id: _id,
+                                            allKeywords: allKeywords,
+                                        },
                                     });
                                 }}
                             >
