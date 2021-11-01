@@ -3,16 +3,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import withAuth from "../container/withAuth";
 
-function Cart({ isLogin }) {
+function Cart({ isLogin, history }) {
     const [wishlist, setWishlist] = useState([]);
 
     useEffect(() => {
         axios
             .get(`http://localhost:5000/product/wishlist`)
             .then((res) => {
+                console.log(res.data.cartlist);
                 setWishlist(res.data.cartlist);
             })
-            .catch((e) => console.error(e));
+            .catch((e) => {
+                window.alert("위시리스트 목록을 가져오는데 실패했습니다. 로그인을 다시 한 후 재시도해주세요");
+            });
     }, []);
 
     function wishListOnClick(_id) {
@@ -42,33 +45,22 @@ function Cart({ isLogin }) {
                         wishListOnClick={() => {
                             wishListOnClick(_id);
                         }}
-                    />
+                    >
+                        <div
+                            className="List-product"
+                            style={{ cursor: "pointer" }}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                history.push(`/wishlistdetail/${idx}`);
+                            }}
+                        >
+                            상세페이지 보기
+                        </div>
+                    </List>
                 );
             })}
         </div>
     );
 }
-/*                        <List
-                            key={idx}
-                            product={name}
-                            price={price}
-                            imageUrl={imageUrl}
-                            negKeywords={negKeywords}
-                            posKeywords={posKeywords}
-                            onWishlist={cart.includes(_id)}
-                            btnMsg="장바구니에 담기"
-                            wishListOnClick={() => wishListOnClick(_id)}
-                        >
-                            <div
-                                className="List-product"
-                                style={{ cursor: "pointer" }}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    history.push(`/detail/${_id}`);
-                                }}
-                            >
-                                상세페이지 보기
-                            </div>
-                        </List> */
+
 export default withAuth(Cart);
-//product, price, productDetail, likeword, hateword

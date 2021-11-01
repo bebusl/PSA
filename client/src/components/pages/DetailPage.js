@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import withAuth from "../container/withAuth";
 
-function DetailPage({ location, match, isLogin }) {
+function DetailPage({ location, match, isLogin, history }) {
     const product = location.state.product;
     const price = location.state.price;
     const imageUrl = location.state.imageUrl;
@@ -13,9 +13,7 @@ function DetailPage({ location, match, isLogin }) {
     const [cart, setCart] = useState([]);
     const [review_list, setReview] = useState({ all: [], selected: [] });
     const [selectKwd, setKwd] = useState("전체");
-    
-    
-    //console.log("match.paramas::",match.params);
+
     useEffect(() => {
         axios
             .get(`http://localhost:5000/product/detail/${match.params.id}`)
@@ -34,7 +32,10 @@ function DetailPage({ location, match, isLogin }) {
 
                 setReview({ selected: review_list_, all: review_list_ });
             })
-            .catch((e) => console.error(e));
+            .catch((e) => {
+                window.alert("정보를 가져오는데 실패했습니다.");
+                history.goBack();
+            });
     }, []);
 
     useEffect(() => {
@@ -98,23 +99,10 @@ function DetailPage({ location, match, isLogin }) {
     }
     const color = { POS: "blue", NEG: "red", NEU: "grey" };
     for (var i = 0; i < WordData.length; i++) {
-        //긍부정으로 나눌지 리뷰 언급 횟수로 나눌지
-        //   if(CountData[i].POS > CountData[i].NEG){
-        //     obj = {value: WordData[i], count: CountData[i].POS + CountData[i].NEG}  //, props:{style: {color:'blue'}}
-        //   }
-        //   else if(CountData[i].POS < CountData[i].NEG){
-        //     obj = {value: WordData[i], count: CountData[i].POS + CountData[i].NEG}  //, props:{style: {color:'red'}}
-        //   }
-        //   else{
-        //     obj = {value: WordData[i], count: CountData[i].POS + CountData[i].NEG}  //, props:{style: {color:'black'}}
-        //   }
-        //obj = { value: WordData[i], count: CountData[i].POS + CountData[i].NEG };
         const sentiment = sentiment_(CountData[i].POS, CountData[i].NEG, CountData[i].NEU);
         obj = { value: WordData[i], count: CountData[i][sentiment], color: color[sentiment] };
         CloudData.push(obj);
     }
-
-    //console.log(":::::::::::::::::::::::::",CloudData);
 
     const PercentData = {
         labels: WordData, //키워드
