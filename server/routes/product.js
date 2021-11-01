@@ -76,6 +76,18 @@ router.get("/wishlist", jwtMiddleware, async (req, res) => {
     return res.json({ success: true, cartlist: _wishlist.wishlist });
 });
 
+router.get("/wishlist/detail/:idx", jwtMiddleware, async (req, res) => {
+    const userEmail = req.userEmail;
+    const { idx } = req.params;
+
+    try {
+        const _wishlist = await wishlists.findOne({ userEmail: userEmail });
+        return res.json({ success: true, data: _wishlist.wishlist[idx] });
+    } catch (e) {
+        return res.status(521).json({ success: false, msg: "db에서 정보를 가져오는 데 실패했습니다." });
+    }
+});
+
 router.delete("/wishlist/:id", jwtMiddleware, async (req, res) => {
     const userEmail = req.userEmail;
     const { id } = req.params;
