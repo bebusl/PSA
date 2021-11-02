@@ -1,5 +1,6 @@
 import React from "react";
 import "./List.css";
+import { FaCartPlus } from "react-icons/fa";
 
 function List({
     children,
@@ -8,7 +9,6 @@ function List({
     posKeywords,
     negKeywords,
     onWishlist,
-    btnMsg,
     wishListOnClick,
     imageUrl = "http://placehold.it/250x200",
 }) {
@@ -19,8 +19,7 @@ function List({
             </div>
             <div className="List-item productInfo">
                 <div className="List-product product">{product} </div>
-                <div className="List-product price">{price}</div>
-                {/* <div className="List-product productD">디테일들어갈 곳</div> */}
+                <div className="List-product price">{price}원</div>
                 {children}
                 <div className="List-product keywords">
                     {posKeywords &&
@@ -35,12 +34,6 @@ function List({
                                 {selected}
                             </div>
                         ))}
-                    {/*likeword.map((selected) => (
-            <div className="goodKeywords">{selected}</div>
-          ))}
-          {hateword.map((selected) => (
-            <div className="badKeywords">{selected}</div>
-          ))*/}
                 </div>
             </div>
             <div className="List-item sBasket">
@@ -51,8 +44,24 @@ function List({
                         e.preventDefault();
                         wishListOnClick();
                     }}
+                    style={
+                        onWishlist
+                            ? {
+                                  backgroundColor: "lightgrey",
+                                  borderRadius: 10,
+                                  paddingRight: "10px",
+                                  paddingLeft: "10px",
+                              }
+                            : {
+                                  backgroundColor: "#0A1B62",
+                                  borderRadius: 10,
+                                  paddingRight: "10px",
+                                  paddingLeft: "10px",
+                                  cursor: "pointer",
+                              }
+                    }
                 >
-                    {onWishlist ? "이미 장바구니에 담긴 상품입니다." : btnMsg}
+                    <FaCartPlus color="white" size="1.5rem" />
                 </button>
             </div>
         </div>

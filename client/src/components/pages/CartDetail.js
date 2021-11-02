@@ -5,7 +5,7 @@ import axios from "axios";
 import withAuth from "../container/withAuth";
 import { createNotification, Alert } from "../shared/Alert";
 function CartDetail({ match, isLogin, history }) {
-    const [data, setData] = useState({ product: "", price: "", imageUrl: "", keywords: [] });
+    const [data, setData] = useState({ product: "", price: "", imageUrl: "", keywords: [], url: "" });
     const [review_list, setReview] = useState({ all: [], selected: [] });
     const [selectKwd, setKwd] = useState("전체");
     useEffect(() => {
@@ -124,7 +124,7 @@ function CartDetail({ match, isLogin, history }) {
                     data={PercentData}
                 />
             </div>
-            <div>
+            <div className="review-container">
                 <form>
                     <select
                         onChange={(e) => {

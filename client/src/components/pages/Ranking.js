@@ -2,8 +2,9 @@ import List from "../shared/List";
 import withAuth from "../container/withAuth";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { FaCartPlus } from "react-icons/fa";
 
-function Ranking({ history, isLogin, userData, productlists = [] }) {
+function Ranking({ history, isLogin, productlists = [] }) {
     const [cart, setCart] = useState([]);
     useEffect(() => {
         if (isLogin) {
@@ -26,7 +27,8 @@ function Ranking({ history, isLogin, userData, productlists = [] }) {
 
     return (
         <div>
-            <h2>Ranking Page</h2>
+            <h2>랭킹페이지</h2>
+            <h5>고객님께 알맞은 상품을 찾았어요</h5>
             {productlists &&
                 productlists.map((product, idx) => {
                     const { _id, name, price, imageUrl, posKeywords, negKeywords, allKeywords } = product;

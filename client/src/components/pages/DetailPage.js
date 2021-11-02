@@ -5,20 +5,21 @@ import axios from "axios";
 import withAuth from "../container/withAuth";
 
 function DetailPage({ location, match, isLogin, history }) {
-    const product = location.state.product;
-    const price = location.state.price;
-    const imageUrl = location.state.imageUrl;
-    const _id = location.state._id;
-    const allKeywords = location.state.allKeywords;
+    // const product = location.state.product;
+    // const price = location.state.price;
+    // const imageUrl = location.state.imageUrl;
+    // const _id = location.state._id;
+    // const allKeywords = location.state.allKeywords;
+    const [data, setData] = useState({ product: "", price: "", imageUrl: "", keywords: [], url: "" });
     const [cart, setCart] = useState([]);
     const [review_list, setReview] = useState({ all: [], selected: [] });
     const [selectKwd, setKwd] = useState("전체");
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         axios
             .get(`http://localhost:5000/product/detail/${match.params.id}`)
             .then((res) => {
-                console.log("RES:::", res);
                 let review_list_ = res.data.data.review_list;
                 for (let i_ in review_list_) {
                     const i = review_list_[i_];
@@ -29,7 +30,7 @@ function DetailPage({ location, match, isLogin, history }) {
                         }
                     }
                 }
-
+                setData(res.data.data);
                 setReview({ selected: review_list_, all: review_list_ });
             })
             .catch((e) => {
@@ -62,7 +63,7 @@ function DetailPage({ location, match, isLogin, history }) {
     function wishListOnClick(_id) {
         if (isLogin) {
             axios
-                .get(`http://localhost:5000/product/wishlist/${_id}`)
+                .get(`http://localhost:5000/product/wishlist/${data._id}`)
                 .then((res) => setCart(res.data.cartlist))
                 .catch((e) => console.error(e));
         } else {
@@ -72,7 +73,7 @@ function DetailPage({ location, match, isLogin, history }) {
 
     const searchBar = () => {
         let options = ["전체"];
-        options.push(...Object.keys(allKeywords));
+        options.push(...Object.keys(data.keywords));
         return options.map((t, idx) => (
             <option value={t} key={`opt-${idx}`}>
                 {t}
@@ -80,8 +81,8 @@ function DetailPage({ location, match, isLogin, history }) {
         ));
     };
 
-    const WordData = Object.keys(allKeywords);
-    const CountData = Object.values(allKeywords);
+    const WordData = Object.keys(data.keywords);
+    const CountData = Object.values(data.keywords);
     let posCount = CountData.map((a) => a.POS);
     let negCount = CountData.map((a) => a.NEG);
 
@@ -97,7 +98,7 @@ function DetailPage({ location, match, isLogin, history }) {
             return "NEU";
         }
     }
-    const color = { POS: "blue", NEG: "red", NEU: "grey" };
+    const color = { POS: "#006ebe", NEG: "#ef1c1c", NEU: "grey" };
     for (var i = 0; i < WordData.length; i++) {
         const sentiment = sentiment_(CountData[i].POS, CountData[i].NEG, CountData[i].NEU);
         obj = { value: WordData[i], count: CountData[i][sentiment], color: color[sentiment] };
@@ -110,14 +111,14 @@ function DetailPage({ location, match, isLogin, history }) {
             {
                 label: "good", //긍정
                 data: posCount,
-                backgroundColor: "blue",
+                backgroundColor: "#006ebe",
                 stack: "Stack 0",
                 borderWidth: 1,
             },
             {
                 label: "bad", //부정
                 data: negCount,
-                backgroundColor: "red",
+                backgroundColor: "#ef1c1c",
                 stack: "Stack 0",
                 borderWidth: 1,
             },
@@ -128,19 +129,22 @@ function DetailPage({ location, match, isLogin, history }) {
         <div>
             <div className="List-container">
                 <Detail
-                    product={product}
-                    price={price}
-                    imageUrl={imageUrl}
+                    product={data.name}
+                    price={data.price}
+                    imageUrl={data.imageUrl}
+                    url={data.url}
                     btnMsg="장바구니에 담기"
-                    onWishlist={cart.includes(_id)}
-                    wishListOnClick={() => wishListOnClick(_id)}
+                    onWishlist={cart.includes(data._id)}
+                    wishListOnClick={() => wishListOnClick(data._id)}
                     defaultdata={CloudData}
                     data={PercentData}
                 />
             </div>
-            <div>
+            <div className="review-container">
                 <form>
+                    <label htmlFor="select">키워드별 리뷰 보기</label>
                     <select
+                        style={{ display: "inline" }}
                         onChange={(e) => {
                             e.preventDefault();
                             setKwd(e.target.value);
@@ -150,7 +154,11 @@ function DetailPage({ location, match, isLogin, history }) {
                     </select>
                 </form>
                 {review_list["selected"].map((review, idx) => {
-                    return <p key={`review-${idx}`} dangerouslySetInnerHTML={{ __html: review["review"] }}></p>;
+                    return (
+                        <div className="review-list">
+                            <p key={`review-${idx}`} dangerouslySetInnerHTML={{ __html: review["review"] }}></p>
+                        </div>
+                    );
                 })}
             </div>
         </div>
