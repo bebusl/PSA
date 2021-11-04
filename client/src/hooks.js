@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useEffect } from "react";
 
 export function useInput(initValue) {
   const [values, setValues] = useState(initValue);
@@ -49,3 +50,16 @@ export function useKeywords(mode, initValue) {
 //!!구현해야 할 것. 다음 페이지 넘어갈 시 reset 호출 됨.
 // => 리덕스에 키워드 저장할 것
 // 새로운 검색 시 리덕스 값들 초기화하는 것 잊지 말 것!
+export function useScript(url) {
+  useEffect(()=> {
+    const script = document.createElement('script');
+    script.src = url;
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    return ()=> {
+      document.body.removeChild(script);
+    }
+  }, [url]);
+}

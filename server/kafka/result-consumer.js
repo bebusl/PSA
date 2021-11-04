@@ -35,24 +35,65 @@ const init = async () => {
                 try {
                     const keyword = await TestCollection.findById(keywordId);
                     const { products } = keyword;
-                    let keywords = {};
+                    let poskeywords = {};
+                    let negkeywords = {};
                     for (productRef in products) {
-                        const product = await productdetails.findById(products[productRef]["oid"]);
-                        const analysis = await analyses.findById(product.analysis["oid"]);
-                        const result = analysis.result;
-                        const key = Object.keys(result[0]);
-                        const values = Object.values(result[0]);
-
-                        for (let idx = 0; idx < key.length; idx++) {
-                            if (key[idx] in keywords) {
-                                keywords[key[idx]] += values[idx]["POS"];
-                            } else {
-                                keywords[key[idx]] = values[idx]["POS"];
-                            }
-                        }
+                      const product = await productdetails.findById(
+                        products[productRef]["oid"]
+                      );
+                      const analysis = await analyses.findById(product.analysis["oid"]);
+                      const result = analysis.result;
+                      const key = Object.keys(result[0]);
+                      const values = Object.values(result[0]);
+                      for (let idx = 0; idx < key.length; idx++) {
+                        let posvalue = values[idx]["POS"];
+                        let negvalue = values[idx]["NEG"];
+          
+                        if (key[idx] in poskeywords) {
+                          poskeywords[key[idx]] += posvalue;
+                        } else {
+                          poskeywords[key[idx]] = posvalue;
+                        } //키워드에 대한 긍정적 키워드 수 카운트
+          
+                        if (key[idx] in negkeywords) {
+                          negkeywords[key[idx]] += negvalue;
+                        } else {
+                          negkeywords[key[idx]] = negvalue;
+                        } //키워드에 대한 부정적 키워드 수 카운트
+                      }
                     }
-                    sorted_result = sort_object(keywords);
-                    io.emit("keywords", Object.keys(sorted_result));
+                    let posresult = [];
+                    let negresult = [];
+                    for (key in poskeywords) {
+                      temp = {};
+                      temp.keyword = key;
+                      temp.count = poskeywords[key];
+                      if (temp.count !== 0) {
+                        posresult.push(temp);
+                      }
+                    }
+          
+                    for (key in negkeywords) {
+                      temp = {};
+                      temp.keyword = key;
+                      temp.count = negkeywords[key];
+                      if (temp.count !== 0) {
+                        negresult.push(temp);
+                      }
+                    }
+          
+                    posresult.sort(function (a, b) {
+                      return b.count - a.count;
+                    });
+          
+                    negresult.sort(function (a, b) {
+                      return b.count - a.count;
+                    });
+          
+                    posreal = posresult.map((dict) => dict.keyword);
+                    negreal = negresult.map((dict) => dict.keyword);
+          
+                    io.emit("keywords", posreal, negreal);
                 } catch (e) {
                     console.log(e);
                 }

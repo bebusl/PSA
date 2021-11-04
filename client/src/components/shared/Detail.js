@@ -1,124 +1,94 @@
 //import React from "react";
 import "./Detail.css";
-import { TagCloud } from "react-tagcloud"
-import React, { useState } from 'react'
+import { TagCloud } from "react-tagcloud";
+import React from "react";
+import { Bar } from "react-chartjs-2";
+import { useScript } from "../../hooks";
+import styled from "styled-components";
 
-function Detail({ product, price, productDetail, likeword, hateword }) {
-    const defaultData = [
-        { value: 'jQuery', count: 25 },
-        { value: 'MongoDB', count: 18 },
-        { value: 'JavaScript', count: 38 },
-        { value: 'React', count: 30 },
-        { value: 'Nodejs', count: 28 },
-        { value: 'Express.js', count: 25 },
-        { value: 'HTML5', count: 33 },
-        { value: 'CSS3', count: 20 },
-        { value: 'Webpack', count: 22 },
-        { value: 'Babel.js', count: 7 },
-        { value: 'ECMAScript', count: 25 },
-        { value: 'Jest', count: 15 },
-        { value: 'Mocha', count: 17 },
-        { value: 'React Native', count: 27 },
-        { value: 'Angular.js', count: 30 },
-        { value: 'TypeScript', count: 15 },
-        { value: 'Flow', count: 30 },
-        { value: 'NPM', count: 11 },
-      ];
-      
-    
-      const [minSize, setMinSize] = useState(12)
-      const [maxSize, setMaxSize] = useState(35)
-      const [data, setData] = useState(defaultData)
-      const [randomColor, setRandomColor] = useState(true)
-      const [shuffle, setShuffle] = useState(true)
+function Detail({
+    product,
+    price,
+    imageUrl = "http://placehold.it/350x300",
+    onWishlist,
+    wishListOnClick,
+    defaultdata,
+    data,
+}) {
+    useScript("https://use.fontawesome.com/releases/v5.2.0/js/all.js");
 
-  return (
-      <div>
-    <div className="Detail-container">
-      
-     <div className="Detail productImage">
-        <img src="http://placehold.it/350x300"></img>
-      </div>
-      <div className="Detail productInfo">
-        <div className="Detail product"> product </div>
-        <div className="Detail price"> price</div>
-      </div>
-      <div className="Detail sBasket">
-        <button type="button">장바구니</button>
-      </div>
+    const options = {
+        indexAxis: "y",
+        elements: {
+            bar: {
+                borderWidth: 2,
+            },
+        },
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "right",
+            },
+            title: {
+                display: true,
+                text: "Percentage__keyword",
+            },
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true,
+                },
+            },
+        },
+    };
 
-      <div></div>
-    </div>
-    
-    <div className="CloudPercent-container">
-        <div className="Detail-WordCloud">
-            
-          <div className="controls">
-            <div>
-              <span>Min</span>
-              <input
-                type="number"
-                min={0}
-                value={minSize}
-                onChange={e => setMinSize(parseInt(e.target.value, 10))}
-              />
+    return (
+        <div>
+            <div className="Detail-container">
+                <div className="Detail productImage">
+                    <img src={imageUrl} alt={product}></img>
+                </div>
+                <div className="Detail productInfo">
+                    <div className="Detail product"> {product} </div>
+                    <div className="Detail price"> {price} 원</div>
+                </div>
+                <div className="Detail sBasket">
+                    <button
+                        type="button"
+                        disabled={onWishlist}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            wishListOnClick();
+                        }}
+                    >
+                        {/* {onWishlist ? styled.button.disabled : styled.button} */}
+                        <i className="fas fa-cart-plus fa-2x"></i>
+                    </button>
+                </div>
+
+                <div></div>
             </div>
-            <div>
-              <span>Max</span>
-              <input
-                type="number"
-                min={0}
-                value={maxSize}
-                onChange={e => setMaxSize(parseInt(e.target.value, 10))}
-              />
+
+            <div className="CloudPercent-container">
+                <div className="Detail-WordCloud">
+                    <TagCloud
+                        minSize={12}
+                        maxSize={35}
+                        tags={defaultdata}
+                        className="simple-cloud"
+                        //onClick={tag => alert(`'${tag.value}' was selected!`)}
+                    />
+                </div>
+
+                <div className="Detail-percentage">
+                    <Bar data={data} options={options} />
+                </div>
             </div>
-            <div>
-              <span>Shuffle</span>
-              <input
-                type="checkbox"
-                checked={shuffle}
-                onChange={() => setShuffle(!shuffle)}
-              />
-            </div>
-            <div>
-              <span>Color</span>
-              <input
-                type="checkbox"
-                checked={randomColor}
-                onChange={() => setRandomColor(!randomColor)}
-              />
-            </div>
-            <div>
-              <button onClick={() => setData(data.slice(0, -1))}>Pop</button>
-            </div>
-          </div>
-          <TagCloud
-            minSize={minSize}
-            maxSize={maxSize}
-            tags={data}
-            shuffle={shuffle}
-            disableRandomColor={!randomColor}
-            className="simple-cloud"
-            onClick={tag => {
-              const value = prompt('Edit tag value', tag.value)
-              if (value == null) {
-                return
-              }
-              const newTag = { value, count: tag.count }
-              const newData = data.map(t => {
-                if (t.value === tag.value) {
-                  return newTag
-                }
-                return t
-              })
-              setData(newData)
-            }}
-          />
         </div>
-        <div className="Detail-percentage">percwener</div>
-    </div>
-    </div>
-  );
+    );
 }
 
 export default Detail;

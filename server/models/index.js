@@ -14,6 +14,7 @@ mongoose.connect(
 const testCollectionSchema = new Schema({ keyword: String, products: [] }, { strict: false });
 const productdetailsSchema = new Schema(
     {
+        reviews: Schema.Types.Mixed,
         analysis: Schema.Types.Mixed,
     },
     { strict: false }
@@ -37,9 +38,25 @@ const wishlistSchema = new Schema({
     },
 });
 
+const reviewsSchema = new Schema({
+    reviews: {
+        type: Schema.Types.Array,
+    }
+})
+
+const reviewdetailsSchema = new Schema(
+    {
+        review: Schema.Types.String,
+        analysis: Schema.Types.Mixed,
+    },
+    { strict: false }
+);
+
 const TestCollection = mongoose.model("searchkeywords", testCollectionSchema);
 const productdetails = mongoose.model("productdetails", productdetailsSchema);
 const analyses = mongoose.model("analysi", analysisSchema);
 const wishlists = mongoose.model("wishlists", wishlistSchema);
+const reviews = mongoose.model("reviews", reviewsSchema);
+const reviewdetails = mongoose.model("reviewdetails", reviewdetailsSchema);
 
-module.exports = { TestCollection, productdetails, analyses, wishlists };
+module.exports = { TestCollection, productdetails, analyses, wishlists, reviews, reviewdetails };

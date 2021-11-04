@@ -11,7 +11,8 @@ function KeywordBtn({ word, handleClick, className }) {
 function SelectBox({ mode, values, keywords, onSubmit, onClick }) {
     return (
         <div>
-            {mode === "like" ? <div>원하는 키워드를 선택해주세요!</div> : <div>원하지 않는 키워드를 선택해주세요!</div>}
+            {mode === "like" ? <div className="title">원하는 키워드를 선택해주세요!</div> : <div className="title">원하지 않는 키워드를 선택해주세요!</div>}
+            <div className="sbox">
             {keywords.map((Keyword, index) => (
                 <Fragment key={index}>
                     {index % 4 === 0 ? <div></div> : undefined}
@@ -25,10 +26,13 @@ function SelectBox({ mode, values, keywords, onSubmit, onClick }) {
                 </Fragment>
             ))}
 
+            <button className="showmore">더보기</button>
+            </div>
+
             <form onSubmit={onSubmit}>
-                <button type="submit">완료</button>
+                <button type="submit" className="submitBtn">완료</button>
             </form>
-            <button>더보기</button>
+            
         </div>
     );
 }

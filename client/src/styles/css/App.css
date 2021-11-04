@@ -72,3 +72,11 @@ body {
 .black-3 {
     background-color: rgba(0, 0, 0, 0.3);
 }
+
+.pos {
+    color: blue;
+}
+
+.neg {
+    color: red;
+}
