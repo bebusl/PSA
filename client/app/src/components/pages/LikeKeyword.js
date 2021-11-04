@@ -22,7 +22,7 @@ const DATA = [
         id: "5",
         title: "재질"
     },
-
+    
 ]
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
@@ -45,7 +45,7 @@ export const LikeKeyword = ({ navigation }) => {
                 backgroundColor={{ backgroundColor }}
                 textColor={{ color }}
             />
-    )
+    ) 
     }
     return(
         <View style={styles.container}>
@@ -53,7 +53,7 @@ export const LikeKeyword = ({ navigation }) => {
                 <Text style={styles.text}>선호 특징을 선택해주세요!</Text>
                 <Text style={styles.textInfo}>선택한 키워드에 대한 긍정적인 리뷰가 많은 순으로 상품이 보여집니다.</Text>
             </View>
-            <View style={{ alignItems: 'center' }}>
+            <View style={{ flex:2, alignItems: 'center' }}>
                 <FlatList
                     horizontal= {false}
                     numColumns= {2}
@@ -63,7 +63,11 @@ export const LikeKeyword = ({ navigation }) => {
                     extraData={selecedId}
                 />
             </View>
-            <Button title="Go" onPress={() => navigation.navigate('hateKeywordScreen')} />
+            <View style={styles.btnArea}>
+                <TouchableOpacity onPress={() => navigation.navigate('hateKeywordScreen')}>
+                    <Text style={styles.saveBtn}>GO</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -97,7 +101,18 @@ const styles = StyleSheet.create({
         textAlign: 'center', 
         fontSize: 13, 
         marginTop: 15 
+    },
+    btnArea:{
+        height: '10%',
+        justifyContent: 'center',
+        alignContent: 'center'
+    },
+    saveBtn:{
+        textAlign: 'center',
+        color: '#000080',
+        fontSize: 20
     }
+
 })
 
 export default LikeKeyword;
