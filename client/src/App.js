@@ -12,6 +12,7 @@ import Cart from "./components/pages/Cart";
 import WishList from "./components/pages/Wishlist";*/
 import Nav from "./components/layout/Nav";
 import Content from "./components/layout/Content";
+import CartDetail from "./components/pages/CartDetail";
 import KeywordContainer from "./components/container/withKeyword";
 import io from "socket.io-client";
 
@@ -42,8 +43,14 @@ function App() {
                     <Route exact path="/ranking" render={(props) => KeywordContainer(Ranking, props, socket)} />
                     {/* <Route path="/detail/:id" render={(props) => KeywordContainer(ProductDetail, props, socket)} />
                     <Route path="/cart" component={WishList} /> */}
+
                     <Route exact path="/detail/:id" render={(props) => KeywordContainer(DetailPage, props, socket)} />
                     <Route exact path="/cart" component={Cart} />
+                    <Route
+                        exact
+                        path="/wishlistdetail/:idx"
+                        render={(props) => KeywordContainer(CartDetail, props, socket)}
+                    ></Route>
                 </Switch>
             </Content>
         </>

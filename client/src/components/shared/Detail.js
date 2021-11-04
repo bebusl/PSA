@@ -4,11 +4,11 @@ import { TagCloud } from "react-tagcloud";
 import React from "react";
 import { Bar } from "react-chartjs-2";
 import { useScript } from "../../hooks";
-import styled from "styled-components";
 
 function Detail({
     product,
     price,
+    url,
     imageUrl = "http://placehold.it/350x300",
     onWishlist,
     wishListOnClick,
@@ -22,6 +22,7 @@ function Detail({
         elements: {
             bar: {
                 borderWidth: 2,
+                borderRadius: 30,
             },
         },
         responsive: true,
@@ -29,10 +30,10 @@ function Detail({
             legend: {
                 position: "right",
             },
-            title: {
-                display: true,
-                text: "Percentage__keyword",
-            },
+            // title: {
+            //     display: true,
+            //     text: "Percentage__keyword",
+            // },
             responsive: true,
             scales: {
                 x: {
@@ -54,6 +55,16 @@ function Detail({
                 <div className="Detail productInfo">
                     <div className="Detail product"> {product} </div>
                     <div className="Detail price"> {price} 원</div>
+                    <div className="Detail productD">
+                        <a
+                            href={url}
+                            style={{ color: "grey", fontSize: "small" }}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                        >
+                            상세정보 보러가기
+                        </a>
+                    </div>
                 </div>
                 <div className="Detail sBasket">
                     <button
@@ -64,7 +75,6 @@ function Detail({
                             wishListOnClick();
                         }}
                     >
-                        {/* {onWishlist ? styled.button.disabled : styled.button} */}
                         <i className="fas fa-cart-plus fa-2x"></i>
                     </button>
                 </div>
@@ -74,16 +84,20 @@ function Detail({
 
             <div className="CloudPercent-container">
                 <div className="Detail-WordCloud">
+                    <p>워드클라우드</p>
+
                     <TagCloud
-                        minSize={12}
-                        maxSize={35}
+                        minSize={30}
+                        maxSize={80}
                         tags={defaultdata}
                         className="simple-cloud"
+                        shuffle={true}
                         //onClick={tag => alert(`'${tag.value}' was selected!`)}
                     />
                 </div>
 
                 <div className="Detail-percentage">
+                    <p>키워드차트</p>
                     <Bar data={data} options={options} />
                 </div>
             </div>

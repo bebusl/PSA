@@ -3,6 +3,8 @@
     min-width: 1300px;
     margin: 0 auto;
     display: flex;
+    border-top: 1px solid #ececec;
+    border-bottom: 1px solid #ececec;
     /* border: 2px solid lightgrey; */
 }
 .List-item {
@@ -18,6 +20,7 @@
 
 .productImage img {
     width: 250px;
+    border: 1px solid #ececec;
 }
 .productInfo {
     flex-grow: 1;
@@ -42,25 +45,37 @@
 }
 .price {
     flex-grow: 0;
-    font-size: large;
+    font-size: medium;
 }
 .keywords {
     flex-grow: 0;
-    font-size: large;
+    font-size: medium;
 }
 .sBasket {
     padding: 20px 0;
 }
 .goodKeywords {
-    border: 2px solid blue;
+    border: 2px solid #006ebe;
     display: inline-block;
     margin: 0 5px;
-    padding: 2px;
+    padding: 2px 5px;
+    color: #006ebe;
+    font-size: medium;
 }
 
 .badKeywords {
-    border: 2px solid red;
+    border: 2px solid #ef1c1c;
     display: inline-block;
     margin: 0 5px;
     padding: 2px;
+    color: #ef1c1c;
+    font-size: medium;
+}
+
+.review-list {
+    padding: 0.5rem 0;
+    border-top: 1px solid #ececec;
+}
+.review-list > p {
+    font-size: 0.8rem;
 }

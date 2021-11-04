@@ -13,10 +13,10 @@ const getProductInfo = async (id) => {
         const { _id, imageUrl, name, price, url } = product._doc;
         const keywords = analy["result"][0];
 
-        const review_list = []
+        const review_list = [];
         for (i in my_reviews["reviews"]) {
             const review = await reviewdetails.findById(ObjectId(my_reviews["reviews"][i]["oid"]));
-            review_list.push({"review": review["review"], "analysis": review["analysis"]});
+            review_list.push({ review: review["review"], analysis: review["analysis"] });
         }
 
         return { _id, imageUrl, name, price, url, keywords, review_list };
@@ -29,13 +29,15 @@ const getProductInfo = async (id) => {
 router.get("/detail/:id", async (req, res) => {
     const { id } = req.params;
     const product = await getProductInfo(id);
-    return res.status(200).json({ success: true, data: product });
+    if (product != "error") return res.status(200).json({ success: true, data: product });
+    else return res.status(521).json({ success: false, msg: "DB에서 정보를 가져오지 못했습니다." });
 });
 
 router.get("/wishlist/:id", jwtMiddleware, async (req, res) => {
     const { id } = req.params;
     const userEmail = req.userEmail;
     const product = await getProductInfo(id);
+    if (product == "error") return res.status(521).json({ success: false, msg: "DB에서 정보를 가져오지 못했습니다." });
     try {
         await wishlists
             .updateOne({ userEmail: userEmail }, { $push: { wishlist: product } })
@@ -48,19 +50,23 @@ router.get("/wishlist/:id", jwtMiddleware, async (req, res) => {
         }, []);
         return res.json({ success: true, cartlist: wishlistId });
     } catch (error) {
-        console.error("장바구니 리스트", error);
+        return res.status(521).json({ success: false, msg: "DB에 데이터 저장을 하지 못했습니다." });
     }
 }); //wishlist 추가하는거.
 
 router.get("/wishlistId", jwtMiddleware, async (req, res) => {
     const userEmail = req.userEmail;
-    const _wishlist = await wishlists.findOne({ userEmail: userEmail });
-    const wishlistId = _wishlist.wishlist.reduce((accumulator, cur) => {
-        accumulator.push(cur._id.toString());
-        return accumulator;
-    }, []);
+    try {
+        const _wishlist = await wishlists.findOne({ userEmail: userEmail });
+        const wishlistId = _wishlist.wishlist.reduce((accumulator, cur) => {
+            accumulator.push(cur._id.toString());
+            return accumulator;
+        }, []);
 
-    return res.json({ success: true, cartlist: wishlistId });
+        return res.json({ success: true, cartlist: wishlistId });
+    } catch (e) {
+        return res.status(522).json({ success: false, msg: e });
+    }
 }); //rankingpages에서 wishlist Id만 필요할 때.
 
 router.get("/wishlist", jwtMiddleware, async (req, res) => {
@@ -68,6 +74,18 @@ router.get("/wishlist", jwtMiddleware, async (req, res) => {
     const _wishlist = await wishlists.findOne({ userEmail: userEmail });
 
     return res.json({ success: true, cartlist: _wishlist.wishlist });
+});
+
+router.get("/wishlist/detail/:idx", jwtMiddleware, async (req, res) => {
+    const userEmail = req.userEmail;
+    const { idx } = req.params;
+
+    try {
+        const _wishlist = await wishlists.findOne({ userEmail: userEmail });
+        return res.json({ success: true, data: _wishlist.wishlist[idx] });
+    } catch (e) {
+        return res.status(521).json({ success: false, msg: "db에서 정보를 가져오는 데 실패했습니다." });
+    }
 });
 
 router.delete("/wishlist/:id", jwtMiddleware, async (req, res) => {
@@ -81,7 +99,7 @@ router.delete("/wishlist/:id", jwtMiddleware, async (req, res) => {
 
         return res.json({ success: true, cartlist: _wishlist.wishlist });
     } catch (error) {
-        console.error("장바구니 리스트", error);
+        return res.status(521).json({ success: false, msg: "삭제를 실패했습니다." });
     }
 });
 

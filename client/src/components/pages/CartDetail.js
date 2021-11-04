@@ -3,21 +3,17 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import withAuth from "../container/withAuth";
-
-function DetailPage({ match, isLogin, history }) {
+function CartDetail({ match, isLogin, history }) {
     const [data, setData] = useState({ product: "", price: "", imageUrl: "", keywords: [], url: "" });
-    const [cart, setCart] = useState([]);
     const [review_list, setReview] = useState({ all: [], selected: [] });
     const [selectKwd, setKwd] = useState("전체");
-
     useEffect(() => {
-        window.scrollTo(0, 0);
         axios
-            .get(`http://localhost:5000/product/detail/${match.params.id}`)
+            .get(`http://localhost:5000/product/wishlist/detail/${match.params.idx}`)
             .then((res) => {
                 let review_list_ = res.data.data.review_list;
-                for (let i_ in review_list_) {
-                    const i = review_list_[i_];
+                for (let _i in review_list_) {
+                    const i = review_list_[_i];
                     if (i["analysis"].length !== 0) {
                         for (let j in i["analysis"]) {
                             const classname = i["analysis"][j]["POS"] > i["analysis"][j]["NEG"] ? "pos" : "neg";
@@ -32,14 +28,6 @@ function DetailPage({ match, isLogin, history }) {
                 window.alert("정보를 가져오는데 실패했습니다.");
                 history.goBack();
             });
-    }, []);
-
-    useEffect(() => {
-        if (isLogin) {
-            axios.get("http://localhost:5000/product/wishlistId").then((res) => {
-                setCart(res.data.cartlist);
-            });
-        }
     }, []);
 
     useEffect(() => {
@@ -58,8 +46,8 @@ function DetailPage({ match, isLogin, history }) {
     function wishListOnClick(_id) {
         if (isLogin) {
             axios
-                .get(`http://localhost:5000/product/wishlist/${data._id}`)
-                .then((res) => setCart(res.data.cartlist))
+                .delete(`http://localhost:5000/product/wishlist/${data._id}`)
+                .then((res) => window.alert("삭제"))
                 .catch((e) => console.error(e));
         } else {
             window.alert("로그인이 필요한 서비스입니다!");
@@ -107,7 +95,6 @@ function DetailPage({ match, isLogin, history }) {
         obj = { value: WordData[i], count: CountData[i][sentiment], color: color[sentiment] };
         CloudData.push(obj);
     }
-
     const PercentData = {
         labels: WordData.length > 9 ? WordData.slice(0, 10) : WordData, //키워드
         datasets: [
@@ -127,6 +114,7 @@ function DetailPage({ match, isLogin, history }) {
             },
         ],
     };
+
     return (
         <div>
             <div className="List-container">
@@ -134,20 +122,18 @@ function DetailPage({ match, isLogin, history }) {
                     product={data.name}
                     price={data.price}
                     imageUrl={data.imageUrl}
-                    url={data.url}
-                    btnMsg={true}
-                    onWishlist={cart.includes(data._id)}
-                    wishListOnClick={() => wishListOnClick(data._id)}
+                    btnMsg="장바구니에서 빼기"
+                    onWishlist={false}
+                    wishListOnClick={(e) => {
+                        window.alert("햐햐");
+                    }}
                     defaultdata={CloudData}
                     data={PercentData}
                 />
             </div>
             <div className="review-container">
-                <div className="review-nav">
-                    <span>키워드별 리뷰 보기</span>
-                    {searchBar_()}
-                </div>
-
+                <div>키워드별 리뷰 보기</div>
+                <div className="review-nav">{searchBar_()}</div>
                 {review_list["selected"].map((review, idx) => {
                     return (
                         <div className="review-list">
@@ -160,4 +146,4 @@ function DetailPage({ match, isLogin, history }) {
     );
 }
 
-export default withAuth(DetailPage);
+export default withAuth(CartDetail);

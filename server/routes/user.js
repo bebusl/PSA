@@ -43,8 +43,8 @@ router.post("/register", (req, res) => {
             WishList.save();
             newUser
                 .save()
-                .then((user) => res.json(user))
-                .catch((err) => res.json({ registerSucess: false, message: err }));
+                .then((user) => res.status(200).json(user))
+                .catch((err) => res.status(522).json({ registerSucess: false, message: err }));
         }
     });
 });
@@ -52,7 +52,6 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-
     User.findOne({ email }).then((user) => {
         if (!user) {
             errors.email = "해당하는 회원이 존재하지 않습니다.";
@@ -80,6 +79,7 @@ router.post("/login", (req, res) => {
                 });
             } else {
                 errors.password = "패스워드가 일치하지 않습니다.";
+
                 return res.status(400).json(errors);
             }
         });

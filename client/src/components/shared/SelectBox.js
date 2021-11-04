@@ -1,5 +1,35 @@
 import "./SelectBox.css";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+
+function Cursor({ children }) {
+    const [MousePosition, setMousePosition] = useState({
+        left: 0,
+        top: 0,
+    });
+
+    function handleMouseMove(e) {
+        setMousePosition({ left: e.pageX, top: e.pageY });
+    }
+    return (
+        <div onMouseMove={handleMouseMove}>
+            <div
+                style={{
+                    position: "absolute",
+                    left: MousePosition.left,
+                    top: MousePosition.top - 20,
+                    zIndex: 100,
+                    backgroundcolor: "black",
+                    cursor: 'url("../../down-arrow.png")',
+                    fontSize: "0.7rem",
+                }}
+            >
+                scroll
+            </div>
+            {children}
+        </div>
+    );
+}
+
 function KeywordBtn({ word, handleClick, className }) {
     return (
         <button className={`keywordBtn ${className}`} onClick={handleClick}>
@@ -10,30 +40,30 @@ function KeywordBtn({ word, handleClick, className }) {
 //head는 selectbox 상단 부에 뜰 내용 적은거.
 function SelectBox({ mode, values, keywords, onSubmit, onClick }) {
     return (
-        <div>
-            {mode === "like" ? <div className="title">원하는 키워드를 선택해주세요!</div> : <div className="title">원하지 않는 키워드를 선택해주세요!</div>}
+        <>
             <div className="sbox">
-            {keywords.map((Keyword, index) => (
-                <Fragment key={index}>
-                    {index % 4 === 0 ? <div></div> : undefined}
-                    <KeywordBtn
-                        word={Keyword}
-                        className={`${values[mode].includes(Keyword) && `${mode}`}`}
-                        handleClick={(e) => {
-                            onClick(e, Keyword);
-                        }}
-                    />
-                </Fragment>
-            ))}
-
-            <button className="showmore">더보기</button>
+                <div className="grid">
+                    {keywords.map((Keyword, index) => (
+                        <div key={index} className="grid-item">
+                            <KeywordBtn
+                                word={Keyword}
+                                className={`${values[mode].includes(Keyword) && `${mode}`}`}
+                                handleClick={(e) => {
+                                    onClick(e, Keyword);
+                                }}
+                            />
+                        </div>
+                    ))}
+                </div>
+                {/* <button className="showmore">더보기</button> */}
             </div>
 
-            <form onSubmit={onSubmit}>
-                <button type="submit" className="submitBtn">완료</button>
+            <form onSubmit={onSubmit} style={{ width: "100%", maxWidth: "1200px" }}>
+                <button type="submit" className="submitBtn">
+                    완료
+                </button>
             </form>
-            
-        </div>
+        </>
     );
 }
 

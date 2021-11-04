@@ -13,7 +13,10 @@ const jwtMiddleware = async (req, res, next) => {
         }
         await User.findOne({ email: decoded.email }, (error, user) => {
             if (error) {
-                return res.cookie("x_auth", "").json({ error: "DB에서 회원정보를 찾는 도중 오류가 발생햇습니다." });
+                return res
+                    .cookie("x_auth", "")
+                    .status(521)
+                    .json({ error: "DB에서 회원정보를 찾는 도중 오류가 발생햇습니다." });
             }
             if (!user) {
                 return res
