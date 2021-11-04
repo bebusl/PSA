@@ -1,7 +1,7 @@
 import React from "react";
 import "./List.css";
 import { FaCartPlus } from "react-icons/fa";
-
+import { MdRemoveShoppingCart } from "react-icons/md";
 function List({
     children,
     product,
@@ -10,6 +10,7 @@ function List({
     negKeywords,
     onWishlist,
     wishListOnClick,
+    btnMsg,
     imageUrl = "http://placehold.it/250x200",
 }) {
     return (
@@ -61,7 +62,11 @@ function List({
                               }
                     }
                 >
-                    <FaCartPlus color="white" size="1.5rem" />
+                    {btnMsg ? (
+                        <FaCartPlus color="white" size="1.5rem" />
+                    ) : (
+                        <MdRemoveShoppingCart color="white" size="1.5rem" />
+                    )}
                 </button>
             </div>
         </div>

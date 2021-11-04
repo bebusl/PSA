@@ -4,12 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import withAuth from "../container/withAuth";
 
-function DetailPage({ location, match, isLogin, history }) {
-    // const product = location.state.product;
-    // const price = location.state.price;
-    // const imageUrl = location.state.imageUrl;
-    // const _id = location.state._id;
-    // const allKeywords = location.state.allKeywords;
+function DetailPage({ match, isLogin, history }) {
     const [data, setData] = useState({ product: "", price: "", imageUrl: "", keywords: [], url: "" });
     const [cart, setCart] = useState([]);
     const [review_list, setReview] = useState({ all: [], selected: [] });
@@ -71,13 +66,21 @@ function DetailPage({ location, match, isLogin, history }) {
         }
     }
 
-    const searchBar = () => {
+    const searchBar_ = () => {
         let options = ["전체"];
         options.push(...Object.keys(data.keywords));
+
         return options.map((t, idx) => (
-            <option value={t} key={`opt-${idx}`}>
+            <span
+                className="kwdbtn"
+                key={`kwdbtn-${idx}`}
+                onClick={(e) => {
+                    e.preventDefault();
+                    setKwd(t);
+                }}
+            >
                 {t}
-            </option>
+            </span>
         ));
     };
 
@@ -106,7 +109,7 @@ function DetailPage({ location, match, isLogin, history }) {
     }
 
     const PercentData = {
-        labels: WordData, //키워드
+        labels: WordData.length > 9 ? WordData.slice(0, 10) : WordData, //키워드
         datasets: [
             {
                 label: "good", //긍정
@@ -124,7 +127,6 @@ function DetailPage({ location, match, isLogin, history }) {
             },
         ],
     };
-
     return (
         <div>
             <div className="List-container">
@@ -133,7 +135,7 @@ function DetailPage({ location, match, isLogin, history }) {
                     price={data.price}
                     imageUrl={data.imageUrl}
                     url={data.url}
-                    btnMsg="장바구니에 담기"
+                    btnMsg={true}
                     onWishlist={cart.includes(data._id)}
                     wishListOnClick={() => wishListOnClick(data._id)}
                     defaultdata={CloudData}
@@ -141,18 +143,11 @@ function DetailPage({ location, match, isLogin, history }) {
                 />
             </div>
             <div className="review-container">
-                <form>
-                    <label htmlFor="select">키워드별 리뷰 보기</label>
-                    <select
-                        style={{ display: "inline" }}
-                        onChange={(e) => {
-                            e.preventDefault();
-                            setKwd(e.target.value);
-                        }}
-                    >
-                        {searchBar()}
-                    </select>
-                </form>
+                <div className="review-nav">
+                    <span>키워드별 리뷰 보기</span>
+                    {searchBar_()}
+                </div>
+
                 {review_list["selected"].map((review, idx) => {
                     return (
                         <div className="review-list">

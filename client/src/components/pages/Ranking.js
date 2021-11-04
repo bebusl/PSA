@@ -2,7 +2,6 @@ import List from "../shared/List";
 import withAuth from "../container/withAuth";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaCartPlus } from "react-icons/fa";
 
 function Ranking({ history, isLogin, productlists = [] }) {
     const [cart, setCart] = useState([]);

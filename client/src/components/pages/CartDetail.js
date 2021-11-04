@@ -3,7 +3,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import withAuth from "../container/withAuth";
-import { createNotification, Alert } from "../shared/Alert";
 function CartDetail({ match, isLogin, history }) {
     const [data, setData] = useState({ product: "", price: "", imageUrl: "", keywords: [], url: "" });
     const [review_list, setReview] = useState({ all: [], selected: [] });
@@ -55,13 +54,21 @@ function CartDetail({ match, isLogin, history }) {
         }
     }
 
-    const searchBar = () => {
+    const searchBar_ = () => {
         let options = ["전체"];
         options.push(...Object.keys(data.keywords));
+
         return options.map((t, idx) => (
-            <option value={t} key={`opt-${idx}`}>
+            <span
+                className="kwdbtn"
+                key={`kwdbtn-${idx}`}
+                onClick={(e) => {
+                    e.preventDefault();
+                    setKwd(t);
+                }}
+            >
                 {t}
-            </option>
+            </span>
         ));
     };
 
@@ -82,26 +89,26 @@ function CartDetail({ match, isLogin, history }) {
             return "NEU";
         }
     }
-    const color = { POS: "blue", NEG: "red", NEU: "grey" };
+    const color = { POS: "#006ebe", NEG: "#ef1c1c", NEU: "grey" };
     for (var i = 0; i < WordData.length; i++) {
         const sentiment = sentiment_(CountData[i].POS, CountData[i].NEG, CountData[i].NEU);
         obj = { value: WordData[i], count: CountData[i][sentiment], color: color[sentiment] };
         CloudData.push(obj);
     }
     const PercentData = {
-        labels: WordData, //키워드
+        labels: WordData.length > 9 ? WordData.slice(0, 10) : WordData, //키워드
         datasets: [
             {
                 label: "good", //긍정
                 data: posCount,
-                backgroundColor: "blue",
+                backgroundColor: "#006ebe",
                 stack: "Stack 0",
                 borderWidth: 1,
             },
             {
                 label: "bad", //부정
                 data: negCount,
-                backgroundColor: "red",
+                backgroundColor: "#ef1c1c",
                 stack: "Stack 0",
                 borderWidth: 1,
             },
@@ -118,28 +125,23 @@ function CartDetail({ match, isLogin, history }) {
                     btnMsg="장바구니에서 빼기"
                     onWishlist={false}
                     wishListOnClick={(e) => {
-                        createNotification("info");
+                        window.alert("햐햐");
                     }}
                     defaultdata={CloudData}
                     data={PercentData}
                 />
             </div>
             <div className="review-container">
-                <form>
-                    <select
-                        onChange={(e) => {
-                            e.preventDefault();
-                            setKwd(e.target.value);
-                        }}
-                    >
-                        {searchBar()}
-                    </select>
-                </form>
+                <div>키워드별 리뷰 보기</div>
+                <div className="review-nav">{searchBar_()}</div>
                 {review_list["selected"].map((review, idx) => {
-                    return <p key={`review-${idx}`} dangerouslySetInnerHTML={{ __html: review["review"] }}></p>;
+                    return (
+                        <div className="review-list">
+                            <p key={`review-${idx}`} dangerouslySetInnerHTML={{ __html: review["review"] }}></p>
+                        </div>
+                    );
                 })}
             </div>
-            <Alert />
         </div>
     );
 }

@@ -31,7 +31,7 @@ function Cart({ isLogin, history }) {
 
     return (
         <div>
-            <h2>Shopping List</h2>
+            <h2>장바구니</h2>
             {wishlist.map((product, idx) => {
                 const { name, price, imageUrl, _id } = product;
                 return (
@@ -41,7 +41,7 @@ function Cart({ isLogin, history }) {
                         price={price}
                         imageUrl={imageUrl}
                         onWishlist={false}
-                        btnMsg={"장바구니에서 빼기"}
+                        btnMsg={false}
                         wishListOnClick={() => {
                             wishListOnClick(_id);
                         }}

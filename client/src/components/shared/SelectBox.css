@@ -51,15 +51,17 @@
     width: 100%;
     max-width: 1200px;
     max-height: 200px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(15%, auto));
+    text-align: center;
     overflow-y: scroll;
     padding: 2rem 0;
-    margin: 0;
+    margin: 0 auto;
 }
 
-.sbox::-webkit-scrollbar {
-    display: none;
+.grid {
+    width: 80%;
+    display: grid;
+    margin: 0 auto;
+    grid-template-columns: repeat(auto-fill, minmax(15%, auto));
 }
 
 .text {
@@ -84,4 +86,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.sbox:hover {
+    cursor: url("../../down-arrow.png"), auto;
+}
+
+.sbox::-webkit-scrollbar {
+    display: none;
 }

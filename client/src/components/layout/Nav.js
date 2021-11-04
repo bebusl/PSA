@@ -52,7 +52,7 @@ function Nav({ isLogin, logoff, userData, history, login }) {
                                             logoff();
                                             history.push("/");
                                         })
-                                        .catch((e) => console.error(e));
+                                        .catch((e) => console.error("로그아웃 에러" + e));
                                 }}
                             >
                                 로그아웃
