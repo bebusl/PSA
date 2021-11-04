@@ -26,6 +26,8 @@ function HomeStackScreen() {
         component={Main} 
         options={{ title: "PSA", headerStyle: { backgroundColor: '#000080' }, headerTintColor: '#fff'}} 
       />
+      {/* <HomeStack.Screen name="loginScreen" component={Login} options={{ title: "로그인", headerStyle: { backgroundColor: '#000080' }, headerTintColor: '#fff'}} />
+      <HomeStack.Screen name="registerScreen" component={Register} options={{ title: "회원가입", headerStyle: { backgroundColor: '#000080' }, headerTintColor: '#fff'}} /> */}
       <HomeStack.Screen name="likeKeywordScreen" component={LikeKeyword} options={{ title: "Keyword", headerStyle: { backgroundColor: '#000080' }, headerTintColor: '#fff'}} />
       <HomeStack.Screen name="hateKeywordScreen" component={HateKeyword} options={{ title: "Keyword", headerStyle: { backgroundColor: '#000080' }, headerTintColor: '#fff'}}/>
       <HomeStack.Screen name="rankingScreen" component={Ranking} options={{ title: "Items", headerStyle: { backgroundColor: '#000080' }, headerTintColor: '#fff'}}/>
@@ -46,18 +48,17 @@ function CartStackScreen() {
 export default function App() {
   return (
     <NavigationContainer>
-      <Tabs.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: '#000080' }}>
-        <Tabs.Screen 
-          name="Home" 
-          component={HomeStackScreen} 
-          options={{tabBarIcon: ({color, size }) => ( <AntDesign name='search1' color= {color} size={size} />) }} 
+      <HomeStack.Navigator initialRouteName="MainScreen">
+        <HomeStack.Screen 
+          name="MainScreen" 
+          component={Main} 
+          options={{ title: "PSA", headerStyle: { backgroundColor: '#000080' }, headerTintColor: '#fff'}} 
         />
-        <Tabs.Screen 
-          name="Cart" 
-          component={CartStackScreen} 
-          options={{tabBarIcon: ({color, size }) => ( <AntDesign name='shoppingcart' color= {color} size={size} />) }}
-        />
-      </Tabs.Navigator>
+        <HomeStack.Screen name="likeKeywordScreen" component={LikeKeyword} options={{ title: "Keyword", headerStyle: { backgroundColor: '#000080' }, headerTintColor: '#fff'}} />
+        <HomeStack.Screen name="hateKeywordScreen" component={HateKeyword} options={{ title: "Keyword", headerStyle: { backgroundColor: '#000080' }, headerTintColor: '#fff'}}/>
+        <HomeStack.Screen name="rankingScreen" component={Ranking} options={{ title: "Items", headerStyle: { backgroundColor: '#000080' }, headerTintColor: '#fff'}}/>
+        <HomeStack.Screen name="detailScreen" component={Detail} options={{ title: "상세페이지", headerStyle: { backgroundColor: '#000080' }, headerTintColor: '#fff'}}/>
+      </HomeStack.Navigator>
     </NavigationContainer>
   )
 };

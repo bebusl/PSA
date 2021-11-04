@@ -17,12 +17,6 @@ function Detail({ route, navigation }){
                     <View style={styles.image}>
                         <Text style={styles.productName}>{item.productname}</Text>
                         <Text style={styles.productPrice}>가격: {item.price}</Text>
-                        <TouchableOpacity style={styles.cartBtn} onPress={() => navigation.navigate('CartScreen')}>
-                            <Text style={styles.cartBtnText}>장바구니에 넣기</Text>
-                            <View style={styles.icon}>
-                                <AntDesign name='shoppingcart' size= {30} color= "white" />
-                            </View>
-                        </TouchableOpacity>
                     </View>       
                 </View>
                 <View style={styles.listBox}>
@@ -117,7 +111,9 @@ const styles = StyleSheet.create({
     productName:{ 
         flex: 1, 
         fontSize: 20, 
-        margin: 10
+        margin: 10,
+        fontWeight: 'bold',
+        paddingTop: 20
     },
     productPrice:{ 
         flex: 1, 
