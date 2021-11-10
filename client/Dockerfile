@@ -1,13 +1,11 @@
-FROM node:14.16.0
+FROM node:14
 
 WORKDIR /client
 
-COPY react-client/package*.json ./
+COPY package*.json ./
 
-RUN yarn
-
-COPY ./react-client .
+RUN npm i
 
 EXPOSE 3000
 
-CMD ["yarn", "start"]
+CMD ["npm", "start"]

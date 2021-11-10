@@ -1,0 +1,102 @@
+export const dummyKeywords = [
+  "가격",
+  "실용성",
+  "사용감",
+  "착용감",
+  "촉감",
+  "B",
+  "A",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+];
+
+export const dummyRankinglist = [
+  {
+    productname: "상품1",
+    price: "25000",
+    productDetail: "상품1에 대한 상품설명란",
+    like: ["가격", "실용성"],
+    hate: ["D"],
+  },
+  {
+    productname: "상품2",
+    price: "27000",
+    productDetail: "상품2에 대한 상품설명란",
+    like: ["가격", "실용성"],
+    hate: [],
+  },
+  {
+    productname: "상품3",
+    price: "1000",
+    productDetail: "상품3에 대한 상품설명란",
+    like: ["가격", "실용성"],
+    hate: ["D"],
+  },
+  {
+    productname: "상품4",
+    price: "25000",
+    productDetail: "상품4에 대한 상품설명란",
+    like: ["가격"],
+    hate: [],
+  },
+  {
+    productname: "상품5",
+    price: "25000",
+    productDetail: "상품5에 대한 상품설명란",
+    like: ["실용성"],
+    hate: [],
+  },
+  {
+    productname: "상품6",
+    price: "25000",
+    productDetail: "상품6에 대한 상품설명란",
+    like: ["가격"],
+    hate: ["D"],
+  },
+  {
+    productname: "상품7",
+    price: "25000",
+    productDetail: "상품7에 대한 상품설명란",
+    like: ["실용성"],
+    hate: ["D"],
+  },
+  {
+    productname: "상품8",
+    price: "25000",
+    productDetail: "상품8에 대한 상품설명란",
+    like: ["가격"],
+    hate: ["D", "F"],
+  },
+  {
+    productname: "상품1",
+    price: "25000",
+    productDetail: "상품1에 대한 상품설명란",
+    like: ["가격"],
+    hate: ["D", "G", "F"],
+  },
+];
+
+export const dummyProductDetail = {
+  productName: "텀블러",
+  price: "11900",
+  productFeature: [
+    "용량 : 900ml",
+    "기능 : 보온,보냉",
+    "재질 : 스테인리스 스틸,폴리프로필렌,실리콘",
+    "특징 : 빨대뚜껑,손잡이있음,진공구조",
+  ],
+  productDescImg:
+    "https://shopping-phinf.pstatic.net/20210514_17_0/607d96a0-0c91-498d-be19-0806519413eb/-2090744640.jpg",
+};

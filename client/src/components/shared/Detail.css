@@ -1,0 +1,101 @@
+.Detail-container {
+    max-width: 1300px;
+    min-width: 1300px;
+    margin: 50px auto 0px;
+    display: flex;
+    border-top: 1px solid #ececec;
+    border-bottom: 1px solid #ececec;
+}
+
+.Detail {
+    margin: 10px;
+    flex-basis: auto;
+    /* border: 2px solid rgb(190, 189, 189); */
+}
+.productImage {
+    text-align: center;
+    width: 350px;
+    width: 30%;
+}
+.productInfo {
+    text-align: left;
+    padding: 1px 20px 1px 20px;
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.product {
+    flex-grow: 0;
+    font-size: 25px;
+}
+
+.price {
+    flex-grow: 0;
+}
+
+.sBasket {
+    padding: 20px 0;
+    width: 10%;
+    text-align: center;
+}
+
+.Detail button {
+    color: white;
+    border-radius: 10px;
+    background-color: #0a1b62;
+    padding: 10px 15px 10px 15px;
+    cursor: pointer;
+}
+.Detail button:disabled {
+    background-color: #eeeeee;
+    color: rgb(173, 173, 173);
+    /* border-color: rgb(215, 215, 215); */
+    border-style: solid;
+    cursor: default;
+}
+
+.CloudPercent-container {
+    max-width: 900px;
+    min-width: 1300px;
+    /* margin: 50px auto 0px; */
+    padding: 50px auto 0px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.Detail-WordCloud {
+    text-align: left;
+    padding: 30px;
+    width: 50%;
+    border-right: 1px solid #ececec;
+    /* border: 2px solid rgb(190, 189, 189); */
+}
+
+.Detail-percentage {
+    height: 400px;
+    width: 50%;
+    padding: 30px;
+    /* border: 2px solid rgb(190, 189, 189); */
+}
+
+.simple-cloud .tag-cloud-tag {
+    cursor: pointer;
+}
+
+.kwdbtn {
+    cursor: pointer;
+    /* border: 2px solid #0a1b62; */
+    background-color: white;
+    border-radius: 20px;
+    padding: 5px 10px;
+    margin: 0.2em 0.2em;
+    display: inline-block;
+}
+
+.review-nav {
+    margin: 1em 0;
+    padding: 1em 0.5em;
+    background-color: rgba(211, 210, 238);
+    /* background-color: #ececec; */
+}

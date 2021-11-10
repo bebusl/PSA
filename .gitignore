@@ -1,0 +1,13 @@
+# Node.js
+node_modules
+
+# Python
+.idea
+__pycache__
+venv
+
+# Model
+analysis-gpu/checkpoint-100
+analysis/checkpoint-100/config.json
+analysis/checkpoint-100/pytorch_model.bin
+analysis/checkpoint-100/training_args.bin
