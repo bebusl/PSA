@@ -1,0 +1,117 @@
+import React, {useState} from "react";
+import { FlatList, StyleSheet, TouchableOpacity, View, Text, Button } from "react-native"
+
+const DATA = [
+    {
+        id: "1",
+        title: "가격"
+    },
+    {
+        id: "2",
+        title: "실용성"
+    },
+    {
+        id: "3",
+        title: "착용감"
+    },
+    {
+        id: "4",
+        title: "촉감"
+    },
+    {
+        id: "5",
+        title: "재질"
+    },
+
+]
+
+const Item = ({ item, onPress, backgroundColor, textColor }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+        <Text style={[styles.title, textColor]}>{item.title}</Text>
+    </TouchableOpacity>    
+)
+
+export const HateKeyword = ({ navigation }) => {
+    const [selecedId, setSelected] = useState(null);
+
+    const renderItem = ({ item }) => {
+        const backgroundColor = item.id === selecedId ? "red" : "white";
+        const color = item.id === selecedId ? 'white' : 'black';
+
+        return(
+            <Item
+                item={item}
+                onPress={() => setSelected(item.id)}
+                backgroundColor={{ backgroundColor }}
+                textColor={{ color }}
+            />
+    )
+    }
+    return(
+        <View style={styles.container}>
+            <View style={styles.information}>
+                <Text style={styles.text}>불호 특징을 선택해주세요!</Text>
+                <Text style={styles.textInfo}>선택한 키워드에 대한 부정적인 리뷰가 적은 순으로 상품이 보여집니다.</Text>
+            </View>
+            <View style={{ flex:2, alignItems: 'center' }}>
+                <FlatList
+                    horizontal= {false}
+                    numColumns= {2}
+                    data={DATA}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                    extraData={selecedId}
+                />
+            </View>
+            <View style={styles.btnArea}>
+                <TouchableOpacity onPress={() => navigation.navigate('rankingScreen')}>
+                    <Text style={styles.saveBtn}>GO</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    )
+}
+
+const styles = StyleSheet.create({
+    container:{
+        flex: 1, 
+        backgroundColor: 'white' 
+    },
+    item: {
+        padding: 20,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        borderWidth:2, 
+        width:'41%'
+    },
+    title: {
+        fontSize: 32,
+        flex: 2, 
+        textAlign: 'center'
+    },
+    information:{
+        height: '30%', 
+        justifyContent: 'center'
+    },
+    text:{ 
+        textAlign: 'center', 
+        fontSize: 30
+    },
+    textInfo:{ 
+        textAlign: 'center', 
+        fontSize: 13, 
+        marginTop: 15 
+    },
+    btnArea:{
+        height: '10%',
+        justifyContent: 'center',
+        alignContent: 'center'
+    },
+    saveBtn:{
+        textAlign: 'center',
+        color: '#000080',
+        fontSize: 20
+    }
+})
+
+export default HateKeyword;
