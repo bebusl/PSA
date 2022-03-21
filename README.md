@@ -4,8 +4,9 @@
 ### contributor
 |이진희|윤정환|신지애|손지현 |
 |------|---|---| --- |
-| [bebusl](https://github.com/bebusl)              |      [dungbik](https://github.com/dungbik)         |   [leejeongeun0](https://github.com/leejeongeun0)      | ㅁㄴㅇ래 |
-| 🌴                                               | 🔥                                               | 📖                                               | ㄴ아룰 |
+| [bebusl](https://github.com/bebusl)              |      [dungbik](https://github.com/dungbik)         |   [
+ShinJA0](https://github.com/ShinJA0)|[jihyun131](https://github.com/jihyun131)      |
+| 🌴                                               | 🔥                                               | 📖                                               |📖   |
 
 
 
@@ -30,37 +31,12 @@ https://drive.google.com/file/d/1l_4s9RA0bdtXl6AEqNQ8vaIUsDOr4abv/view?usp=shari
 
 ### api server
 *  의존성
-      ```
-      //for server
-      "bcryptjs": "^2.4.3",
-        "body-parser": "^1.19.0",
-        "cookie-parser": "^1.4.5",
-        "cors": "^2.8.5",
-        "dotenv": "^10.0.0",
-        "express": "^4.17.1",
-        "jsonwebtoken": "^8.5.1",
-        "mongoose": "^6.0.11",
-        "nodemon": "^2.0.13",
-        "swagger-autogen": "^2.13.0",
-        "swagger-ui-express": "^4.1.6"
-        
-        //for task
-        torch==1.8.0
-        numpy
-        transformers==4.1.1
-        tqdm==4.32.1
-        emoji
-        soynlp
-        python-dotenv
-        tweepy==3.10.0
-        konlpy
-        ```
+
 * 설치방법
      ```
         cd server
         npm i
         cd server/celery
-        pip install -r requirements.txt
     ```
 
 ### flutter-app
