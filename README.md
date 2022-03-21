@@ -4,8 +4,7 @@
 ### contributor
 |이진희|윤정환|신지애|손지현 |
 |------|---|---| --- |
-| [bebusl](https://github.com/bebusl)              |      [dungbik](https://github.com/dungbik)         |   [
-ShinJA0](https://github.com/ShinJA0)|[jihyun131](https://github.com/jihyun131)      |
+| [bebusl](https://github.com/bebusl)              |      [dungbik](https://github.com/dungbik)         |   [ShinJA0](https://github.com/ShinJA0)|[jihyun131](https://github.com/jihyun131)      |
 | 🌴                                               | 🔥                                               | 📖                                               |📖   |
 
 
