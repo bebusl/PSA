@@ -9,10 +9,9 @@
 
 
 
-#### 서비스 설명
-실시간으로 상품의 리뷰에서 추출된 특징에 대한 선호도를 선택하게 해 사용자의 요구사항이 반영된 상품을 추천해주고, 상품의 요약정보를 시각화해주는 웹/앱 서비스
-
-웹 소켓과 분산 처리를 이용해 실시간으로 많은 요청을 처리 가능
+### 서비스 설명
+* 실시간으로 상품의 리뷰에서 추출된 특징에 대한 선호도를 선택하게 해 사용자의 요구사항이 반영된 상품을 추천해주고, 상품의 요약정보를 시각화해주는 웹/앱 서비스
+* 웹 소켓과 분산 처리를 이용해 실시간으로 많은 요청을 처리 가능
 -----
 ## 샘플
 **앱화면**
@@ -38,7 +37,7 @@ https://drive.google.com/file/d/1l_4s9RA0bdtXl6AEqNQ8vaIUsDOr4abv/view?usp=shari
         cd server/celery
     ```
 
-### flutter-app
+### react-native app
 [flutter install](https://docs.flutter.dev/get-started/install)
 <br />
 
