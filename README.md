@@ -5,70 +5,45 @@
 |이진희|윤정환|신지애|손지현 |
 |------|---|---| --- |
 | [bebusl](https://github.com/bebusl)              |      [dungbik](https://github.com/dungbik)         |   [ShinJA0](https://github.com/ShinJA0)|[jihyun131](https://github.com/jihyun131)      |
-| 🌴                                               | 🔥                                               | 📖                                               |📖   |
+| 🌴                                               | 🔥                                               |✨                                         |      🪄  |
 
 
 
 ### 서비스 설명
 * 실시간으로 상품의 리뷰에서 추출된 특징에 대한 선호도를 선택하게 해 사용자의 요구사항이 반영된 상품을 추천해주고, 상품의 요약정보를 시각화해주는 웹/앱 서비스
 * 웹 소켓과 분산 처리를 이용해 실시간으로 많은 요청을 처리 가능
------
-## 샘플
-**앱화면**
 
-**웹화면**
+----
+### 기능적 요구사항
+1. **회원가입 / 로그인** : (회원가입 선행되어야 함. 로그인 안했을 때는 장바구니 이용불가)
+2. **검색** : 원하는 제품군 검색
+3. **크롤링** : 제품의 리뷰를 크롤링
+4. **키워드 추출 및 긍/부정도 판단** : 리뷰의 키워드 추출 + 키워드에 대한 긍/부정도 판단 후 db저장
+5. **키워드 선택 기능** : 리뷰에서 추출된 키워드를 보여줌 -> 비선호/선호 키워드 선택하게 함
+6. **랭킹 알고리즘** : 선택 키워드에 알맞은 상품 보여주기
+7. **분석 결과 워드클라우드 및 그래프로 표현(상세 페이지)** : 상품에 대한 정보 제공.
 
-## 의존성 및 설치 방법
-* 용량이 큰 파일은 git에 올리지 않았음.
-* 모델( checkpoint-1200 ) 파일은 다운로드 받아서 server/celery/model/ 위치에 넣어주어야 함
-* tfidf 매트릭스 파일도 다운로드받아 sever/celery/model폴더에 넣어주어야 함.
-* .env파일을 server/env파일에 생성해주어야 함.(key 내용 문의 :  bebus1998@naver.com)
+----
+### 시스템 아키텍처
+![PSA 시스템아키텍처](https://user-images.githubusercontent.com/49019236/159383240-33a08847-0d26-4183-9929-4fab8f9edc01.png)
+---
+### 설명 비디오
+프로그램이 어떤 방식으로 작동하는지 알고싶다면 아래의 링크를 클릭해 설명 동영상을 봐주세요!
+* 전체적인 흐름 설명
+* 랭킹 알고리즘/키워드 추출 및 감성분석에 사용한 모델설명
+* [PSA 설명](https://drive.google.com/file/d/1jMwQwm8Zdw_N8_HvpXhdfIieWiMjfytX/view?usp=sharing)
+---
 
+### 샘플
+#### 웹화면
+![웹화면](https://user-images.githubusercontent.com/49019236/159382447-5b223d81-d68c-43a3-b9ec-7427918c25b3.gif)
+#### 앱 화면
+![앱화면](https://user-images.githubusercontent.com/49019236/159383022-011f29ec-7bcd-46ae-baf5-77c58d4b37b0.gif)
+
+===
 ### 설계문서
 https://drive.google.com/file/d/1l_4s9RA0bdtXl6AEqNQ8vaIUsDOr4abv/view?usp=sharing
 
-### api server
-*  의존성
-
-* 설치방법
-     ```
-        cd server
-        npm i
-        cd server/celery
-    ```
-
-### react-native app
-[flutter install](https://docs.flutter.dev/get-started/install)
-<br />
-
-## 실행방법(development)
-### api 서버 오픈
-```
-cd server
-npm i
-npm run dev
-```
-
-### flutter app 빌드
-```
-cd flutter-app
-flutter build apk (android)
-flutter build ios (ios)
-```
-
-
-
-----
-## License
-```
-The MIT License (MIT)
-
-Copyright (c) 2021 yoonleeverse
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-```
+---
+### 실행방법(development) - docker로 docker-compose파일 빌드하고 실행시키는 게 가장 빠름!
+빌드 및 실행방법 추가예정.
