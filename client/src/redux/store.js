@@ -1,12 +1,7 @@
-import {
-  configureStore,
-  getDefaultMiddleware,
-  combineReducers,
-} from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import authReducer from "./slice/authSlice";
 import keywordReducer from "./slice/keywordSlice";
 import {
-  persistStore,
   persistReducer,
   FLUSH,
   REHYDRATE,
@@ -17,7 +12,10 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-const reducers = combineReducers(authReducer, keywordReducer);
+const reducers = combineReducers({
+  auth: authReducer,
+  keyword: keywordReducer,
+});
 
 const persistConfig = {
   key: "root",
