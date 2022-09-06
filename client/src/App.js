@@ -2,20 +2,18 @@ import "./styles/css/App.css";
 import io from "socket.io-client";
 import DefaultRoutes from "./routes/DefaultRoutes";
 import Content from "./components/layout/Content";
-import { PersistGate } from "redux-persist/integration/react";
-import { persistStore } from "redux-persist";
-import store from "./redux/store";
+import Nav from "./components/layout/Nav";
 
 const socket = io.connect("http://localhost:5000");
-const persistor = persistStore(store);
-
+// const socket = "socket";
 function App() {
   return (
-    <Content>
-      <PersistGate loading={null} persistor={persistor}>
+    <div>
+      <Nav />
+      <Content>
         <DefaultRoutes socket={socket} />
-      </PersistGate>
-    </Content>
+      </Content>
+    </div>
   );
 }
 
