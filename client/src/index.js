@@ -7,6 +7,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import store from "./store/store";
 import "./styles/css/index.css";
 import App from "./App";
+import GlobalStyle from "./styles/globalStyle";
 
 const persistor = persistStore(store);
 
@@ -22,6 +23,7 @@ root.render(
   <BrowserRouter>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
+        <GlobalStyle />
         <App />
       </PersistGate>
     </Provider>
