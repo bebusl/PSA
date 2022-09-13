@@ -13,7 +13,7 @@ h1 {
 
 
 hr {
-  box-sizing: content-box; /* 1 */
+
   height: 0; /* 1 */
   overflow: visible; /* 2 */
 }
@@ -202,6 +202,9 @@ textarea {
   -webkit-appearance: none;
 }
 
+*{
+    box-sizing:border-box;
+}
 
 
 ::-webkit-file-upload-button {
@@ -230,6 +233,35 @@ template {
 [hidden] {
   display: none;
 }
+
+
+.full-page {
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.black-3 {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.pos {
+  color: #006ebe;
+}
+
+.neg {
+  color: #ef1c1c;
+}
+
 `;
 
 export default GlobalStyle;

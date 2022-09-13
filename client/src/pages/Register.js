@@ -1,5 +1,4 @@
-import withAuth from "../container/withAuth";
-import { useInput } from "../../hooks/useInput";
+import { useInput } from "../hooks/useInput";
 import "./Login.css";
 import axios from "axios";
 const Register = ({ history }) => {
@@ -81,4 +80,4 @@ const Register = ({ history }) => {
   );
 };
 
-export default withAuth(Register);
+export default Register;

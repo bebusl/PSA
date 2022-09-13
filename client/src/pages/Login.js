@@ -1,5 +1,4 @@
-import withAuth from "../container/withAuth";
-import { useInput } from "../../hooks/useInput";
+import { useInput } from "../hooks/useInput";
 import "./Login.css";
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -54,4 +53,4 @@ const Login = ({ login, history }) => {
   );
 };
 
-export default withAuth(Login);
+export default Login;

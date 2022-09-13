@@ -1,5 +1,5 @@
-import SelectBox from "../shared/SelectBox";
-import { useKeywords } from "../../hooks/useKeywords";
+import SelectBox from "../components/shared/SelectBox";
+import { useKeywords } from "../hooks/useKeywords";
 import { useCallback, useEffect, useState } from "react";
 
 function HateKeywordSelect({

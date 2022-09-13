@@ -1,10 +1,10 @@
-import SearchBox from "../shared/SearchBox";
-import { useInput } from "../../hooks/useInput";
+import SearchBox from "../components/shared/SearchBox";
+import { useInput } from "../hooks/useInput";
 import { useState, useCallback, useEffect } from "react";
-import Loading from "../shared/Loading";
+import Loading from "../components/shared/Loading";
 import "./Main.css";
 import { connect } from "react-redux";
-import { setSearchItem } from "../../store/action";
+import { setSearchItem } from "../store/action";
 import { GiShoppingBag } from "react-icons/gi";
 
 const mapDispatchToProps = (dispatch) => ({
@@ -26,6 +26,7 @@ function Home({ history, socket, setSearchItem }) {
       });
     });
   }, [socket]);
+  //keyword => 가 오면 localStorage에 저장하고 넘기네.
 
   useEffect(() => {
     setSocket();

@@ -1,8 +1,8 @@
-import SelectBox from "../shared/SelectBox";
-import { useKeywords } from "../../hooks/useKeywords";
+import SelectBox from "../components/shared/SelectBox";
+import { useKeywords } from "../hooks/useKeywords";
 import { useEffect, useState } from "react";
 import "./Keywordpage.css";
-import { dummyKeywords } from "../dummyData";
+import { dummyKeywords } from "../components/dummyData";
 
 function LikeKeywordSelect({ updateLikeKeyword, history, socket }) {
   const [keywords, setKeywords] = useState(dummyKeywords);
