@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
+import socket from "../../socket";
 // export const login = createAsyncThunk(
 //   "auth/login",
 //   async (userData: { email: string; password: string }, thunkAPI) => {
@@ -52,23 +52,28 @@ const initialState = {
   preferKeyword: [],
   dispreferKeyword: [],
   productLists: [],
+  searchItem: "",
 };
 
 export const keywordSlice = createSlice({
-  name: "auth",
+  name: "keyword",
   initialState: initialState,
   reducers: {
     logoff: (state) => {
       state = initialState;
     },
     updateLoginStatus: (state, action) => {
-      console.log(action);
       state.isLogin = true;
       state.email = action.payload.email;
       state.authToken = action.payload.auth_token;
     },
+    setSearchItem: (state, action) => {
+      state.searchItem = action.payload;
+      socket.emit("send message", { searchItem: action.payload });
+    },
   },
 });
 
-export const { logoff, updateLoginStatus } = keywordSlice.actions;
+export const { logoff, updateLoginStatus, setSearchItem } =
+  keywordSlice.actions;
 export default keywordSlice.reducer;
