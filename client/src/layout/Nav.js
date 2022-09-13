@@ -1,4 +1,4 @@
-import "./Nav.css";
+// import "./Nav.css";
 import { Link } from "react-router-dom";
 
 import { useEffect } from "react";
