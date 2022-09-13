@@ -1,9 +1,17 @@
 //import React from "react";
-import "./Detail.css";
+// import "./Detail.css";
 import { TagCloud } from "react-tagcloud";
 import React from "react";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+} from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { useScript } from "../../hooks/useScript";
+
+ChartJS.register(CategoryScale, LinearScale, BarElement);
 
 function Detail({
   product,
