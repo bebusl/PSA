@@ -1,4 +1,3 @@
-import SearchBox from "../components/shared/SearchBox";
 import { useInput } from "../hooks/useInput";
 import { useState, useCallback, useEffect } from "react";
 import Loading from "../components/shared/Loading";
@@ -6,6 +5,8 @@ import "./Main.css";
 import { connect } from "react-redux";
 import { setSearchItem } from "../store/action";
 import { GiShoppingBag } from "react-icons/gi";
+import { Banner, Container, SubBanner } from "./Main.style";
+import SearchBar from "../components/searchBar/SearchBox";
 
 const mapDispatchToProps = (dispatch) => ({
   setSearchItem: (searchItem) => dispatch(setSearchItem(searchItem)),
@@ -45,25 +46,24 @@ function Home({ history, socket, setSearchItem }) {
   return (
     <>
       {isLoading && <Loading />}
-
-      <div className="contents-wrapper main">
-        <div className="banner">
-          <div className="sub_banner">
+      <Container>
+        <Banner>
+          <SubBanner>
             <p>마음에 꼭 맞는</p>
             <p>상품을 찾아드립니다</p>
             <br />
             <p>믿고 맡겨주세요!</p>
-          </div>
-          <div className="sub_banner">
+          </SubBanner>
+          <SubBanner>
             <GiShoppingBag color="white" size="8rem"></GiShoppingBag>
-          </div>
-        </div>
-        <SearchBox
+          </SubBanner>
+        </Banner>
+        <SearchBar
           searchItem={values.searchItem}
           onSubmit={onSubmit}
           onChange={onChange}
-        ></SearchBox>
-      </div>
+        />
+      </Container>
     </>
   );
 }
