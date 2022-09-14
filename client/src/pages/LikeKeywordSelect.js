@@ -1,34 +1,38 @@
 import SelectBox from "../components/shared/SelectBox";
-import { useKeywords } from "../hooks/useKeywords";
-import { useEffect, useState } from "react";
+import { useRef } from "react";
 import "./Keywordpage.css";
-import { dummyKeywords } from "../components/dummyData";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setKeywords } from "../store/slice/keywordSlice";
 
-function LikeKeywordSelect({ updateLikeKeyword, history, socket }) {
-  const [keywords, setKeywords] = useState(dummyKeywords);
-  const { values, addKeyword, deleteKeyword } = useKeywords("like", []);
+function LikeKeywordSelect() {
+  const keywords = JSON.parse(window.localStorage.getItem("poskeywords"));
 
-  useEffect(() => {
-    let item = window.localStorage.getItem("poskeywords");
-    setKeywords(JSON.parse(item));
-  }, []);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  function onClick(e, keyword) {
-    e.preventDefault();
-    if (values["like"].includes(keyword)) {
-      deleteKeyword(keyword);
-    } else addKeyword(keyword);
+  const selectedKeywords = useRef([]);
+
+  const onClick = (e) => {
+    if (e.target.checked) {
+      selectedKeywords.current.push(e.target.id);
+    } else {
+      selectedKeywords.current = selectedKeywords.current.filter(
+        (keyword) => keyword !== e.target.id
+      );
+    }
+  };
+
+  function onSubmit() {
+    dispatch(
+      setKeywords({
+        type: "preferKeywords",
+        keywords: selectedKeywords.current,
+      })
+    );
+    navigate("/hatekeyword");
   }
 
-  function onSubmit(e) {
-    //redux에 저장하고 다음페이지로 넘기기!
-    e.preventDefault();
-    updateLikeKeyword(values["like"]); //redux 저장소에 like keyword 저장.
-    history.push({
-      pathname: "/hatekeyword",
-      socket: socket,
-    });
-  }
   return (
     <div className="select-container">
       <div className="title">선호 특징을 선택해주세요!</div>
@@ -38,9 +42,8 @@ function LikeKeywordSelect({ updateLikeKeyword, history, socket }) {
       <SelectBox
         mode="like"
         keywords={keywords}
-        onSubmit={onSubmit}
         onClick={onClick}
-        values={values}
+        onSubmit={onSubmit}
       />
     </div>
   );

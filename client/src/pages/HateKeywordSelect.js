@@ -1,53 +1,51 @@
 import SelectBox from "../components/shared/SelectBox";
-import { useKeywords } from "../hooks/useKeywords";
-import { useCallback, useEffect, useState } from "react";
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setKeywords, setProductList } from "../store/slice/keywordSlice";
+import { useEffect } from "react";
+import socket from "../socket";
 
-function HateKeywordSelect({
-  updateHateKeyword,
-  setProductlist,
-  history,
-  likeWrd,
-  hateWrd,
-  searchItem,
-  socket,
-}) {
-  //const socket = location.socket;
-  const [keywords, setKeywords] = useState([]);
-  const { values, addKeyword, deleteKeyword } = useKeywords("hate", []);
+function HateKeywordSelect() {
+  const keywords = JSON.parse(window.localStorage.getItem("negkeywords"));
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const setSocket = useCallback(() => {
-    socket.on("productlist", (productlist) => {
-      setProductlist(productlist);
-      history.push({
-        pathname: "/ranking",
-      });
-    });
-  }, []);
+  const keywordStore = useSelector((state) => state.keyword);
+  const selectedKeywords = useRef([]);
 
   useEffect(() => {
-    setSocket();
-    let item = window.localStorage.getItem("negkeywords");
-    setKeywords(JSON.parse(item));
-    return function cleanup() {
-      socket.off("productlist");
-    };
+    socket.on("productlist", (productlist) => {
+      console.log("productlist 도착");
+      dispatch(setProductList(productlist));
+      navigate("/ranking");
+    });
+
+    return () => socket.disconnect();
   }, []);
 
-  function onClick(e, keyword) {
-    e.preventDefault();
-    if (values["hate"].includes(keyword)) {
-      deleteKeyword(keyword);
-    } else addKeyword(keyword);
-  }
+  const onClick = (e) => {
+    if (e.target.checked) {
+      selectedKeywords.current.push(e.target.id);
+    } else {
+      selectedKeywords.current = selectedKeywords.current.filter(
+        (keyword) => keyword !== e.target.id
+      );
+    }
+  };
 
   function onSubmit(e) {
-    //redux에 저장하고 다음페이지로 넘기기!
     e.preventDefault();
-    updateHateKeyword(values["hate"]); //redux 저장소에 like keyword 저장.
+    dispatch(
+      setKeywords({
+        type: "dispreferKeywords",
+        keywords: selectedKeywords.current,
+      })
+    );
     socket.emit("selected keywords", {
-      searchItem: searchItem,
-      likeword: likeWrd,
-      hateword: values["hate"],
+      searchItem: keywordStore.searchItem,
+      likeword: keywordStore.preferKeywords,
+      hateword: keywordStore.dispreferKeywords,
     });
   }
 
@@ -59,10 +57,9 @@ function HateKeywordSelect({
       </p>
       <SelectBox
         mode="hate"
-        onSubmit={onSubmit}
-        onClick={onClick}
-        values={values}
         keywords={keywords}
+        onClick={onClick}
+        onSubmit={onSubmit}
       />
     </div>
   );
