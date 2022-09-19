@@ -1,23 +1,19 @@
 import { useCallback, useState } from "react";
 
-export function useKeywords(mode, initValue) {
-  const [values, setValues] = useState({ [mode]: initValue });
+export function useKeywords(initialValue) {
+  const [values, setValues] = useState(initialValue ?? []);
 
-  const addKeyword = useCallback(
-    (keyword) => {
-      setValues((values) => ({ [mode]: [...values[mode], keyword] }));
-    },
-    [mode]
-  );
+  const addKeyword = useCallback((keyword) => {
+    setValues((values) => [...values, keyword]);
+  }, []);
 
-  const deleteKeyword = useCallback(
-    (deleteKeyword) => {
-      let modified = values[mode];
+  const deleteKeyword = useCallback((deleteKeyword) => {
+    setValues((prev) => {
+      let modified = [...prev];
       modified = modified.filter((keyword) => keyword !== deleteKeyword);
-      setValues((values) => ({ ...values, [mode]: modified }));
-    },
-    [mode, values]
-  );
+      return modified;
+    });
+  }, []);
 
   const reset = useCallback(() => setValues({}), []);
 

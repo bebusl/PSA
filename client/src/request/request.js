@@ -1,7 +1,7 @@
 import axios from "axios";
 
 function defaulHandler(result) {
-  console.log("msw ::", result);
+  // console.log("msw ::", result);
 }
 
 function requests(baseURL = "http://localhost:3000") {

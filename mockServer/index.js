@@ -12,10 +12,10 @@ const io = new Server(httpServer, {
 console.log("====================READY====================");
 
 io.on("connection", (socket) => {
-  console.log("WEB SOCKET SERVER ON");
+  console.log("WEB SOCKET SERVER ON", new Date().toString());
 
-  socket.on("send message", () => {
-    console.log("Test");
+  socket.on("send message", ({ searchItem }) => {
+    console.log("Test", searchItem);
     const posreal = [
       "소재",
       "길이감",
@@ -35,6 +35,7 @@ io.on("connection", (socket) => {
     const negreal = ["배송", "마감", "질", "소재"];
 
     setTimeout(() => {
+      console.log("TIMEOUT");
       io.emit("keywords", posreal, negreal); //posreal, negreal 두번째 세번째 인자로 전달.
     }, 1000);
 
