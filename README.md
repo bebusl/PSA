@@ -31,7 +31,7 @@
 프로그램이 어떤 방식으로 작동하는지 알고싶다면 아래의 링크를 클릭해 설명 동영상을 봐주세요!
 * 전체적인 흐름 설명
 * 랭킹 알고리즘/키워드 추출 및 감성분석에 사용한 모델설명
-* [PSA 설명](https://drive.google.com/file/d/1jMwQwm8Zdw_N8_HvpXhdfIieWiMjfytX/view?usp=sharing)
+* [PSA 설명](https://drive.google.com/file/d/1e4UQALNm7_9CtjcrN047z9Hswzy_jOhF/view?usp=sharing)
 ---
 
 ### 샘플
@@ -40,10 +40,9 @@
 #### 앱 화면
 ![앱화면](https://user-images.githubusercontent.com/49019236/159383022-011f29ec-7bcd-46ae-baf5-77c58d4b37b0.gif)
 
-===
+--- 
 ### 설계문서
-https://drive.google.com/file/d/1l_4s9RA0bdtXl6AEqNQ8vaIUsDOr4abv/view?usp=sharing
-
+[문서 보기](https://drive.google.com/file/d/15s48vr1W2MqqURBeMLCMSAanJe-UlNxL/view?usp=sharing)
 ---
 ### 실행방법(development) - docker로 docker-compose파일 빌드하고 실행시키는 게 가장 빠름!
 빌드 및 실행방법 추가예정.
